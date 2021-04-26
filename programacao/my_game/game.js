@@ -59,8 +59,8 @@ function create() {
 
         fire: function (x, y, pos) {
             this.speed = pos == 'R' ? Phaser.Math.GetSpeed(600, 1) : Phaser.Math.GetSpeed(600, -1);
-            
-            this.setPosition(x, y + 50);
+
+            this.setPosition(pos == 'R' ? x + 100 : x, y + 50);
             this.setActive(true);
             this.setVisible(true);
         },
@@ -78,7 +78,7 @@ function create() {
 
     bullets = this.add.group({
         classType: Bullet,
-        maxSize: 30,
+        maxSize: 100,
         runChildUpdate: true
     });
 
