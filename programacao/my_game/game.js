@@ -16,6 +16,8 @@ var config = {
 };
 
 var game = new Phaser.Game(config);
+var keys;
+var pos = 'R';
 
 function preload() {
     this.load.image('classroom', '../../cenario/classroom.png');
@@ -24,12 +26,16 @@ function preload() {
     this.load.spritesheet('playerRunningL', '../../sprites/runningL.png', { frameWidth: 515, frameHeight: 690 });
     this.load.spritesheet('playerStand', '../../sprites/stand.png', { frameWidth: 262, frameHeight: 690 });
     this.load.spritesheet('playerJump', '../../sprites/jump.png', { frameWidth: 343, frameHeight: 545 });
+    this.load.spritesheet('playerStandL', '../../sprites/standL.png', { frameWidth: 262, frameHeight: 690 });
 }
 
 function create() {
+
+    keys = this.input.keyboard.addKeys("W,A,S,D"); 
     this.add.image(400, 300, 'classroom').setScale(1.5)
 
     player = this.physics.add.sprite(801, 450, 'playerStand').setScale(0.2)
+    
     player.setGravityY(500)
 
     player.setCollideWorldBounds(true);
@@ -50,6 +56,11 @@ function create() {
         frameRate: 10
     });
     this.anims.create({
+        key: 'standL',
+        frames: this.anims.generateFrameNumbers("playerStandL"),
+        frameRate: 10
+    })
+    this.anims.create({
         key: 'jump',
         frames: this.anims.generateFrameNumbers("playerJump"),
         frameRate: 10
@@ -59,31 +70,41 @@ function create() {
         frames: this.anims.generateFrameNumbers("playerRunningL"),
         frameRate: 10
     });
-
-    cursors = this.input.keyboard.createCursorKeys();
 }
 
 function update() {
 
-    if (cursors.left.isDown) {
-        player.setVelocityX(-160);
-        player.anims.play('left', true);
-    }
-    else if (cursors.right.isDown) {
-        player.setVelocityX(160);
-        player.anims.play('right', true);
-    }
-    else if (cursors.down.isDown) {
+    if (keys.A.isDown && keys.D.isDown)
+    {
         player.setVelocityX(0);
-        player.anims.play('down', true);
+        player.anims.play('stand', true);
     }
-    else if (cursors.up.isDown && player.body.y == 462) {
+    else if (keys.W.isDown && player.body.y == 462) {
         player.setVelocityY(-400);
         player.setVelocityX(0);
         player.anims.play('jump', true);
     }
+    else if (keys.D.isDown) {
+        player.setVelocityX(160);
+        player.anims.play('right', true);
+        pos = 'R';
+    }
+    else if (keys.A.isDown) {
+        player.setVelocityX(-160);
+        player.anims.play('left', true);
+        pos = 'L';
+    }
+    else if (keys.S.isDown) {
+        player.setVelocityX(0);
+        player.anims.play('down', true);
+    }
     else {
         player.setVelocityX(0);
-        player.anims.play('stand', true);
+        if(pos == 'R'){
+            player.anims.play('stand', true);
+        }
+        else if(pos == 'L'){
+            player.anims.play('standL', true);
+        }
     }
 }
