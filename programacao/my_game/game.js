@@ -12,12 +12,18 @@ var config = {
         preload: preload,
         create: create,
         update: update
+    },
+    scale: {
+        autoCenter: Phaser.Scale.CENTER_BOTH
     }
 };
 
-var game = new Phaser.Game(config);
-var keys;
-var pos = 'R';
+let game = new Phaser.Game(config);
+let keys;
+let pos = 'R';
+
+let player;
+let bullets;
 
 function preload() {
     this.load.image('classroom', '../../cenario/classroom.png');
@@ -31,13 +37,12 @@ function preload() {
 
 function create() {
 
-    keys = this.input.keyboard.addKeys("W,A,S,D"); 
+    keys = this.input.keyboard.addKeys("W,A,S,D");
+
     this.add.image(400, 300, 'classroom').setScale(1.5)
 
     player = this.physics.add.sprite(801, 450, 'playerStand').setScale(0.2)
-    
     player.setGravityY(500)
-
     player.setCollideWorldBounds(true);
 
     this.anims.create({
@@ -74,8 +79,7 @@ function create() {
 
 function update() {
 
-    if (keys.A.isDown && keys.D.isDown)
-    {
+    if (keys.A.isDown && keys.D.isDown) {
         player.setVelocityX(0);
         player.anims.play('stand', true);
     }
@@ -100,10 +104,10 @@ function update() {
     }
     else {
         player.setVelocityX(0);
-        if(pos == 'R'){
+        if (pos == 'R') {
             player.anims.play('stand', true);
         }
-        else if(pos == 'L'){
+        else if (pos == 'L') {
             player.anims.play('standL', true);
         }
     }
