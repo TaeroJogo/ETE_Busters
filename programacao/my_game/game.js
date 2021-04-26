@@ -1,7 +1,7 @@
 var config = {
     type: Phaser.AUTO,
-    width: 1000,
-    height: 800,
+    width: 800,
+    height: 600,
     physics: {
         default: 'arcade',
         arcade: {
@@ -10,38 +10,45 @@ var config = {
     },
     scene: {
         preload: preload,
-        create: create
+        create: create,
+        update: update
     }
 };
 
 var game = new Phaser.Game(config);
 
-function preload ()
-{
-    this.load.setBaseURL('http://labs.phaser.io');
-
-    this.load.image('sky', 'assets/skies/space3.png');
-    this.load.image('logo', 'assets/sprites/phaser3-logo.png');
-    this.load.image('red', 'assets/particles/red.png');
+function preload() {
+    this.load.image('classroom', '../../cenario/classroom.png');
+    this.load.image('player', '../../sprites/stand.png');
 }
 
-function create ()
-{
-    this.add.image(400, 300, 'sky');
+function create() {
+    this.add.image(400, 300, 'classroom').setScale(1.5)
 
-    var particles = this.add.particles('red');
+    player = this.physics.add.sprite(100, 450, 'player');
 
-    var emitter = particles.createEmitter({
-        speed: 100,
-        scale: { start: 1, end: 0 },
-        blendMode: 'ADD'
+    player.setBounce(0.2);
+    player.setCollideWorldBounds(true);
+
+    this.anims.create({
+        key: 'left',
+        frames: this.anims.generateFrameNumbers('player', { start: 0, end: 3 }),
+        frameRate: 10,
+        repeat: -1
     });
 
-    var logo = this.physics.add.image(400, 100, 'logo');
+    this.anims.create({
+        key: 'turn',
+        frames: [{ key: 'player', frame: 4 }],
+        frameRate: 20
+    });
 
-    logo.setVelocity(100, 200);
-    logo.setBounce(1, 1);
-    logo.setCollideWorldBounds(true);
-
-    emitter.startFollow(logo);
+    this.anims.create({
+        key: 'right',
+        frames: this.anims.generateFrameNumbers('player', { start: 5, end: 8 }),
+        frameRate: 10,
+        repeat: -1
+    });
 }
+
+function update() { }
