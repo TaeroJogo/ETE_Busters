@@ -19,13 +19,13 @@ var game = new Phaser.Game(config);
 
 function preload() {
     this.load.image('classroom', '../../cenario/classroom.png');
-    this.load.image('player', '../../sprites/stand.png');
+    this.load.spritesheet('player', 'sprite.png', { frameWidth: 376.8, frameHeight: 690 });
 }
 
 function create() {
     this.add.image(400, 300, 'classroom').setScale(1.5)
 
-    player = this.physics.add.sprite(100, 450, 'player');
+    player = this.physics.add.sprite(100, 450, 'player', 0);
 
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
