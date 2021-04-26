@@ -26,15 +26,15 @@ let player;
 let bullets;
 
 function preload() {
-    this.load.image('classroom', '../../cenario/classroom.png');
-    this.load.image('id_card', '../../cenario/id_card.png')
+    this.load.image('classroom', '../../res/cenario/classroom.png');
+    this.load.image('id_card', '../../res/cenario/id_card.png')
 
-    this.load.spritesheet('playerDown', '../../sprites/down.png', { frameWidth: 249, frameHeight: 690 });
-    this.load.spritesheet('playerRunning', '../../sprites/running.png', { frameWidth: 515, frameHeight: 690 });
-    this.load.spritesheet('playerRunningL', '../../sprites/runningL.png', { frameWidth: 515, frameHeight: 690 });
-    this.load.spritesheet('playerStand', '../../sprites/stand.png', { frameWidth: 262, frameHeight: 690 });
-    this.load.spritesheet('playerJump', '../../sprites/jump.png', { frameWidth: 343, frameHeight: 545 });
-    this.load.spritesheet('playerStandL', '../../sprites/standL.png', { frameWidth: 262, frameHeight: 690 });
+    this.load.spritesheet('playerDown', '../../res/sprites/down.png', { frameWidth: 249, frameHeight: 690 });
+    this.load.spritesheet('playerRunning', '../../res/sprites/running.png', { frameWidth: 515, frameHeight: 690 });
+    this.load.spritesheet('playerRunningL', '../../res/sprites/runningL.png', { frameWidth: 515, frameHeight: 690 });
+    this.load.spritesheet('playerStand', '../../res/sprites/stand.png', { frameWidth: 262, frameHeight: 690 });
+    this.load.spritesheet('playerJump', '../../res/sprites/jump.png', { frameWidth: 343, frameHeight: 545 });
+    this.load.spritesheet('playerStandL', '../../res/sprites/standL.png', { frameWidth: 262, frameHeight: 690 });
 }
 
 function create() {
