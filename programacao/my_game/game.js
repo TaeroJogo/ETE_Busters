@@ -27,6 +27,8 @@ let bullets;
 
 function preload() {
     this.load.image('classroom', '../../cenario/classroom.png');
+    this.load.image('id_card', '../../cenario/id_card.png')
+
     this.load.spritesheet('playerDown', '../../sprites/down.png', { frameWidth: 249, frameHeight: 690 });
     this.load.spritesheet('playerRunning', '../../sprites/running.png', { frameWidth: 515, frameHeight: 690 });
     this.load.spritesheet('playerRunningL', '../../sprites/runningL.png', { frameWidth: 515, frameHeight: 690 });
@@ -38,12 +40,47 @@ function preload() {
 function create() {
 
     keys = this.input.keyboard.addKeys("W,A,S,D");
+    spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
     this.add.image(400, 300, 'classroom').setScale(1.5)
 
     player = this.physics.add.sprite(801, 450, 'playerStand').setScale(0.2)
     player.setGravityY(500)
     player.setCollideWorldBounds(true);
+
+    var Bullet = new Phaser.Class({
+        Extends: Phaser.GameObjects.Image,
+        initialize:
+            function Bullet(scene) {
+                Phaser.GameObjects.Image.call(this, scene, 0, 0, 'id_card');
+
+                this.speed = Phaser.Math.GetSpeed(600, -1);
+            },
+
+        fire: function (x, y, pos) {
+            this.speed = pos == 'R' ? Phaser.Math.GetSpeed(600, 1) : Phaser.Math.GetSpeed(600, -1);
+            
+            this.setPosition(x, y + 50);
+            this.setActive(true);
+            this.setVisible(true);
+        },
+
+        update: function (time, delta) {
+            this.x += this.speed * delta;
+
+            if (this.x > 820) {
+                this.setActive(false);
+                this.setVisible(false);
+            }
+        }
+
+    });
+
+    bullets = this.add.group({
+        classType: Bullet,
+        maxSize: 30,
+        runChildUpdate: true
+    });
 
     this.anims.create({
         key: 'right',
@@ -75,6 +112,7 @@ function create() {
         frames: this.anims.generateFrameNumbers("playerRunningL"),
         frameRate: 10
     });
+
 }
 
 function update() {
@@ -109,6 +147,13 @@ function update() {
         }
         else if (pos == 'L') {
             player.anims.play('standL', true);
+        }
+    }
+    if (Phaser.Input.Keyboard.JustDown(spacebar) && !keys.S.isDown) {
+        var bullet = bullets.get();
+
+        if (bullet) {
+            bullet.fire(player.body.x, player.body.y, pos);
         }
     }
 }
