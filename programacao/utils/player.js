@@ -5,29 +5,32 @@ class Player {
         this.ps.setCollideWorldBounds(true);
 
         this.pos = 'R'
+        this.xSpeed = 300;
 
         this.healthBar = new HealthBar(scene, x, y);
     }
 
     move_left() {
-        this.ps.setVelocityX(-160);
+        this.ps.setVelocityX(-this.xSpeed);
         this.ps.anims.play('left', true);
         this.pos = 'L';
         this.healthBar.updateLocation(this.ps.x - 65, this.ps.y - 100)
     }
 
     move_right() {
-        this.ps.setVelocityX(160);
+        this.ps.setVelocityX(this.xSpeed);
         this.ps.anims.play('right', true);
         this.pos = 'R';
         this.healthBar.updateLocation(this.ps.x - 25, this.ps.y - 100)
     }
 
     jump() {
-        this.ps.setVelocityY(-400);
-        this.ps.setVelocityX(0);
         this.ps.anims.play('jump', true);
-        this.healthBar.updateLocation(this.ps.x - 65, this.ps.y - 100)
+        if (this.ps.body.onFloor()) {
+            this.ps.setVelocityY(-400);
+            this.ps.setVelocityX(0);
+        }
+        this.healthBar.updateLocation(this.ps.x - 35, this.ps.y - 70)
     }
 
     sneak() {

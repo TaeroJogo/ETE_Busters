@@ -33,7 +33,7 @@ function preload() {
     this.load.spritesheet('playerRunning', '../../res/sprites/running.png', { frameWidth: 515, frameHeight: 690 });
     this.load.spritesheet('playerRunningL', '../../res/sprites/runningL.png', { frameWidth: 515, frameHeight: 690 });
     this.load.spritesheet('playerStand', '../../res/sprites/stand.png', { frameWidth: 262, frameHeight: 690 });
-    this.load.spritesheet('playerJump', '../../res/sprites/jump.png', { frameWidth: 343, frameHeight: 545 });
+    this.load.spritesheet('playerJump', '../../res/sprites/jump.png', { frameWidth: 343, frameHeight: 690 });
     this.load.spritesheet('playerStandL', '../../res/sprites/standL.png', { frameWidth: 262, frameHeight: 690 });
 }
 
@@ -44,7 +44,7 @@ function create() {
 
     this.add.image(400, 300, 'classroom').setScale(1.5)
 
-    player = new Player(this, 801, 450, 'playerStand', 0.2, 500)
+    player = new Player(this, 400, 300, 'playerStand', 0.2, 500)
 
     bullets = this.add.group({
         classType: Bullet,
@@ -89,7 +89,7 @@ function update() {
     if (keys.A.isDown && keys.D.isDown) {
         player.stand()
     }
-    else if (keys.W.isDown && player.ps.body.y == 462) {
+    else if (keys.W.isDown) {
         player.jump()
     }
     else if (keys.D.isDown) {
@@ -99,6 +99,7 @@ function update() {
         player.move_left()
     }
     else if (keys.S.isDown) {
+
         player.sneak()
     }
     else {
