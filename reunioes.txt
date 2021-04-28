@@ -1,2 +1,5 @@
 Reunião 19/04/2021
 Nós nos reunimos para discutir e finalizar o mapa do jogo, bem como as fases( suas funcionalidades e possiveis itens) e qual professor representaria qual corredor.
+
+Reunião 26/04/2021
+Nós discutimos sobre as funções de cada um, organizamos as pastas do github, testamos a primeira versão do jogo em html , e atualizamos algumas coisa no documento de 10 páginas, deixamos estabelecidas também algumas tarefas, como por exemplo a criação de mais desenhos e animações para ser introduzido na prévia do jogo em html
