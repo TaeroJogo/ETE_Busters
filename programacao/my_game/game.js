@@ -24,10 +24,12 @@ let pos = 'R';
 
 let player;
 let bullets;
+let ghost;
 
 function preload() {
     this.load.image('classroom', '../../res/cenario/classroom.png');
     this.load.image('id_card', '../../res/cenario/id_card.png')
+    this.load.image('ghost', '../../res/ghosts/ghost.png')
 
     this.load.spritesheet('playerDown', '../../res/sprites/down.png', { frameWidth: 249, frameHeight: 690 });
     this.load.spritesheet('playerRunning', '../../res/sprites/running.png', { frameWidth: 515, frameHeight: 690 });
@@ -51,6 +53,15 @@ function create() {
         maxSize: 100,
         runChildUpdate: true
     });
+
+    ghost = new Ghost(this, 600, 400, 'ghost', 0.2, 0)
+    this.physics.moveToObject(ghost.gs, player.ps, 200)
+
+
+    this.physics.add.overlap(bullets, ghost.gs, (bullets, ghost) => {
+        ghost.destroy()
+        console.log(32)
+    })
 
     this.anims.create({
         key: 'right',
@@ -82,27 +93,34 @@ function create() {
         frames: this.anims.generateFrameNumbers("playerRunningL"),
         frameRate: 10
     });
-
 }
 
 function update() {
+
+
+
     if (keys.A.isDown && keys.D.isDown) {
         player.stand()
+        this.physics.moveToObject(ghost.gs, player.ps, 200)
     }
     else if (keys.W.isDown) {
         player.jump()
+        this.physics.moveToObject(ghost.gs, player.ps, 200)
     }
     else if (keys.D.isDown) {
         player.move_right()
+        this.physics.moveToObject(ghost.gs, player.ps, 200)
     }
     else if (keys.A.isDown) {
         player.move_left()
+        this.physics.moveToObject(ghost.gs, player.ps, 200)
     }
     else if (keys.S.isDown) {
-
         player.sneak()
+        this.physics.moveToObject(ghost.gs, player.ps, 200)
     }
     else {
+        this.physics.moveToObject(ghost.gs, player.ps, 200)
         player.stand()
     }
     if (Phaser.Input.Keyboard.JustDown(spacebar) && !keys.S.isDown) {

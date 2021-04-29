@@ -2,8 +2,8 @@ let Bullet = new Phaser.Class({
     Extends: Phaser.GameObjects.Image,
     initialize:
         function Bullet(scene) {
-            Phaser.GameObjects.Image.call(this, scene, 0, 0, 'id_card');
-
+            Phaser.GameObjects.Image.call(this, scene, 0, 0, 'id_card'); 
+            
             this.speed = Phaser.Math.GetSpeed(600, -1);
         },
 
