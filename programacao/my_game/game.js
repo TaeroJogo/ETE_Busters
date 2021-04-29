@@ -36,7 +36,7 @@ function preload() {
     this.load.spritesheet('playerRunningL', '../../res/sprites/runningL.png', { frameWidth: 515, frameHeight: 690 });
     this.load.spritesheet('playerStand', '../../res/sprites/stand.png', { frameWidth: 262, frameHeight: 690 });
     this.load.spritesheet('playerJump', '../../res/sprites/jump.png', { frameWidth: 343, frameHeight: 690 });
-    this.load.spritesheet('playerJumpL', '../../res/sprites/jumpL.png', { frameWidth: 343, frameHeight: 690 });
+    this.load.spritesheet('playerJumpL', '../../res/sprites/jumpL.png', { frameWidth: 342, frameHeight: 690 });
     this.load.spritesheet('playerStandL', '../../res/sprites/standL.png', { frameWidth: 262, frameHeight: 690 });
 }
 
@@ -86,14 +86,14 @@ function create() {
     })
     this.anims.create({
         key: 'jump',
-        frames: this.anims.generateFrameNumbers("playerJumpL"),
+        frames: this.anims.generateFrameNumbers("playerJump"),
         frameRate: 10
     });
-    /*this.anims.create({
+    this.anims.create({
         key: 'jumpL',
         frames: this.anims.generateFrameNumbers("playerJumpL"),
         frameRate: 10
-    });*/
+    });
     this.anims.create({
         key: 'left',
         frames: this.anims.generateFrameNumbers("playerRunningL"),
@@ -109,8 +109,20 @@ function update() {
         player.stand()
         this.physics.moveToObject(ghost.gs, player.ps, 200)
     }
-    else if (keys.W.isDown) {
+    else if (keys.W.isDown && keys.D.isDown)
+    {
         player.jump()
+        player.move_right_jump()
+        this.physics.moveToObject(ghost.gs, player.ps, 200)
+    }
+    else if (keys.W.isDown && keys.A.isDown)
+    {
+        player.jump()
+        player.move_left_jump()
+        this.physics.moveToObject(ghost.gs, player.ps, 200)
+    }
+    else if (keys.W.isDown) {
+        player.jump()       
         this.physics.moveToObject(ghost.gs, player.ps, 200)
     }
     else if (keys.D.isDown) {

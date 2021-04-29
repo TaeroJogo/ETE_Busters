@@ -17,6 +17,13 @@ class Player {
         this.healthBar.updateLocation(this.ps.x - 65, this.ps.y - 100)
     }
 
+    move_left_jump() {
+        this.ps.setVelocityX(-this.xSpeed);
+        this.ps.anims.play('jumpL', true);
+        this.pos = 'L';
+        this.healthBar.updateLocation(this.ps.x - 65, this.ps.y - 100)
+    }
+
     move_right() {
         this.ps.setVelocityX(this.xSpeed);
         this.ps.anims.play('right', true);
@@ -24,8 +31,21 @@ class Player {
         this.healthBar.updateLocation(this.ps.x - 25, this.ps.y - 100)
     }
 
-    jump() {
+    move_right_jump() {
+        this.ps.setVelocityX(this.xSpeed);
         this.ps.anims.play('jump', true);
+        this.pos = 'R';
+        this.healthBar.updateLocation(this.ps.x - 25, this.ps.y - 100)
+    }
+
+    jump() {
+        if(this.pos == 'R') {
+            this.ps.anims.play('jump', true);
+        }
+        else if (this.pos == 'L') {
+            this.ps.anims.play('jumpL', true);
+        }
+        
         if (this.ps.body.onFloor()) {
             this.ps.setVelocityY(-400);
             this.ps.setVelocityX(0);
