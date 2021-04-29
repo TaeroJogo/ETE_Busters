@@ -3,3 +3,6 @@ Nós nos reunimos para discutir e finalizar o mapa do jogo, bem como as fases( s
 
 Reunião 26/04/2021
 Nós discutimos sobre as funções de cada um, organizamos as pastas do github, testamos a primeira versão do jogo em html , e atualizamos algumas coisa no documento de 10 páginas, deixamos estabelecidas também algumas tarefas, como por exemplo a criação de mais desenhos e animações para ser introduzido na prévia do jogo em html
+
+Reunião 29/04/2021
+Nessa reunião a gente se dividiu em partes e atualizamos o programa, documento de 10 paginas e cenario, eduardo e leonardo desenvolveram e atualizaram mais o programa, Thúlio Bianca e Arthur atualizaram mais informações no documento de 10 páginas, e a Stefanie desenhou o cenário.
