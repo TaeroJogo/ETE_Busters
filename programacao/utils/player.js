@@ -21,7 +21,7 @@ class Player {
         this.ps.setVelocityX(-this.xSpeed);
         this.ps.anims.play('jumpL', true);
         this.pos = 'L';
-        this.healthBar.updateLocation(this.ps.x - 65, this.ps.y - 100)
+        this.healthBar.updateLocation(this.ps.x - 45, this.ps.y - 70)
     }
 
     move_right() {
@@ -35,7 +35,7 @@ class Player {
         this.ps.setVelocityX(this.xSpeed);
         this.ps.anims.play('jump', true);
         this.pos = 'R';
-        this.healthBar.updateLocation(this.ps.x - 25, this.ps.y - 100)
+        this.healthBar.updateLocation(this.ps.x - 35, this.ps.y - 70)
     }
 
     jump() {
