@@ -5,6 +5,7 @@ let config = {
     physics: {
         default: 'arcade',
         arcade: {
+            debug: true,
             gravity: { y: 200 }
         }
     },
@@ -25,6 +26,8 @@ let pos = 'R';
 let player;
 let bullets;
 let ghost;
+
+let ghostDead = false
 
 function preload() {
     this.load.image('classroom', '../../res/cenario/classroom.png');
@@ -49,20 +52,8 @@ function create() {
 
     player = new Player(this, 400, 300, 'playerStand', 0.2, 500)
 
-    bullets = this.add.group({
-        classType: Bullet,
-        maxSize: 100,
-        runChildUpdate: true
-    });
-
     ghost = new Ghost(this, 600, 400, 'ghost', 0.2, 0)
     this.physics.moveToObject(ghost.gs, player.ps, 200)
-
-
-    this.physics.add.overlap(bullets, ghost.gs, (bullets, ghost) => {
-        ghost.destroy()
-        console.log(32)
-    })
 
     this.anims.create({
         key: 'right',
@@ -103,49 +94,49 @@ function create() {
 
 function update() {
 
-
-
     if (keys.A.isDown && keys.D.isDown) {
         player.stand()
-        this.physics.moveToObject(ghost.gs, player.ps, 200)
+        if (!ghostDead) { this.physics.moveToObject(ghost.gs, player.ps, 200) }
+
     }
-    else if (keys.W.isDown && keys.D.isDown)
-    {
+    else if (keys.W.isDown && keys.D.isDown) {
         player.jump()
         player.move_right_jump()
-        this.physics.moveToObject(ghost.gs, player.ps, 200)
+        if (!ghostDead) { this.physics.moveToObject(ghost.gs, player.ps, 200) }
     }
-    else if (keys.W.isDown && keys.A.isDown)
-    {
+    else if (keys.W.isDown && keys.A.isDown) {
         player.jump()
         player.move_left_jump()
-        this.physics.moveToObject(ghost.gs, player.ps, 200)
+        if (!ghostDead) { this.physics.moveToObject(ghost.gs, player.ps, 200) }
     }
     else if (keys.W.isDown) {
-        player.jump()       
-        this.physics.moveToObject(ghost.gs, player.ps, 200)
+        player.jump()
+        if (!ghostDead) { this.physics.moveToObject(ghost.gs, player.ps, 200) }
     }
     else if (keys.D.isDown) {
         player.move_right()
-        this.physics.moveToObject(ghost.gs, player.ps, 200)
+        if (!ghostDead) { this.physics.moveToObject(ghost.gs, player.ps, 200) }
     }
     else if (keys.A.isDown) {
         player.move_left()
-        this.physics.moveToObject(ghost.gs, player.ps, 200)
+        if (!ghostDead) { this.physics.moveToObject(ghost.gs, player.ps, 200) }
     }
     else if (keys.S.isDown) {
         player.sneak()
-        this.physics.moveToObject(ghost.gs, player.ps, 200)
+        if (!ghostDead) { this.physics.moveToObject(ghost.gs, player.ps, 200) }
     }
     else {
-        this.physics.moveToObject(ghost.gs, player.ps, 200)
+        if (!ghostDead) { this.physics.moveToObject(ghost.gs, player.ps, 200) }
         player.stand()
     }
     if (Phaser.Input.Keyboard.JustDown(spacebar) && !keys.S.isDown) {
-        var bullet = bullets.get();
+        let bullet = new Bullet(this, player.ps.x, player.ps.y, "id_card")
+        bullet.fire(player.pos)
 
-        if (bullet) {
-            bullet.fire(player.ps.body.x, player.ps.body.y, player.pos);
-        }
+        this.physics.add.collider(bullet.bullet, ghost.gs, (bullet, ghost) => {
+            ghostDead = true
+            ghost.destroy()
+            bullet.destroy()
+        })
     }
 }
