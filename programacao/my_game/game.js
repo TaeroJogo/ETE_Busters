@@ -26,7 +26,7 @@ let pos = 'R';
 let player;
 let bullets;
 let ghost;
-var bltqnt = 100;
+var bltqnt = 10;
 var inst;
 
 let ghostDead = false
@@ -47,15 +47,13 @@ function preload() {
 
 function create() {
 
-    
+
     keys = this.input.keyboard.addKeys("W,A,S,D");
     spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
     this.add.image(400, 300, 'classroom').setScale(1.5)
 
-    inst = new GameText(this, 710, 5, 'x'+bltqnt)
-
-
+    inst = new GameText(this, 710, 5, 'x' + bltqnt)
     player = new Player(this, 400, 300, 'playerStand', 0.2, 500)
 
     ghost = new Ghost(this, 600, 400, 'ghost', 0.2, 0)
@@ -136,20 +134,17 @@ function update() {
         player.stand()
     }
     if (Phaser.Input.Keyboard.JustDown(spacebar) && !keys.S.isDown) {
-        let bullet = new Bullet(this, player.ps.x, player.ps.y, "id_card")
-        bullet.fire(player.pos)
-
-        this.physics.add.collider(bullet.bullet, ghost.gs, (bullet, ghost) => {
-            ghostDead = true
-            ghost.destroy()
-            bullet.destroy()
-        })
-        var bullet = bullets.get();
-
-        if (bullet) {
-            bullet.fire(player.ps.body.x, player.ps.body.y, player.pos);
+        if (bltqnt > 0) {
             bltqnt = bltqnt - 1;
-            inst.text(bltqnt.toString())
+            inst.setNewText('x' + bltqnt.toString())
+            let bullet = new Bullet(this, player.ps.x, player.ps.y, "id_card")
+            bullet.fire(player.pos)
+
+            this.physics.add.collider(bullet.bullet, ghost.gs, (bullet, ghost) => {
+                ghostDead = true
+                ghost.destroy()
+                bullet.destroy()
+            })
         }
     }
 }
