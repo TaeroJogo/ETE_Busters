@@ -136,7 +136,6 @@ function update() {
         player.stand()
     }
     if (Phaser.Input.Keyboard.JustDown(spacebar) && !keys.S.isDown) {
-<<<<<<< Updated upstream
         let bullet = new Bullet(this, player.ps.x, player.ps.y, "id_card")
         bullet.fire(player.pos)
 
@@ -145,7 +144,6 @@ function update() {
             ghost.destroy()
             bullet.destroy()
         })
-=======
         var bullet = bullets.get();
 
         if (bullet) {
@@ -153,6 +151,5 @@ function update() {
             bltqnt = bltqnt - 1;
             inst.text(bltqnt.toString())
         }
->>>>>>> Stashed changes
     }
 }
