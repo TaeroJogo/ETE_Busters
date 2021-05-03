@@ -9,3 +9,6 @@ Nessa reunião a gente se dividiu em partes e atualizamos o programa, documento 
 
 Reunião 30/04/2021
 Nessa reunião que foi de modo presencial, eduardo e leonardo arrumaram alguns bugs que tinha na demo do jogo, além de acrescentarem a colisão da carta com o fantasma, thulio bianca e arthur martins ficaram de rever o documento de 10 páginas, enquanto stefanie esboçou mais um cenário e a sofia rezende continuou a fazer os sprites
+
+Reunião 03/05/2021
+Leonardo e Eduardo se reuniram para adicionar sprites da corrida do personagem, enquanto Sofia desenvolvia mais sprites como chutes e socos, Thulio Bianca e Arthur Martins continuaram o desenvolvimento do restante do documento de 10 páginas, e Thúlio também começou a procurar e coletar músicas para serem editadas para o jogo.
