@@ -5,6 +5,7 @@ let config = {
     physics: {
         default: 'arcade',
         arcade: {
+            debug: false,
             gravity: { y: 200 }
         }
     },
@@ -28,7 +29,7 @@ let bullets;
 var bltqnt = 100;
 var inst;
 
-ghostNumber = 30
+ghostNumber = 0
 let ghosts = [];
 
 function preload() {
@@ -36,9 +37,9 @@ function preload() {
     this.load.image('id_card', '../../res/cenario/id_card.png')
     this.load.image('ghost', '../../res/ghosts/ghost.png')
 
-    this.load.spritesheet('playerDown', '../../res/sprites/down.png', { frameWidth: 249, frameHeight: 690 });
-    this.load.spritesheet('playerRunning', '../../res/sprites/running.png', { frameWidth: 880, frameHeight: 689 });
-    this.load.spritesheet('playerRunningL', '../../res/sprites/runningL.png', { frameWidth: 890, frameHeight: 689 });
+    this.load.spritesheet('playerDown', '../../res/sprites/down.png', { frameWidth: 249, frameHeight: 375 });
+    this.load.spritesheet('playerRunning', '../../res/sprites/running.png', { frameWidth: 515, frameHeight: 686 });
+    this.load.spritesheet('playerRunningL', '../../res/sprites/runningL.png', { frameWidth: 515, frameHeight: 686 });
     this.load.spritesheet('playerStand', '../../res/sprites/stand.png', { frameWidth: 262, frameHeight: 690 });
     this.load.spritesheet('playerJump', '../../res/sprites/jump.png', { frameWidth: 343, frameHeight: 690 });
     this.load.spritesheet('playerJumpL', '../../res/sprites/jumpL.png', { frameWidth: 342, frameHeight: 690 });
@@ -54,7 +55,7 @@ function create() {
     this.add.image(400, 300, 'classroom').setScale(1.5)
 
     inst = new GameText(this, 710, 5, 'x' + bltqnt)
-    player = new Player(this, 400, 300, 'playerStand', 0.2, 500)
+    player = new Player(this, 400, 561, 'playerStand', 0.2, 500)
 
     this.randomMinAndMax = (max, min) => Math.floor(Math.random() * (max - (min) + 1)) + min;
     this.randomInterv = (min, max, min2, max2) => this.randomMinAndMax(1, 0) == 0 ? this.randomMinAndMax(min, max) : this.randomMinAndMax(min2, max2)
