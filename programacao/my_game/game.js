@@ -37,8 +37,8 @@ function preload() {
     this.load.image('ghost', '../../res/ghosts/ghost.png')
 
     this.load.spritesheet('playerDown', '../../res/sprites/down.png', { frameWidth: 249, frameHeight: 690 });
-    this.load.spritesheet('playerRunning', '../../res/sprites/running.png', { frameWidth: 515, frameHeight: 690 });
-    this.load.spritesheet('playerRunningL', '../../res/sprites/runningL.png', { frameWidth: 515, frameHeight: 690 });
+    this.load.spritesheet('playerRunning', '../../res/sprites/running.png', { frameWidth: 880, frameHeight: 689 });
+    this.load.spritesheet('playerRunningL', '../../res/sprites/runningL.png', { frameWidth: 890, frameHeight: 689 });
     this.load.spritesheet('playerStand', '../../res/sprites/stand.png', { frameWidth: 262, frameHeight: 690 });
     this.load.spritesheet('playerJump', '../../res/sprites/jump.png', { frameWidth: 343, frameHeight: 690 });
     this.load.spritesheet('playerJumpL', '../../res/sprites/jumpL.png', { frameWidth: 342, frameHeight: 690 });
