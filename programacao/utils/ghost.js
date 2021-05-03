@@ -4,6 +4,8 @@ class Ghost {
         this.gs.setGravityY(gravity)
         this.gs.setCollideWorldBounds(false);
 
+        this.gs.isAlive = true
+
         this.speed = 300;
     }
 }
