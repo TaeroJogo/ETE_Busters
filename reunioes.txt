@@ -12,3 +12,6 @@ Nessa reunião que foi de modo presencial, eduardo e leonardo arrumaram alguns b
 
 Reunião 03/05/2021
 Leonardo e Eduardo se reuniram para adicionar sprites da corrida do personagem, enquanto Sofia desenvolvia mais sprites como chutes e socos, Thulio Bianca e Arthur Martins continuaram o desenvolvimento do restante do documento de 10 páginas, e Thúlio também começou a procurar e coletar músicas para serem editadas para o jogo.
+
+Reunião 04/05/2021
+Leonardo e eduardo introduziram mais animações do personagem e correções de bugs,thúlio ficou estudando e fazendo o download de músicas para os corredores, Bianca revisou o documento de 10 páginas, sofia continuou o desenvolvimento de sprites, Arthur Martins ficou auxiliando no desenvolvimento da lógica do jogo e avaliação das músicas.
