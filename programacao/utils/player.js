@@ -8,7 +8,7 @@ class Player {
         this.xSpeed = 300;
         this.isNotJumping = true;
 
-        this.healthBar = new HealthBar(scene, x, y);
+        this.healthBar = new HealthBar(scene, 610, 20);
     }
 
     move_left() {
@@ -21,7 +21,6 @@ class Player {
         } else {
             this.ps.setVelocityX(-this.xSpeed);
             this.ps.anims.play('left', true);
-            this.healthBar.updateLocation(this.ps.x - 55, this.ps.y - 100)
         }
     }
 
@@ -31,7 +30,6 @@ class Player {
         this.ps.setVelocityX(-this.xSpeed);
         this.ps.anims.play('jumpL', true);
         this.pos = 'L';
-        this.healthBar.updateLocation(this.ps.x - 35, this.ps.y - 70)
     }
 
     move_right() {
@@ -44,7 +42,6 @@ class Player {
         } else {
             this.ps.setVelocityX(this.xSpeed);
             this.ps.anims.play('right', true);
-            this.healthBar.updateLocation(this.ps.x - 10, this.ps.y - 100)
         }
     }
 
@@ -54,7 +51,6 @@ class Player {
         this.ps.setVelocityX(this.xSpeed);
         this.ps.anims.play('jump', true);
         this.pos = 'R';
-        this.healthBar.updateLocation(this.ps.x - 35, this.ps.y - 70)
     }
 
     jump() {
@@ -77,7 +73,6 @@ class Player {
                 this.ps.setVelocityX(0);
             }
         }
-        this.healthBar.updateLocation(this.ps.x - 35, this.ps.y - 70)
     }
 
     sneak() {
@@ -87,7 +82,6 @@ class Player {
         this.ps.body.setSize(299, 385)
         this.ps.setVelocityX(0);
         this.ps.anims.play('down', true);
-        this.healthBar.updateLocation(this.ps.x - 40, this.ps.y - 50)
     }
 
     stand() {
@@ -96,7 +90,6 @@ class Player {
 
         if (this.ps.body.onFloor()) {
             this.isNotJumping = true
-            this.healthBar.updateLocation(this.ps.x - 40, this.ps.y - 100)
             if (this.pos == 'R') {
                 this.ps.anims.play('stand', true);
             }
@@ -105,37 +98,35 @@ class Player {
             }
         } else {
             this.jump()
-            this.healthBar.updateLocation(this.ps.x - 35, this.ps.y - 70)
         }
 
     }
 
     standShot(posit) {
-            this.posit = posit
-            
-            this.ps.body.setSize(262, 690)
-            this.ps.setVelocityX(0);
-            this.isNotJumping = true
-            this.healthBar.updateLocation(this.ps.x - 40, this.ps.y - 100)
-            this.ps.anims.stop()
-            if(this.pos == 'R') {
-                if(posit == 'R') {
-                    this.ps.anims.play('stand', true);
-                }
-                else if(posit == 'L') {
-                    this.ps.anims.play('standL', true);
-                }
+        this.posit = posit
+
+        this.ps.body.setSize(262, 690)
+        this.ps.setVelocityX(0);
+        this.isNotJumping = true
+        this.ps.anims.stop()
+        if (this.pos == 'R') {
+            if (posit == 'R') {
+                this.ps.anims.play('stand', true);
             }
-            else if(this.pos == 'L') {
-                if(posit == 'L') {
-                    this.ps.anims.play('standL', true);
-                }
-                else if(posit == 'R') {
-                    this.ps.anims.play('stand', true);
-                }
-                
+            else if (posit == 'L') {
+                this.ps.anims.play('standL', true);
             }
-        
-        
+        }
+        else if (this.pos == 'L') {
+            if (posit == 'L') {
+                this.ps.anims.play('standL', true);
+            }
+            else if (posit == 'R') {
+                this.ps.anims.play('stand', true);
+            }
+
+        }
+
+
     }
 }
