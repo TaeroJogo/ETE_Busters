@@ -110,23 +110,32 @@ class Player {
 
     }
 
-    standShot() {
-        this.ps.body.setSize(262, 690)
-        this.ps.setVelocityX(0);
-
-        if (this.ps.body.onFloor()) {
+    standShot(posit) {
+            this.posit = posit
+            
+            this.ps.body.setSize(262, 690)
+            this.ps.setVelocityX(0);
             this.isNotJumping = true
             this.healthBar.updateLocation(this.ps.x - 40, this.ps.y - 100)
-            if (this.pos == 'R') {
-                this.ps.anims.play('stand', true);
+            this.ps.anims.stop()
+            if(this.pos == 'R') {
+                if(posit == 'R') {
+                    this.ps.anims.play('stand', true);
+                }
+                else if(posit == 'L') {
+                    this.ps.anims.play('standL', true);
+                }
             }
-            else if (this.pos == 'L') {
-                this.ps.anims.play('standL', true);
+            else if(this.pos == 'L') {
+                if(posit == 'L') {
+                    this.ps.anims.play('standL', true);
+                }
+                else if(posit == 'R') {
+                    this.ps.anims.play('stand', true);
+                }
+                
             }
-        } else {
-            this.jump()
-            this.healthBar.updateLocation(this.ps.x - 35, this.ps.y - 70)
-        }
-
+        
+        
     }
 }
