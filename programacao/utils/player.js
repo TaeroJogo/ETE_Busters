@@ -104,6 +104,7 @@ class Player {
 
     standShot(posit) {
         this.posit = posit
+        this.pos = posit
 
         this.ps.body.setSize(262, 690)
         this.ps.setVelocityX(0);
