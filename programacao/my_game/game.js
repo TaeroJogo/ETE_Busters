@@ -26,6 +26,8 @@ let pos = 'R';
 let player;
 let bullets;
 
+let img;
+
 var bltqnt = 100;
 var inst;
 
@@ -36,6 +38,7 @@ function preload() {
     this.load.image('classroom', '../../res/cenario/classroom.png');
     this.load.image('id_card', '../../res/cenario/id_card.png')
     this.load.image('ghost', '../../res/ghosts/ghost.png')
+    this.load.image('aim', '../../res/cenario/aim.png')
 
     this.load.spritesheet('playerDown', '../../res/sprites/down.png', { frameWidth: 249, frameHeight: 375 });
     this.load.spritesheet('playerRunning', '../../res/sprites/running.png', { frameWidth: 515, frameHeight: 686 });
@@ -49,10 +52,11 @@ function preload() {
 function create() {
 
 
-    keys = this.input.keyboard.addKeys("W,A,S,D");
+    keys = this.input.keyboard.addKeys("W,A,S,D,SHIFT");
     spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
     this.add.image(400, 300, 'classroom').setScale(1.5)
+    img = this.add.image(400,300, 'aim').setScale(0.06)
 
     inst = new GameText(this, 710, 5, 'x' + bltqnt)
     player = new Player(this, 400, 561, 'playerStand', 0.2, 500)
@@ -116,7 +120,18 @@ function update() {
 
     this.moveGhosts()
 
-    if (keys.A.isDown && keys.D.isDown) {
+    img.rotation += 0.01;
+
+    if (keys.SHIFT.isDown) {
+        player.standShot()
+    }
+
+    if (keys.SHIFT.isDown && keys.A.isDown) {
+
+        player.standShot()
+    }
+
+    else if (keys.A.isDown && keys.D.isDown) {
         player.stand()
     }
     else if (keys.W.isDown && keys.D.isDown) {

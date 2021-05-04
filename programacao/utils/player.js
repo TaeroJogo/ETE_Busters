@@ -109,4 +109,24 @@ class Player {
         }
 
     }
+
+    standShot() {
+        this.ps.body.setSize(262, 690)
+        this.ps.setVelocityX(0);
+
+        if (this.ps.body.onFloor()) {
+            this.isNotJumping = true
+            this.healthBar.updateLocation(this.ps.x - 40, this.ps.y - 100)
+            if (this.pos == 'R') {
+                this.ps.anims.play('stand', true);
+            }
+            else if (this.pos == 'L') {
+                this.ps.anims.play('standL', true);
+            }
+        } else {
+            this.jump()
+            this.healthBar.updateLocation(this.ps.x - 35, this.ps.y - 70)
+        }
+
+    }
 }
