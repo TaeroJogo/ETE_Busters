@@ -95,13 +95,13 @@ class ClassRoom1 extends Phaser.Scene {
 
         this.moveGhosts()
 
-        img.rotation += 0.01;
+        this.img.rotation += 0.01;
 
-        if (keys.SHIFT.isDown) {
+        if (this.keys.SHIFT.isDown) {
             player.standShot()
         }
 
-        if (keys.SHIFT.isDown && keys.A.isDown) {
+        else if (this.keys.SHIFT.isDown && this.keys.A.isDown) {
 
             player.standShot()
         }
