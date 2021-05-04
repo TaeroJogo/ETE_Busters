@@ -137,7 +137,16 @@ class ClassRoom1 extends Phaser.Scene {
                 this.bltqnt = this.bltqnt - 1;
                 this.inst.setNewText('x' + this.bltqnt.toString())
                 let bullet = new Bullet(this, this.player.ps.x, this.player.ps.y, "id_card")
-                bullet.fire(this.player.pos)
+
+                if (this.keys.SHIFT.isDown && this.player.ps.body.onFloor() && this.keys.W.isDown) {
+                    bullet.fireUp()
+                }
+                else if (this.keys.SHIFT.isDown && this.player.ps.body.onFloor()) {
+                    bullet.fireDiagonally(this.player.pos)
+                }
+                else {
+                    bullet.fire(this.player.pos)
+                }
 
                 this.ghosts.forEach(ghost => {
                     this.physics.add.collider(bullet.bullet, ghost.gs, (bullet, ghost) => {
