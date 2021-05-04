@@ -12,7 +12,8 @@ class Player {
     }
 
     move_left() {
-        this.ps.body.setOffset(200, 0)
+        this.ps.body.setSize(262, 690)
+        this.ps.body.setOffset(80, 0)
         this.isNotJumping = true
         this.pos = 'L';
         if (!this.ps.body.onFloor()) {
@@ -20,7 +21,7 @@ class Player {
         } else {
             this.ps.setVelocityX(-this.xSpeed);
             this.ps.anims.play('left', true);
-            this.healthBar.updateLocation(this.ps.x - 75, this.ps.y - 100)
+            this.healthBar.updateLocation(this.ps.x - 55, this.ps.y - 100)
         }
     }
 
@@ -30,10 +31,11 @@ class Player {
         this.ps.setVelocityX(-this.xSpeed);
         this.ps.anims.play('jumpL', true);
         this.pos = 'L';
-        this.healthBar.updateLocation(this.ps.x - 45, this.ps.y - 70)
+        this.healthBar.updateLocation(this.ps.x - 35, this.ps.y - 70)
     }
 
     move_right() {
+        this.ps.body.setSize(262, 690)
         this.ps.body.setOffset(200, 0)
         this.isNotJumping = true
         this.pos = 'R';
@@ -42,7 +44,7 @@ class Player {
         } else {
             this.ps.setVelocityX(this.xSpeed);
             this.ps.anims.play('right', true);
-            this.healthBar.updateLocation(this.ps.x - 45, this.ps.y - 100)
+            this.healthBar.updateLocation(this.ps.x - 10, this.ps.y - 100)
         }
     }
 
@@ -94,6 +96,7 @@ class Player {
 
         if (this.ps.body.onFloor()) {
             this.isNotJumping = true
+            this.healthBar.updateLocation(this.ps.x - 40, this.ps.y - 100)
             if (this.pos == 'R') {
                 this.ps.anims.play('stand', true);
             }
@@ -102,7 +105,8 @@ class Player {
             }
         } else {
             this.jump()
+            this.healthBar.updateLocation(this.ps.x - 35, this.ps.y - 70)
         }
-        this.healthBar.updateLocation(this.ps.x - 40, this.ps.y - 100)
+
     }
 }
