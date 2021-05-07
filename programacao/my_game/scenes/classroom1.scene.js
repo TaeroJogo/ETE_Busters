@@ -190,7 +190,7 @@ class ClassRoom1 extends Phaser.Scene {
         else {
             this.player.stand()
         }
-        if (this.keys.UP.isDown && !this.keys.S.isDown) {
+        if (this.keys.UP.isDown && !this.keys.S.isDown && !this.keys.UP.isDown) {
             if (((new Date().getTime()) - this.timeBefore) > this.fireRate) {
                 this.timeBefore = new Date().getTime()
                 if (this.bltqnt > 0) {
