@@ -7,10 +7,12 @@ class ClassRoom1 extends Phaser.Scene {
         this.bullets;
         this.bltqnt = 100;
         this.inst;
-        this.ghostNumber = 10
+        this.ghostNumber = 0
         this.ghosts = [];
         this.spacebar;
         this.img;
+        this.fireRate = 200;
+        this.timeBefore = 0;
     }
 
     init(data) { }
@@ -27,10 +29,13 @@ class ClassRoom1 extends Phaser.Scene {
         this.load.spritesheet('playerJump', '../res/sprites/jump.png', { frameWidth: 343, frameHeight: 690 });
         this.load.spritesheet('playerJumpL', '../res/sprites/jumpL.png', { frameWidth: 342, frameHeight: 690 });
         this.load.spritesheet('playerStandL', '../res/sprites/standL.png', { frameWidth: 262, frameHeight: 690 });
+        this.load.spritesheet('playerPunching', '../res/sprites/punchingR.png', { frameWidth: 430, frameHeight: 689 });
+        this.load.spritesheet('playerPunchingL', '../res/sprites/punchingL.png', { frameWidth: 430, frameHeight: 689 });
+
 
     }
     create(data) {
-        this.keys = this.input.keyboard.addKeys("W,A,S,D,SHIFT");
+        this.keys = this.input.keyboard.addKeys("W,A,S,D,SHIFT,UP,RIGHT");
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         this.add.image(400, 300, 'classroom').setScale(1.5)
@@ -90,6 +95,16 @@ class ClassRoom1 extends Phaser.Scene {
             frames: this.anims.generateFrameNumbers("playerRunningL"),
             frameRate: 10
         });
+        this.anims.create({
+            key: 'punching',
+            frames: this.anims.generateFrameNumbers("playerPunching"),
+            frameRate: 10
+        });
+        this.anims.create({
+            key: 'punchingL',
+            frames: this.anims.generateFrameNumbers("playerPunchingL"),
+            frameRate: 10
+        });
     }
     update(time, delta) {
 
@@ -98,15 +113,33 @@ class ClassRoom1 extends Phaser.Scene {
         this.img.rotation += 0.01;
 
         if (this.keys.SHIFT.isDown && this.keys.A.isDown) {
-            this.player.standShot('L')
+
+            if (this.keys.RIGHT.isDown) {
+                this.player.punch()
+            } else {
+                this.player.standShot('L')
+            }
         }
+
         else if (this.keys.SHIFT.isDown && this.keys.D.isDown) {
-            this.player.standShot('R')
+            if (this.keys.RIGHT.isDown) {
+                this.player.punch()
+            }
+            else {
+                this.player.standShot('R')
+            }
+
+        }
+        else if (this.keys.RIGHT.isDown || (this.keys.SHIFT.isDown && this.keys.RIGHT.isDown)) {
+            this.player.punch()
         }
         else if (this.keys.SHIFT.isDown) {
             this.player.standShot()
+            if (this.keys.RIGHT.isDown) {
+                this.player.punch()
+            }
         }
-        else if (this.keys.A.isDown && this.keys.D.isDown) {
+        else if (this.keys.A.isDown && this.keys.D.isDown && !this.keys.RIGHT.isDown) {
             this.player.stand()
         }
         else if (this.keys.W.isDown && this.keys.D.isDown) {
@@ -132,29 +165,32 @@ class ClassRoom1 extends Phaser.Scene {
         else {
             this.player.stand()
         }
-        if (Phaser.Input.Keyboard.JustDown(this.spacebar) && !this.keys.S.isDown) {
-            if (this.bltqnt > 0) {
-                this.bltqnt = this.bltqnt - 1;
-                this.inst.setNewText('x' + this.bltqnt.toString())
-                let bullet = new Bullet(this, this.player.ps.x, this.player.ps.y, "id_card")
+        if (this.keys.UP.isDown && !this.keys.S.isDown) {
+            if (((new Date().getTime()) - this.timeBefore) > this.fireRate) {
+                this.timeBefore = new Date().getTime()
+                if (this.bltqnt > 0) {
+                    this.bltqnt = this.bltqnt - 1;
+                    this.inst.setNewText('x' + this.bltqnt.toString())
+                    let bullet = new Bullet(this, this.player.ps.x, this.player.ps.y, "id_card")
 
-                if (this.keys.SHIFT.isDown && this.player.ps.body.onFloor() && this.keys.W.isDown) {
-                    bullet.fireUp()
-                }
-                else if (this.keys.SHIFT.isDown && this.player.ps.body.onFloor()) {
-                    bullet.fireDiagonally(this.player.pos)
-                }
-                else {
-                    bullet.fire(this.player.pos)
-                }
+                    if (this.keys.SHIFT.isDown && this.player.ps.body.onFloor() && this.keys.W.isDown) {
+                        bullet.fireUp()
+                    }
+                    else if (this.keys.SHIFT.isDown && this.player.ps.body.onFloor()) {
+                        bullet.fireDiagonally(this.player.pos)
+                    }
+                    else {
+                        bullet.fire(this.player.pos)
+                    }
 
-                this.ghosts.forEach(ghost => {
-                    this.physics.add.collider(bullet.bullet, ghost.gs, (bullet, ghost) => {
-                        ghost.isAlive = false
-                        ghost.destroy()
-                        bullet.destroy()
-                    })
-                });
+                    this.ghosts.forEach(ghost => {
+                        this.physics.add.collider(bullet.bullet, ghost.gs, (bullet, ghost) => {
+                            ghost.isAlive = false
+                            ghost.destroy()
+                            bullet.destroy()
+                        })
+                    });
+                }
             }
         }
     }

@@ -127,7 +127,10 @@ class Player {
             }
 
         }
+    }
 
-
+    punch() {
+        this.ps.setVelocityX(0);
+        this.ps.anims.play(this.pos == 'R' ? 'punching' : 'punchingL', true);
     }
 }
