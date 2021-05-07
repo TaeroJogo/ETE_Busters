@@ -31,8 +31,8 @@ class ClassRoom1 extends Phaser.Scene {
         this.load.spritesheet('playerStandL', '../res/sprites/standL.png', { frameWidth: 262, frameHeight: 690 });
         this.load.spritesheet('playerPunching', '../res/sprites/punchingR.png', { frameWidth: 430, frameHeight: 689 });
         this.load.spritesheet('playerPunchingL', '../res/sprites/punchingL.png', { frameWidth: 430, frameHeight: 689 });
-
-
+        this.load.spritesheet('playerKicking', '../res/sprites/kickR.png', { frameWidth: 455, frameHeight: 556 });
+        this.load.spritesheet('playerKickingL', '../res/sprites/kickL.png', { frameWidth: 455, frameHeight: 556 });
     }
     create(data) {
         this.keys = this.input.keyboard.addKeys("W,A,S,D,SHIFT,UP,RIGHT");
@@ -128,6 +128,16 @@ class ClassRoom1 extends Phaser.Scene {
             frames: this.anims.generateFrameNumbers("playerPunchingL"),
             frameRate: 10
         });
+        this.anims.create({
+            key: 'kicking',
+            frames: this.anims.generateFrameNumbers("playerKicking"),
+            frameRate: 10
+        });
+        this.anims.create({
+            key: 'kickingL',
+            frames: this.anims.generateFrameNumbers("playerKickingL"),
+            frameRate: 10
+        });
     }
     update(time, delta) {
 
@@ -139,7 +149,7 @@ class ClassRoom1 extends Phaser.Scene {
 
             if (this.keys.RIGHT.isDown) {
 
-                this.player.punch()
+                this.player.combat()
             } else {
                 this.player.standShot('L')
             }
@@ -147,7 +157,7 @@ class ClassRoom1 extends Phaser.Scene {
 
         else if (this.keys.SHIFT.isDown && this.keys.D.isDown) {
             if (this.keys.RIGHT.isDown) {
-                this.player.punch()
+                this.player.combat()
 
             }
             else {
@@ -156,12 +166,12 @@ class ClassRoom1 extends Phaser.Scene {
 
         }
         else if (this.keys.RIGHT.isDown || (this.keys.SHIFT.isDown && this.keys.RIGHT.isDown)) {
-            this.player.punch()
+            this.player.combat()
         }
         else if (this.keys.SHIFT.isDown) {
             this.player.standShot()
             if (this.keys.RIGHT.isDown) {
-                this.player.punch()
+                this.player.combat()
             }
         }
         else if (this.keys.A.isDown && this.keys.D.isDown && !this.keys.RIGHT.isDown) {
@@ -190,7 +200,7 @@ class ClassRoom1 extends Phaser.Scene {
         else {
             this.player.stand()
         }
-        if (this.keys.UP.isDown && !this.keys.S.isDown && !this.keys.UP.isDown) {
+        if (this.keys.UP.isDown && !this.keys.S.isDown && !this.keys.RIGHT.isDown) {
             if (((new Date().getTime()) - this.timeBefore) > this.fireRate) {
                 this.timeBefore = new Date().getTime()
                 if (this.bltqnt > 0) {

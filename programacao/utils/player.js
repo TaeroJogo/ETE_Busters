@@ -133,11 +133,15 @@ class Player {
         }
     }
 
-    punch() {
+    combat() {
         this.ps.setVelocityX(0);
-        this.ps.body.setSize(262, 690)
-        this.ps.anims.play(this.pos == 'R' ? 'punching' : 'punchingL', true);
-        this.ps.body.setSize(320, 690)
-        this.ps.body.setOffset(this.pos == 'R' ? 100 : 0, 0)
+
+        if (this.ps.body.onFloor()) {
+            this.ps.anims.play(this.pos == 'R' ? 'punching' : 'punchingL', true);
+            this.ps.body.setSize(320, 690)
+            this.ps.body.setOffset(this.pos == 'R' ? 100 : 0, 0)
+        } else {
+            this.ps.anims.play(this.pos == 'R' ? 'kicking' : 'kickingL', true);
+        }
     }
 }
