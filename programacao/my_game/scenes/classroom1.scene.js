@@ -203,11 +203,15 @@ class ClassRoom1 extends Phaser.Scene {
                     this.inst.setNewText('x' + this.bltqnt.toString())
                     let bullet = new Bullet(this, this.player.ps.x, this.player.ps.y, "id_card")
 
-                    if (this.keys.SHIFT.isDown && this.player.ps.body.onFloor() && this.keys.W.isDown) {
-                        bullet.fireUp()
-                    }
-                    else if (this.keys.SHIFT.isDown && this.player.ps.body.onFloor()) {
+
+                    if (this.keys.SHIFT.isDown && (this.keys.D.isDown || this.keys.A.isDown) && this.keys.W.isDown) {
                         bullet.fireDiagonally(this.player.pos)
+                    }
+                    else if (this.keys.SHIFT.isDown && (this.keys.D.isDown || this.keys.A.isDown)) {
+                        bullet.fire(this.player.pos)
+                    }
+                    else if (this.keys.SHIFT.isDown && this.player.ps.body.onFloor() && this.keys.W.isDown) {
+                        bullet.fireUp()
                     }
                     else {
                         bullet.fire(this.player.pos)
