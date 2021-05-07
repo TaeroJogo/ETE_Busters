@@ -15,3 +15,6 @@ Leonardo e Eduardo se reuniram para adicionar sprites da corrida do personagem, 
 
 Reunião 04/05/2021
 Leonardo e eduardo introduziram mais animações do personagem e correções de bugs,thúlio ficou estudando e fazendo o download de músicas para os corredores, Bianca revisou o documento de 10 páginas, sofia continuou o desenvolvimento de sprites, Arthur Martins ficou auxiliando no desenvolvimento da lógica do jogo e avaliação das músicas.
+
+Reunião 06/05/2021
+Alteração do tema do grupo feita, de Luta para Shot 'em up, genêro esse que se assemelha muito ao famoso jogo "CupHead", e separamos algumas partes que restam do documento de 10 páginas
