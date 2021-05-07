@@ -11,6 +11,10 @@ class Player {
         this.healthBar = new HealthBar(scene, 610, 20);
     }
 
+    damage() {
+        this.healthBar.decrease(5)
+    }
+
     move_left() {
         this.ps.body.setSize(262, 690)
         this.ps.body.setOffset(80, 0)

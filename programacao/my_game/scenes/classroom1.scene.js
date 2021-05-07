@@ -7,7 +7,7 @@ class ClassRoom1 extends Phaser.Scene {
         this.bullets;
         this.bltqnt = 100;
         this.inst;
-        this.ghostNumber = 0
+        this.ghostNumber = 2
         this.ghosts = [];
         this.spacebar;
         this.img;
@@ -59,6 +59,29 @@ class ClassRoom1 extends Phaser.Scene {
                 }
             });
         }
+
+        this.ghosts.forEach(ghost => {
+            this.physics.add.collider(this.player.ps, ghost.gs, (player, ghost) => {
+                if (player.width == 430) {
+                    if (player.body.touching.up) {
+                        this.player.damage()
+                    }
+                    if ((player.body.touching.left && this.player.pos == 'L') || (player.body.touching.right && this.player.pos == 'R')) {
+                        ghost.isAlive = false
+                        ghost.destroy()
+                    }
+                    else {
+                        this.player.damage()
+                    }
+                }
+                else {
+                    this.player.damage()
+                    ghost.isAlive = false
+                    ghost.destroy()
+                }
+
+            })
+        });
 
         this.anims.create({
             key: 'right',
@@ -115,6 +138,7 @@ class ClassRoom1 extends Phaser.Scene {
         if (this.keys.SHIFT.isDown && this.keys.A.isDown) {
 
             if (this.keys.RIGHT.isDown) {
+
                 this.player.punch()
             } else {
                 this.player.standShot('L')
@@ -124,6 +148,7 @@ class ClassRoom1 extends Phaser.Scene {
         else if (this.keys.SHIFT.isDown && this.keys.D.isDown) {
             if (this.keys.RIGHT.isDown) {
                 this.player.punch()
+
             }
             else {
                 this.player.standShot('R')
