@@ -10,7 +10,6 @@ class ClassRoom1 extends Phaser.Scene {
         this.ghostNumber = 2
         this.ghosts = [];
         this.spacebar;
-        this.img;
         this.fireRate = 200;
         this.timeBefore = 0;
     }
@@ -20,7 +19,6 @@ class ClassRoom1 extends Phaser.Scene {
         this.load.image('classroom', '../res/cenario/classroom.png');
         this.load.image('id_card', '../res/cenario/id_card.png')
         this.load.image('ghost', '../res/ghosts/ghost.png')
-        this.load.image('aim', '../res/cenario/aim.png')
 
         this.load.spritesheet('playerDown', '../res/sprites/down.png', { frameWidth: 249, frameHeight: 375 });
         this.load.spritesheet('playerRunning', '../res/sprites/running.png', { frameWidth: 515, frameHeight: 686 });
@@ -39,7 +37,6 @@ class ClassRoom1 extends Phaser.Scene {
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         this.add.image(400, 300, 'classroom').setScale(1.5)
-        this.img = this.add.image(400, 300, 'aim').setScale(0.06)
 
         this.inst = new GameText(this, 710, 5, 'x' + this.bltqnt)
         this.player = new Player(this, 400, 561, 'playerStand', 0.2, 500)
