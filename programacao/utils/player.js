@@ -110,36 +110,12 @@ class Player {
         this.posit = posit
         this.pos = posit
 
-        if(this.isNotJumping) {
+        if (this.isNotJumping) {
             this.ps.body.setSize(262, 690)
             this.ps.setVelocityX(0);
             this.isNotJumping = true
             if (this.pos == 'R') {
                 if (posit == 'R') {
-                this.ps.anims.play('stand', true);
-                this.pos = 'R'
-            }
-            else if (posit == 'L') {
-                this.ps.anims.play('standL', true);
-                this.pos = 'L'
-            }
-            }
-            else if (this.pos == 'L') {
-            if (posit == 'L') {
-                this.ps.anims.play('standL', true);
-            }
-            else if (posit == 'R') {
-                this.ps.anims.play('stand', true);
-            }
-
-        }
-        }
-        else {
-            this.ps.setVelocityX(0);
-            if(this.ps.body.onFloor()) {
-
-                if (this.pos == 'R') {
-                    if (posit == 'R') {
                     this.ps.anims.play('stand', true);
                     this.pos = 'R'
                 }
@@ -147,16 +123,40 @@ class Player {
                     this.ps.anims.play('standL', true);
                     this.pos = 'L'
                 }
-                }
-                else if (this.pos == 'L') {
+            }
+            else if (this.pos == 'L') {
                 if (posit == 'L') {
                     this.ps.anims.play('standL', true);
                 }
                 else if (posit == 'R') {
                     this.ps.anims.play('stand', true);
                 }
-    
+
             }
+        }
+        else {
+            this.ps.setVelocityX(0);
+            if (this.ps.body.onFloor()) {
+
+                if (this.pos == 'R') {
+                    if (posit == 'R') {
+                        this.ps.anims.play('stand', true);
+                        this.pos = 'R'
+                    }
+                    else if (posit == 'L') {
+                        this.ps.anims.play('standL', true);
+                        this.pos = 'L'
+                    }
+                }
+                else if (this.pos == 'L') {
+                    if (posit == 'L') {
+                        this.ps.anims.play('standL', true);
+                    }
+                    else if (posit == 'R') {
+                        this.ps.anims.play('stand', true);
+                    }
+
+                }
 
             }
         }
@@ -170,7 +170,7 @@ class Player {
             this.ps.anims.play(this.pos == 'R' ? 'punching' : 'punchingL', true);
             this.ps.body.setSize(320, 690)
             this.ps.body.setOffset(this.pos == 'R' ? 100 : 0, 0)
-        } else {
+        } else if (!this.ps.body.onFloor()) {
             this.ps.anims.play(this.pos == 'R' ? 'kicking' : 'kickingL', true);
         }
     }
