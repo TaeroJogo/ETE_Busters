@@ -160,6 +160,11 @@ class ClassRoom1 extends Phaser.Scene {
             }
 
         }
+        
+        else if (this.keys.SHIFT.isDown) {
+            this.player.standShot(this.player.pos)
+        }
+
         else if (this.keys.RIGHT.isDown || (this.keys.SHIFT.isDown && this.keys.RIGHT.isDown)) {
             this.player.combat()
         }
@@ -214,7 +219,7 @@ class ClassRoom1 extends Phaser.Scene {
                         bullet.fireUp()
                     }
                     else {
-                        bullet.fire(this.player.pos)
+                        bullet.fire(this.player.pos)  
                     }
 
                     this.ghosts.forEach(ghost => {
