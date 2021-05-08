@@ -171,7 +171,10 @@ class Player {
             this.ps.body.setSize(320, 690)
             this.ps.body.setOffset(this.pos == 'R' ? 100 : 0, 0)
         } else if (!this.ps.body.onFloor()) {
+            this.ps.body.setSize(262, 690)
             this.ps.anims.play(this.pos == 'R' ? 'kicking' : 'kickingL', true);
+            this.ps.body.setSize(400, 550)
+            this.ps.body.setOffset(this.pos == 'R' ? 150 : -80, -100)
         }
     }
 }
