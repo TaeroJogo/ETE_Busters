@@ -114,8 +114,6 @@ class Player {
             this.ps.body.setSize(262, 690)
             this.ps.setVelocityX(0);
             this.isNotJumping = true
-            this.ps.anims.stop()
-            console.log(this.pos)
             if (this.pos == 'R') {
                 if (posit == 'R') {
                 this.ps.anims.play('stand', true);
@@ -135,11 +133,33 @@ class Player {
             }
 
         }
-        else if(this.isNotJumping == false) {
-            this.player.jump()
         }
+        else {
+            this.ps.setVelocityX(0);
+            if(this.ps.body.onFloor()) {
+
+                if (this.pos == 'R') {
+                    if (posit == 'R') {
+                    this.ps.anims.play('stand', true);
+                    this.pos = 'R'
+                }
+                else if (posit == 'L') {
+                    this.ps.anims.play('standL', true);
+                    this.pos = 'L'
+                }
+                }
+                else if (this.pos == 'L') {
+                if (posit == 'L') {
+                    this.ps.anims.play('standL', true);
+                }
+                else if (posit == 'R') {
+                    this.ps.anims.play('stand', true);
+                }
+    
+            }
+
+            }
         }
-        
     }
 
     combat() {

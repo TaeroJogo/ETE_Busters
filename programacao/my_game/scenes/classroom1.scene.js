@@ -141,15 +141,12 @@ class ClassRoom1 extends Phaser.Scene {
         this.moveGhosts()
 
         if (this.keys.SHIFT.isDown && this.keys.A.isDown) {
-
             if (this.keys.RIGHT.isDown) {
-
                 this.player.combat()
             } else {
                 this.player.standShot('L')
             }
         }
-
         else if (this.keys.SHIFT.isDown && this.keys.D.isDown) {
             if (this.keys.RIGHT.isDown) {
                 this.player.combat()
@@ -158,13 +155,13 @@ class ClassRoom1 extends Phaser.Scene {
             else {
                 this.player.standShot('R')
             }
-
         }
-        
+    
         else if (this.keys.SHIFT.isDown) {
             this.player.standShot(this.player.pos)
         }
-
+        
+       
         else if (this.keys.RIGHT.isDown || (this.keys.SHIFT.isDown && this.keys.RIGHT.isDown)) {
             this.player.combat()
         }
