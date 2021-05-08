@@ -16,20 +16,23 @@ class Player {
     }
 
     move_left() {
-        this.ps.body.setSize(262, 690)
-        this.ps.body.setOffset(80, 0)
+
         this.isNotJumping = true
         this.pos = 'L';
         if (!this.ps.body.onFloor()) {
+            this.ps.body.setSize(300, 555)
+            this.ps.body.setOffset(0, 135)
             this.move_left_jump()
         } else {
+            this.ps.body.setSize(262, 690)
+            this.ps.body.setOffset(80, 0)
             this.ps.setVelocityX(-this.xSpeed);
             this.ps.anims.play('left', true);
         }
     }
 
     move_left_jump() {
-        this.ps.body.setOffset(0, 0)
+        this.ps.body.setOffset(0, 135)
         this.isNotJumping = false
         this.ps.setVelocityX(-this.xSpeed);
         this.ps.anims.play('jumpL', true);
@@ -37,20 +40,23 @@ class Player {
     }
 
     move_right() {
-        this.ps.body.setSize(262, 690)
-        this.ps.body.setOffset(200, 0)
+
         this.isNotJumping = true
         this.pos = 'R';
         if (!this.ps.body.onFloor()) {
+            this.ps.body.setSize(300, 555)
+            this.ps.body.setOffset(0, 135)
             this.move_right_jump()
         } else {
+            this.ps.body.setSize(262, 690)
+            this.ps.body.setOffset(200, 0)
             this.ps.setVelocityX(this.xSpeed);
             this.ps.anims.play('right', true);
         }
     }
 
     move_right_jump() {
-        this.ps.body.setOffset(0, 0)
+        this.ps.body.setOffset(0, 135)
         this.isNotJumping = false
         this.ps.setVelocityX(this.xSpeed);
         this.ps.anims.play('jump', true);
@@ -61,11 +67,13 @@ class Player {
         this.isNotJumping = false
         if (this.pos == 'R') {
             this.ps.anims.play('jump', true);
-            this.ps.body.setSize(300, 690)
+            this.ps.body.setSize(300, 555)
+            this.ps.body.setOffset(0, 135)
         }
         else if (this.pos == 'L') {
             this.ps.anims.play('jumpL', true);
-            this.ps.body.setSize(300, 690)
+            this.ps.body.setSize(300, 555)
+            this.ps.body.setOffset(0, 135)
         }
 
         if (this.ps.body.onFloor()) {
@@ -90,6 +98,7 @@ class Player {
 
     stand() {
         this.ps.body.setSize(262, 690)
+        this.ps.body.setOffset(0, 0)
         this.ps.setVelocityX(0);
 
         if (this.ps.body.onFloor()) {
@@ -112,6 +121,7 @@ class Player {
 
         if (this.isNotJumping) {
             this.ps.body.setSize(262, 690)
+            this.ps.body.setOffset(0, 0)
             this.ps.setVelocityX(0);
             this.isNotJumping = true
             if (this.pos == 'R') {
@@ -137,7 +147,8 @@ class Player {
         else {
             this.ps.setVelocityX(0);
             if (this.ps.body.onFloor()) {
-
+                this.ps.body.setSize(262, 690)
+                this.ps.body.setOffset(0, 0)
                 if (this.pos == 'R') {
                     if (posit == 'R') {
                         this.ps.anims.play('stand', true);
