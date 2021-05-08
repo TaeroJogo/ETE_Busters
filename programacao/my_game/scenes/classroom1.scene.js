@@ -59,8 +59,9 @@ class ClassRoom1 extends Phaser.Scene {
 
         this.ghosts.forEach(ghost => {
             this.physics.add.collider(this.player.ps, ghost.gs, (player, ghost) => {
-                if (player.width == 430) {
-                    if (player.body.touching.up) {
+                console.log(player.height)
+                if (player.width == 430 || player.height < 560) {
+                    if (player.body.touching.up && player.height > 560) {
                         this.player.damage()
                     }
                     if ((player.body.touching.left && this.player.pos == 'L') || (player.body.touching.right && this.player.pos == 'R')) {
