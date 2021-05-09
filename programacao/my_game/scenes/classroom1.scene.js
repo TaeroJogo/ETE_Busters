@@ -31,6 +31,10 @@ class ClassRoom1 extends Phaser.Scene {
         this.load.spritesheet('playerPunchingL', '../res/sprites/punchingL.png', { frameWidth: 430, frameHeight: 689 });
         this.load.spritesheet('playerKicking', '../res/sprites/kickR.png', { frameWidth: 455, frameHeight: 556 });
         this.load.spritesheet('playerKickingL', '../res/sprites/kickL.png', { frameWidth: 455, frameHeight: 556 });
+        this.load.audio("music", "../res/sons/Sound Effects/musicadeluta.mp3");
+        this.load.audio("kick", "../res/sons/Sound Effects/Kick - Sound Effect.mp3");
+        this.load.audio("punch", "../res/sons/Sound Effects/Punch sound effect.mp3");
+        this.load.audio("card", "../res/sons/Sound Effects/card throwing sound effect.mp3");
     }
     create(data) {
         this.keys = this.input.keyboard.addKeys("W,A,S,D,SHIFT,UP,RIGHT");
@@ -40,6 +44,22 @@ class ClassRoom1 extends Phaser.Scene {
 
         this.inst = new GameText(this, 710, 5, 'x' + this.bltqnt)
         this.player = new Player(this, 400, 561, 'playerStand', 0.2, 500)
+
+        this.music = this.sound.add("music");
+        this.punchSound = this.sound.add("punch");
+        this.cardSound = this.sound.add("card");
+        this.kickSound = this.sound.add("kick");
+
+        var musicConfig = {
+         mute: false,
+         volume: 1,
+         rate: 1,
+         detune: 0,
+         seek: 0,
+         loop: true,
+         delay: 0,
+        };
+        this.music.play(musicConfig);
 
         this.randomMinAndMax = (max, min) => Math.floor(Math.random() * (max - (min) + 1)) + min;
         this.randomInterv = (min, max, min2, max2) => this.randomMinAndMax(1, 0) == 0 ? this.randomMinAndMax(min, max) : this.randomMinAndMax(min2, max2)
