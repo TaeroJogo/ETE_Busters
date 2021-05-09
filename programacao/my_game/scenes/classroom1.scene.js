@@ -35,6 +35,7 @@ class ClassRoom1 extends Phaser.Scene {
         this.load.audio("punch", "../res/sons/Sound Effects/Punch.mp3");
         this.load.audio("card", "../res/sons/Sound Effects/card throwing sound effect.mp3");
         this.load.audio("jump", "../res/sons/Sound Effects/jump.mp3");
+        this.load.audio("hit", "../res/sons/Sound Effects/hit.mp3");
     }
     create(data) {
         this.keys = this.input.keyboard.addKeys("W,A,S,D,SHIFT,UP,RIGHT");
@@ -49,6 +50,7 @@ class ClassRoom1 extends Phaser.Scene {
         this.music = this.sound.add("music");
         this.cardSound = this.sound.add("card");
         this.jumpSound = this.sound.add("jump");
+        this.hitSound = this.sound.add("hit");
 
         var musicConfig = {
          mute: false,
@@ -83,6 +85,7 @@ class ClassRoom1 extends Phaser.Scene {
                 if (player.width == 430 || player.height < 560) {
                     if (player.body.touching.up && player.height > 560) {
                         this.player.damage()
+                        this.hitSound.play();
                     }
                     if ((player.body.touching.left && this.player.pos == 'L') || (player.body.touching.right && this.player.pos == 'R')) {
                         ghost.isAlive = false
@@ -90,10 +93,12 @@ class ClassRoom1 extends Phaser.Scene {
                     }
                     else {
                         this.player.damage()
+                        this.hitSound.play();
                     }
                 }
                 else {
                     this.player.damage()
+                    this.hitSound.play();
                     ghost.isAlive = false
                     ghost.destroy()
                 }

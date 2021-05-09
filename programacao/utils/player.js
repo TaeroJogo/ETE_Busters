@@ -7,7 +7,6 @@ class Player {
         this.pos = 'R'
         this.xSpeed = 300;
         this.isNotJumping = true;
-
         this.healthBar = new HealthBar(scene, 610, 20);
     }
 
