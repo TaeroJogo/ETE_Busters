@@ -14,10 +14,10 @@ class ClassRoom1 extends Phaser.Scene {
         this.timeBefore = 0;
     }
 
-    init(data) {}
+    init(data) { }
     preload() {
         this.load.image('classroom', '../res/cenario/classroom.png');
-        this.load.image('id_card', '../res/cenario/id_card.png')
+        this.load.image('id_card', '../res/sprites/id_card.png')
         this.load.image('ghost', '../res/ghosts/ghost.png')
 
         this.load.spritesheet('playerDown', '../res/sprites/down.png', { frameWidth: 249, frameHeight: 375 });
@@ -49,10 +49,10 @@ class ClassRoom1 extends Phaser.Scene {
             seek: 0,
             loop: true,
             delay: 0,
-           })
-           bmsc.play()
+        })
+        bmsc.play()
 
-           
+
         this.game.config.pss = this.sound.add('punch')
         this.game.config.js = this.sound.add('jump', {
             mute: false,
@@ -110,13 +110,13 @@ class ClassRoom1 extends Phaser.Scene {
                     if ((player.body.touching.left && this.player.pos == 'L') || (player.body.touching.right && this.player.pos == 'R')) {
                         ghost.isAlive = false
                         ghost.destroy()
-                        if(player.body.onFloor()) {
+                        if (player.body.onFloor()) {
                             this.game.config.pss.play()
                         }
                         else {
                             this.game.config.ks.play()
                         }
-                        
+
                     }
                     else {
                         this.player.damage()
@@ -206,13 +206,13 @@ class ClassRoom1 extends Phaser.Scene {
                 this.player.standShot('R')
             }
         }
-    
+
         else if (this.keys.SHIFT.isDown) {
             this.player.standShot(this.player.pos)
         }
-        
-       
-        else if (this.keys.RIGHT.isDown ) {
+
+
+        else if (this.keys.RIGHT.isDown) {
             this.player.combat()
         }
         else if (this.keys.SHIFT.isDown) {
@@ -253,7 +253,7 @@ class ClassRoom1 extends Phaser.Scene {
                 if (this.bltqnt > 0) {
                     this.bltqnt = this.bltqnt - 1;
                     this.inst.setNewText('x' + this.bltqnt.toString())
-                    let bullet = new Bullet(this, this.player.ps.x, this.player.ps.y, "id_card", 1, this.game.config.idcs)
+                    let bullet = new Bullet(this, this.player.ps.x, this.player.ps.y, "id_card", 0.5, this.game.config.idcs)
 
 
                     if (this.keys.SHIFT.isDown && (this.keys.D.isDown || this.keys.A.isDown) && this.keys.W.isDown) {
@@ -266,7 +266,7 @@ class ClassRoom1 extends Phaser.Scene {
                         bullet.fireUp()
                     }
                     else {
-                        bullet.fire(this.player.pos)  
+                        bullet.fire(this.player.pos)
                     }
 
                     this.ghosts.forEach(ghost => {
