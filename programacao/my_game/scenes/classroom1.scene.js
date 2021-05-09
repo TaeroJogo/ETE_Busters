@@ -32,9 +32,9 @@ class ClassRoom1 extends Phaser.Scene {
         this.load.spritesheet('playerKicking', '../res/sprites/kickR.png', { frameWidth: 455, frameHeight: 556 });
         this.load.spritesheet('playerKickingL', '../res/sprites/kickL.png', { frameWidth: 455, frameHeight: 556 });
         this.load.audio("music", "../res/sons/Sound Effects/musicadeluta.mp3");
-        this.load.audio("kick", "../res/sons/Sound Effects/Kick - Sound Effect.mp3");
         this.load.audio("punch", "../res/sons/Sound Effects/Punch.mp3");
         this.load.audio("card", "../res/sons/Sound Effects/card throwing sound effect.mp3");
+        this.load.audio("jump", "../res/sons/Sound Effects/jump.mp3");
     }
     create(data) {
         this.keys = this.input.keyboard.addKeys("W,A,S,D,SHIFT,UP,RIGHT");
@@ -47,8 +47,8 @@ class ClassRoom1 extends Phaser.Scene {
 
         this.punchSound = this.sound.add("punch");
         this.music = this.sound.add("music");
-        this.kickSound = this.sound.add("kick");
         this.cardSound = this.sound.add("card");
+        this.jumpSound = this.sound.add("jump");
 
         var musicConfig = {
          mute: false,
@@ -176,6 +176,15 @@ class ClassRoom1 extends Phaser.Scene {
             loop: false,
             delay: 0,
         };
+        var jumpConfig = {
+            mute: false,
+            volume: 2,
+            rate: 1,
+            detune: 0,
+            seek: 0,
+            loop: false,
+            delay: 0.2,
+        };
         this.moveGhosts()
 
         if (this.keys.SHIFT.isDown && this.keys.A.isDown) {
@@ -219,13 +228,17 @@ class ClassRoom1 extends Phaser.Scene {
         else if (this.keys.W.isDown && this.keys.D.isDown) {
             this.player.jump()
             this.player.move_right_jump()
+            this.jumpSound.play(jumpConfig);
         }
         else if (this.keys.W.isDown && this.keys.A.isDown) {
             this.player.jump()
             this.player.move_left_jump()
+            this.jumpSound.play(jumpConfig);
         }
         else if (this.keys.W.isDown) {
             this.player.jump()
+            this.jumpSound.play(jumpConfig);
+
         }
         else if (this.keys.D.isDown) {
             this.player.move_right()
