@@ -1,5 +1,5 @@
 class Player {
-    constructor(scene, x, y, texture, scale, gravity) {
+    constructor(scene, x, y, texture, scale, gravity, audio) {
         this.ps = scene.physics.add.sprite(x, y, texture).setScale(scale)
         this.ps.setGravityY(gravity)
         this.ps.setCollideWorldBounds(true);
@@ -8,10 +8,14 @@ class Player {
         this.xSpeed = 300;
         this.isNotJumping = true;
         this.healthBar = new HealthBar(scene, 610, 20);
+        this.js = audio.js
+        this.hs = audio.hs
+        this.pss = audio.pss
     }
 
     damage() {
         this.healthBar.decrease(5)
+        this.hs.play()
     }
 
     move_left() {
@@ -36,6 +40,11 @@ class Player {
         this.ps.setVelocityX(-this.xSpeed);
         this.ps.anims.play('jumpL', true);
         this.pos = 'L';
+        if (this.ps.body.onFloor()) {
+            if (Math.abs(this.ps.body.velocity.x) == 300) {
+                this.js.play()
+            } 
+        }
     }
 
     move_right() {
@@ -60,6 +69,11 @@ class Player {
         this.ps.setVelocityX(this.xSpeed);
         this.ps.anims.play('jump', true);
         this.pos = 'R';
+        if (this.ps.body.onFloor()) {
+            if (Math.abs(this.ps.body.velocity.x) == 300) {
+                this.js.play()
+            } 
+        }
     }
 
     jump() {
@@ -82,6 +96,7 @@ class Player {
             } else {
                 this.ps.setVelocityY(-400);
                 this.ps.setVelocityX(0);
+                this.js.play()
             }
         }
     }
