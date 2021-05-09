@@ -14,7 +14,7 @@ class ClassRoom1 extends Phaser.Scene {
         this.timeBefore = 0;
     }
 
-    init(data) { }
+    init(data) {}
     preload() {
         this.load.image('classroom', '../res/cenario/classroom.png');
         this.load.image('id_card', '../res/cenario/id_card.png')
@@ -31,11 +31,11 @@ class ClassRoom1 extends Phaser.Scene {
         this.load.spritesheet('playerPunchingL', '../res/sprites/punchingL.png', { frameWidth: 430, frameHeight: 689 });
         this.load.spritesheet('playerKicking', '../res/sprites/kickR.png', { frameWidth: 455, frameHeight: 556 });
         this.load.spritesheet('playerKickingL', '../res/sprites/kickL.png', { frameWidth: 455, frameHeight: 556 });
-        this.load.audio("music", "../res/sons/Sound Effects/musicadeluta.mp3");
-        this.load.audio("punch", "../res/sons/Sound Effects/Punch.mp3");
-        this.load.audio("card", "../res/sons/Sound Effects/card throwing sound effect.mp3");
-        this.load.audio("jump", "../res/sons/Sound Effects/jump.mp3");
-        this.load.audio("hit", "../res/sons/Sound Effects/hit.mp3");
+        this.load.audio('music', '../res/sons/Sound Effects/musicadeluta.mp3');
+        this.load.audio('punch', '../res/sons/Sound Effects/Punch.mp3');
+        this.load.audio('card', '../res/sons/Sound Effects/card throwing sound effect.mp3');
+        this.load.audio('jump', '../res/sons/Sound Effects/jump.mp3');
+        this.load.audio('hit', '../res/sons/Sound Effects/hit.mp3');
     }
     create(data) {
         this.keys = this.input.keyboard.addKeys("W,A,S,D,SHIFT,UP,RIGHT");
@@ -46,23 +46,34 @@ class ClassRoom1 extends Phaser.Scene {
         this.inst = new GameText(this, 710, 5, 'x' + this.bltqnt)
         this.player = new Player(this, 400, 561, 'playerStand', 0.2, 500)
 
-        this.punchSound = this.sound.add("punch");
+        /*this.punchSound = this.sound.add("punch");
         this.music = this.sound.add("music");
         this.cardSound = this.sound.add("card");
         this.jumpSound = this.sound.add("jump");
-        this.hitSound = this.sound.add("hit");
+        this.hitSound = this.sound.add("hit");*/
 
-        var musicConfig = {
+        /*var musicConfig = {
          mute: false,
-         volume: 1,
+         volume: 0.4,
          rate: 1,
          detune: 0,
          seek: 0,
          loop: true,
          delay: 0,
         };
-        this.music.play(musicConfig);
+        this.music.play(musicConfig);*/
 
+        let bmsc = this.sound.add('music', {
+            mute: false,
+            volume: 0.4,
+            rate: 1,
+            detune: 0,
+            seek: 0,
+            loop: true,
+            delay: 0,
+           })
+           bmsc.play()
+        
         this.randomMinAndMax = (max, min) => Math.floor(Math.random() * (max - (min) + 1)) + min;
         this.randomInterv = (min, max, min2, max2) => this.randomMinAndMax(1, 0) == 0 ? this.randomMinAndMax(min, max) : this.randomMinAndMax(min2, max2)
 
@@ -163,7 +174,7 @@ class ClassRoom1 extends Phaser.Scene {
         });
     }
     update(time, delta) {
-        var punchConfig = {
+        /*var punchConfig = {
             mute: false,
             volume: 1,
             rate: 1,
@@ -188,14 +199,14 @@ class ClassRoom1 extends Phaser.Scene {
             detune: 0,
             seek: 0,
             loop: false,
-            delay: 0.2,
-        };
+            delay: 0.1,
+        };*/
         this.moveGhosts()
 
         if (this.keys.SHIFT.isDown && this.keys.A.isDown) {
             if (this.keys.RIGHT.isDown) {
                 this.player.combat()
-                this.punchSound.play();
+                //this.punchSound.play();
             } else {
                 this.player.standShot('L')
             }
@@ -203,7 +214,7 @@ class ClassRoom1 extends Phaser.Scene {
         else if (this.keys.SHIFT.isDown && this.keys.D.isDown) {
             if (this.keys.RIGHT.isDown) {
                 this.player.combat()
-                this.punchSound.play();
+                //this.punchSound.play();
 
             }
             else {
@@ -218,13 +229,13 @@ class ClassRoom1 extends Phaser.Scene {
        
         else if (this.keys.RIGHT.isDown ) {
             this.player.combat()
-            this.punchSound.play(punchConfig);
+            //this.punchSound.play(punchConfig);
         }
         else if (this.keys.SHIFT.isDown) {
             this.player.standShot()
             if (this.keys.RIGHT.isDown) {
                 this.player.combat()
-                this.punchSound.play();
+               // this.punchSound.play();
             }
         }
         else if (this.keys.A.isDown && this.keys.D.isDown && !this.keys.RIGHT.isDown) {
@@ -233,17 +244,16 @@ class ClassRoom1 extends Phaser.Scene {
         else if (this.keys.W.isDown && this.keys.D.isDown) {
             this.player.jump()
             this.player.move_right_jump()
-            this.jumpSound.play(jumpConfig);
+            //this.jumpSound.play(jumpConfig);
         }
         else if (this.keys.W.isDown && this.keys.A.isDown) {
             this.player.jump()
             this.player.move_left_jump()
-            this.jumpSound.play(jumpConfig);
+           // this.jumpSound.play(jumpConfig);
         }
         else if (this.keys.W.isDown) {
             this.player.jump()
-            this.jumpSound.play(jumpConfig);
-
+            //this.jumpSound.play(jumpConfig);
         }
         else if (this.keys.D.isDown) {
             this.player.move_right()
@@ -268,19 +278,20 @@ class ClassRoom1 extends Phaser.Scene {
 
                     if (this.keys.SHIFT.isDown && (this.keys.D.isDown || this.keys.A.isDown) && this.keys.W.isDown) {
                         bullet.fireDiagonally(this.player.pos)
-                        this.cardSound.play(cardConfig);
+                        //this.cardSound.play(cardConfig);
                     }
                     else if (this.keys.SHIFT.isDown && (this.keys.D.isDown || this.keys.A.isDown)) {
                         bullet.fire(this.player.pos)
-                        this.cardSound.play(cardConfig);
+                        //this.cardSound.play(cardConfig);
                     }
                     else if (this.keys.SHIFT.isDown && this.player.ps.body.onFloor() && this.keys.W.isDown) {
                         bullet.fireUp()
-                        this.cardSound.play(cardConfig);
+                       // this.cardSound.play(cardConfig);
                     }
                     else {
                         bullet.fire(this.player.pos)  
-                        this.cardSound.play(cardConfig);
+                       // this.cardSound.play(cardConfig);
+                       idcs.play()
                     }
 
                     this.ghosts.forEach(ghost => {
