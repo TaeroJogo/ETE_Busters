@@ -191,7 +191,7 @@ class Player {
     combat() {
         this.ps.setVelocityX(0);
 
-        if (this.ps.body.y > 460) {
+        if (Math.abs(this.ps.body.velocity.x) < 1 && Math.abs(this.ps.body.velocity.y) < 1) {
             this.ps.body.setSize(262, 690)
             this.ps.anims.play(this.pos == 'R' ? 'punching' : 'punchingL', true);
             this.ps.body.setSize(320, 690)
