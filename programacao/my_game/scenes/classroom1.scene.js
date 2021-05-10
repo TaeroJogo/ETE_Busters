@@ -245,7 +245,6 @@ class ClassRoom1 extends Phaser.Scene {
                 this.player.standShot('R')
             }
         }
-
         else if (this.keys.SHIFT.isDown) {
             this.player.standShot(this.player.pos)
         }
@@ -272,10 +271,10 @@ class ClassRoom1 extends Phaser.Scene {
         else if (this.keys.W.isDown) {
             this.player.jump()
         }
-        else if (this.keys.D.isDown) {
+        else if (this.keys.D.isDown && !this.keys.S.isDown) {
             this.player.move_right()
         }
-        else if (this.keys.A.isDown) {
+        else if (this.keys.A.isDown && !this.keys.S.isDown) {
             this.player.move_left()
         }
         else if (this.keys.S.isDown) {

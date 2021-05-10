@@ -12,6 +12,7 @@ class Player {
         this.hs = audio.hs
         this.pss = audio.pss
         this.isThrowing = false
+        this.platSneak = 0
     }
 
     damage() {
@@ -103,12 +104,15 @@ class Player {
 
     sneak() {
         if (this.ps.y > 559 && this.ps.y < 560 && this.ps.body.blocked.down) {
+            this.platSneak = 1
             this.ps.y = 605
         }
         else if (this.ps.y > 228 && this.ps.y < 240 && this.ps.body.blocked.down) {
+            this.platSneak = 2
             this.ps.y = 275.69
         }
         else if (this.ps.y > 725 && this.ps.body.blocked.down) {
+            this.platSneak = 0
             this.ps.y = 776
         }
         this.ps.body.setSize(299, 385)
@@ -117,6 +121,14 @@ class Player {
     }
 
     stand() {
+
+        if (this.platSneak == 1) {
+            this.ps.y = 559.94
+        }
+        else if (this.platSneak == 2) {
+            this.ps.y = 229.24
+        }
+        this.platSneak = 0
         this.ps.body.setSize(262, 690)
         this.ps.body.setOffset(0, 0)
         this.ps.setVelocityX(0);
