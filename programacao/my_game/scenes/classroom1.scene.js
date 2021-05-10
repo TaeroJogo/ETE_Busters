@@ -85,7 +85,7 @@ class ClassRoom1 extends Phaser.Scene {
 
         this.add.image(450, 330, 'classroom')
 
-        this.platform = this.physics.add.sprite(400, 500, 'table').setScale(0.2).refreshBody()
+        this.platform = this.physics.add.sprite(450, 440, 'table').setScale(0.2).refreshBody()
         this.platform.body.immovable = true;
         this.platform.body.moves = false;
         this.platform.body.setSize(750, 520)
