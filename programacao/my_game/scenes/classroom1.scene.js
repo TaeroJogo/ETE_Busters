@@ -10,7 +10,7 @@ class ClassRoom1 extends Phaser.Scene {
         this.ghostNumber = 2
         this.ghosts = [];
         this.spacebar;
-        this.fireRate = 300;
+        this.fireRate = 1000;
         this.timeBefore = 0;
     }
 
@@ -31,6 +31,8 @@ class ClassRoom1 extends Phaser.Scene {
         this.load.spritesheet('playerPunchingL', '../res/sprites/punchingL.png', { frameWidth: 430, frameHeight: 689 });
         this.load.spritesheet('playerKicking', '../res/sprites/kickR.png', { frameWidth: 455, frameHeight: 556 });
         this.load.spritesheet('playerKickingL', '../res/sprites/kickL.png', { frameWidth: 455, frameHeight: 556 });
+        this.load.spritesheet('playerThrowing', '../res/sprites/throw.png', { frameWidth: 459, frameHeight: 714 });
+        this.load.spritesheet('playerThrowingL', '../res/sprites/throwL.png', { frameWidth: 459, frameHeight: 714 });
 
         this.load.audio('music', '../res/sons/Sound_Effects/musicadeluta.mp3');
         this.load.audio('punch', '../res/sons/Sound_Effects/punch.mp3');
@@ -186,10 +188,25 @@ class ClassRoom1 extends Phaser.Scene {
             frames: this.anims.generateFrameNumbers("playerKickingL"),
             frameRate: 10
         });
+        this.anims.create({
+            key: 'throw',
+            frames: this.anims.generateFrameNumbers("playerThrowing"),
+            frameRate: 10
+        });
+        this.anims.create({
+            key: 'throwL',
+            frames: this.anims.generateFrameNumbers("playerThrowingL"),
+            frameRate: 10
+        });
+        console.log(this.anims)
     }
 
     update(time, delta) {
         this.moveGhosts()
+
+        if ((((new Date().getTime()) - this.timeBefore) > this.fireRate - 200) && this.player.isThrowing) {
+            this.player.isThrowing = false
+        }
 
         if (this.keys.SHIFT.isDown && this.keys.A.isDown) {
             if (this.keys.RIGHT.isDown) {
@@ -210,8 +227,6 @@ class ClassRoom1 extends Phaser.Scene {
         else if (this.keys.SHIFT.isDown) {
             this.player.standShot(this.player.pos)
         }
-
-
         else if (this.keys.RIGHT.isDown) {
             this.player.combat()
         }
@@ -245,7 +260,11 @@ class ClassRoom1 extends Phaser.Scene {
             this.player.sneak()
         }
         else {
-            this.player.stand()
+            if (this.player.isThrowing) {
+                this.player.throwing_card()
+            } else {
+                this.player.stand()
+            }
         }
         if (this.keys.UP.isDown && !this.keys.S.isDown && !this.keys.RIGHT.isDown) {
             if (((new Date().getTime()) - this.timeBefore) > this.fireRate) {
@@ -253,30 +272,49 @@ class ClassRoom1 extends Phaser.Scene {
                 if (this.bltqnt > 0) {
                     this.bltqnt = this.bltqnt - 1;
                     this.inst.setNewText('x' + this.bltqnt.toString())
-                    let bullet = new Bullet(this, this.player.ps.x, this.player.ps.y, "id_card", 0.5, this.game.config.idcs)
 
+                    let bullet;
+                    let newBullet = () => bullet = new Bullet(this, this.player.ps.x, this.player.ps.y, "id_card", 0.3, this.game.config.idcs)
+                    let collider = true
 
                     if (this.keys.SHIFT.isDown && (this.keys.D.isDown || this.keys.A.isDown) && this.keys.W.isDown) {
+                        newBullet()
                         bullet.fireDiagonally(this.player.pos)
                     }
                     else if (this.keys.SHIFT.isDown && (this.keys.D.isDown || this.keys.A.isDown)) {
+                        newBullet()
                         bullet.fire(this.player.pos)
                     }
                     else if (this.keys.SHIFT.isDown && this.player.ps.body.onFloor() && this.keys.W.isDown) {
+                        newBullet()
                         bullet.fireUp()
                     }
                     else {
-                        bullet.fire(this.player.pos)
+                        collider = false
+                        this.player.throwing_card()
+                        setTimeout(() => {
+                            newBullet()
+                            bullet.fire(this.player.pos)
+                            this.ghosts.forEach(ghost => {
+                                this.physics.add.collider(bullet.bullet, ghost.gs, (bullet, ghost) => {
+                                    ghost.isAlive = false
+                                    ghost.destroy()
+                                    this.game.config.ds.play()
+                                    bullet.destroy()
+                                })
+                            });
+                        }, 400);
                     }
 
-                    this.ghosts.forEach(ghost => {
-                        this.physics.add.collider(bullet.bullet, ghost.gs, (bullet, ghost) => {
-                            ghost.isAlive = false
-                            ghost.destroy()
-                            this.game.config.ds.play()
-                            bullet.destroy()
-                        })
-                    });
+                    if (collider)
+                        this.ghosts.forEach(ghost => {
+                            this.physics.add.collider(bullet.bullet, ghost.gs, (bullet, ghost) => {
+                                ghost.isAlive = false
+                                ghost.destroy()
+                                this.game.config.ds.play()
+                                bullet.destroy()
+                            })
+                        });
                 }
             }
         }

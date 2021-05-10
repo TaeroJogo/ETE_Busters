@@ -11,6 +11,7 @@ class Player {
         this.js = audio.js
         this.hs = audio.hs
         this.pss = audio.pss
+        this.isThrowing = false
     }
 
     damage() {
@@ -43,7 +44,7 @@ class Player {
         if (this.ps.body.onFloor()) {
             if (Math.abs(this.ps.body.velocity.x) == 300) {
                 this.js.play()
-            } 
+            }
         }
     }
 
@@ -72,7 +73,7 @@ class Player {
         if (this.ps.body.onFloor()) {
             if (Math.abs(this.ps.body.velocity.x) == 300) {
                 this.js.play()
-            } 
+            }
         }
     }
 
@@ -201,5 +202,13 @@ class Player {
             this.ps.body.setSize(400, 550)
             this.ps.body.setOffset(this.pos == 'R' ? 150 : -80, -100)
         }
+    }
+
+    throwing_card() {
+        this.ps.setVelocityX(0);
+        this.ps.body.setSize(262, 700)
+        this.ps.body.setOffset(this.pos == 'R' ? 70 : 70, 2.5)
+        this.isThrowing = true
+        this.ps.anims.play(this.pos == 'R' ? 'throw' : 'throwL', true);
     }
 }
