@@ -18,3 +18,6 @@ Leonardo e eduardo introduziram mais animações do personagem e correções de 
 
 Reunião 06/05/2021
 Alteração do tema do grupo feita, de Luta para Shot 'em up, genêro esse que se assemelha muito ao famoso jogo "CupHead", e separamos algumas partes que restam do documento de 10 páginas
+
+Reunião 10/05/2021
+Nos reunimos para discutir as ultimas alterações no projeto, oferecer sugestões de mudança e adicionar novas features, adicionar plataformas e mudar o cenário de fundo da sala de aula, e consertar bugs.
