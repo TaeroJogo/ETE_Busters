@@ -83,13 +83,13 @@ class ClassRoom1 extends Phaser.Scene {
         this.keys = this.input.keyboard.addKeys("W,A,S,D,SHIFT,UP,RIGHT");
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
-        this.add.image(450, 330, 'classroom')
+        this.add.image(1252 / 2, 834 / 2, 'classroom')
 
-        this.platform = this.physics.add.sprite(450, 440, 'table').setScale(0.2).refreshBody()
-        this.platform.body.immovable = true;
-        this.platform.body.moves = false;
-        this.platform.body.setSize(750, 520)
-        this.platform.body.setOffset(0, 220)
+        // this.platform = this.physics.add.sprite(450, 440, 'table').setScale(0.2).refreshBody()
+        // this.platform.body.immovable = true;
+        // this.platform.body.moves = false;
+        // this.platform.body.setSize(750, 520)
+        // this.platform.body.setOffset(0, 220)
 
 
 
