@@ -13,6 +13,12 @@ class ClassRoom1 extends Phaser.Scene {
         this.fireRate = 1000;
         this.timeBefore = 0;
         this.platform
+        this.platforms = []
+        this.platformsData = {
+            0: [510, 590],
+            1: [915, 260],
+            2: [85, 260],
+        }
     }
 
     init(data) { }
@@ -85,14 +91,15 @@ class ClassRoom1 extends Phaser.Scene {
 
         this.add.image(1252 / 2, 834 / 2, 'classroom')
 
-        // this.platform = this.physics.add.sprite(450, 440, 'table').setScale(0.2).refreshBody()
-        // this.platform.body.immovable = true;
-        // this.platform.body.moves = false;
-        // this.platform.body.setSize(750, 520)
-        // this.platform.body.setOffset(0, 220)
 
-
-
+        for (let i = 0; i < 3; i++) {
+            let platform = this.physics.add.sprite(this.platformsData[i][0], this.platformsData[i][1]).setScale(0.36).refreshBody()
+            platform.body.immovable = true;
+            platform.body.moves = false;
+            platform.body.setSize(750, 450)
+            platform.body.setOffset(0, 220)
+            this.platforms.push(platform)
+        }
 
         this.inst = new GameText(this, 710, 5, 'x' + this.bltqnt)
         this.player = new Player(this, 400, 561, 'playerStand', 0.2, 500, this.game.config)
@@ -113,7 +120,9 @@ class ClassRoom1 extends Phaser.Scene {
             });
         }
 
-        this.physics.add.collider(this.player.ps, this.platform, () => {
+        this.platforms.forEach((plat) => {
+            this.physics.add.collider(this.player.ps, plat, () => {
+            })
         })
 
         this.ghosts.forEach(ghost => {
