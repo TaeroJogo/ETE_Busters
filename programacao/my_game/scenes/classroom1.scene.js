@@ -17,7 +17,7 @@ class ClassRoom1 extends Phaser.Scene {
 
     init(data) { }
     preload() {
-        this.load.image('classroom', '../res/cenario/classroom.png');
+        this.load.image('classroom', '../res/cenario/classroom.jpg');
         this.load.image('table', '../res/cenario/table.png');
         this.load.image('id_card', '../res/sprites/id_card.png')
         this.load.image('ghost', '../res/ghosts/ghost.png')
@@ -83,7 +83,7 @@ class ClassRoom1 extends Phaser.Scene {
         this.keys = this.input.keyboard.addKeys("W,A,S,D,SHIFT,UP,RIGHT");
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
-        this.add.image(400, 300, 'classroom').setScale(1.5)
+        this.add.image(450, 330, 'classroom')
 
         this.platform = this.physics.add.sprite(400, 500, 'table').setScale(0.2).refreshBody()
         this.platform.body.immovable = true;
