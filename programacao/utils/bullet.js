@@ -4,7 +4,7 @@ class Bullet {
         this.y = y
         this.bullet = scene.physics.add.sprite(x, y, texture).setScale(scale)
         this.xSpeed = 600;
-        this.bullet.setGravityY(-200)
+        this.bullet.setGravityY(-350)
         this.bullet.setCollideWorldBounds(false);
         audio.play()
     }

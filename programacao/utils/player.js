@@ -91,10 +91,10 @@ class Player {
 
         if (this.ps.body.onFloor()) {
             if (Math.abs(this.ps.body.velocity.x) == 300) {
-                this.ps.setVelocityY(-700);
+                this.ps.setVelocityY(-780);
                 this.ps.setVelocityX(0);
             } else {
-                this.ps.setVelocityY(-500);
+                this.ps.setVelocityY(-600);
                 this.ps.setVelocityX(0);
                 this.js.play()
             }
@@ -103,11 +103,9 @@ class Player {
 
     sneak() {
         if (this.ps.y > 559 && this.ps.y < 560 && this.ps.body.blocked.down) {
-            console.log(31)
             this.ps.y = 605
         }
         else if (this.ps.y > 228 && this.ps.y < 240 && this.ps.body.blocked.down) {
-            console.log(31)
             this.ps.y = 275.69
         }
         else if (this.ps.y > 725 && this.ps.body.blocked.down) {

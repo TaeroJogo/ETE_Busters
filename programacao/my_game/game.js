@@ -6,7 +6,7 @@ let config = {
         default: 'arcade',
         arcade: {
             debug: true,
-            gravity: { y: 200 }
+            gravity: { y: 350 }
         }
     },
     scene: [ClassRoom1],
