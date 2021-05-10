@@ -101,7 +101,7 @@ class ClassRoom1 extends Phaser.Scene {
             this.platforms.push(platform)
         }
 
-        this.inst = new GameText(this, 710, 5, 'x' + this.bltqnt)
+        this.inst = new GameText(this, 1150, 5, 'x' + this.bltqnt)
         this.player = new Player(this, 400, 561, 'playerStand', 0.2, 500, this.game.config)
 
         this.randomMinAndMax = (max, min) => Math.floor(Math.random() * (max - (min) + 1)) + min;
