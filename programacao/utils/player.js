@@ -49,7 +49,6 @@ class Player {
     }
 
     move_right() {
-
         this.isNotJumping = true
         this.pos = 'R';
         if (!this.ps.body.onFloor()) {
@@ -103,8 +102,16 @@ class Player {
     }
 
     sneak() {
-        if (this.isNotJumping) {
-            this.ps.y = 561
+        if (this.ps.y > 559 && this.ps.y < 560 && this.ps.body.blocked.down) {
+            console.log(31)
+            this.ps.y = 605
+        }
+        else if (this.ps.y > 228 && this.ps.y < 240 && this.ps.body.blocked.down) {
+            console.log(31)
+            this.ps.y = 275.69
+        }
+        else if (this.ps.y > 725 && this.ps.body.blocked.down) {
+            this.ps.y = 776
         }
         this.ps.body.setSize(299, 385)
         this.ps.setVelocityX(0);
@@ -191,7 +198,7 @@ class Player {
     combat() {
         this.ps.setVelocityX(0);
 
-        if (Math.abs(this.ps.body.velocity.x) < 1 && Math.abs(this.ps.body.velocity.y) < 1) {
+        if (this.ps.body.blocked.down) {
             this.ps.body.setSize(262, 690)
             this.ps.anims.play(this.pos == 'R' ? 'punching' : 'punchingL', true);
             this.ps.body.setSize(320, 690)
