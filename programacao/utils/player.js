@@ -1,6 +1,6 @@
 class Player {
     constructor(scene, x, y, texture, scale, gravity, audio) {
-        this.ps = scene.physics.add.sprite(x, y, texture).setScale(scale)
+        this.ps = scene.physics.add.sprite(x, y, texture).setScale(0.3)
         this.ps.setGravityY(gravity)
         this.ps.setCollideWorldBounds(true);
 

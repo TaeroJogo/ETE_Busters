@@ -287,7 +287,7 @@ class ClassRoom1 extends Phaser.Scene {
                     this.inst.setNewText('x' + this.bltqnt.toString())
 
                     let bullet;
-                    let newBullet = () => bullet = new Bullet(this, this.player.ps.x, this.player.ps.y, "id_card", 0.3, this.game.config.idcs)
+                    let newBullet = () => bullet = new Bullet(this, this.player.ps.x, this.player.ps.y, "id_card", 0.4, this.game.config.idcs)
                     let collider = true
 
                     if (this.keys.SHIFT.isDown && (this.keys.D.isDown || this.keys.A.isDown) && this.keys.W.isDown) {
