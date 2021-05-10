@@ -21,7 +21,6 @@ class Player {
     }
 
     move_left() {
-
         this.isNotJumping = true
         this.pos = 'L';
         if (!this.ps.body.onFloor()) {
@@ -121,7 +120,6 @@ class Player {
     }
 
     stand() {
-
         if (this.platSneak == 1) {
             this.ps.y = 559.94
         }

@@ -246,7 +246,11 @@ class ClassRoom1 extends Phaser.Scene {
             }
         }
         else if (this.keys.SHIFT.isDown) {
-            this.player.standShot(this.player.pos)
+            if (this.player.isThrowing) {
+                this.player.throwing_card()
+            } else {
+                this.player.standShot(this.player.pos)
+            }
         }
         else if (this.keys.RIGHT.isDown) {
             this.player.combat()
@@ -301,10 +305,6 @@ class ClassRoom1 extends Phaser.Scene {
                     if (this.keys.SHIFT.isDown && (this.keys.D.isDown || this.keys.A.isDown) && this.keys.W.isDown) {
                         newBullet()
                         bullet.fireDiagonally(this.player.pos)
-                    }
-                    else if (this.keys.SHIFT.isDown && (this.keys.D.isDown || this.keys.A.isDown)) {
-                        newBullet()
-                        bullet.fire(this.player.pos)
                     }
                     else if (this.keys.SHIFT.isDown && this.player.ps.body.onFloor() && this.keys.W.isDown) {
                         newBullet()
