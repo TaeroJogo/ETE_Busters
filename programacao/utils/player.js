@@ -92,7 +92,7 @@ class Player {
 
         if (this.ps.body.onFloor()) {
             if (Math.abs(this.ps.body.velocity.x) == 300) {
-                this.ps.setVelocityY(-600);
+                this.ps.setVelocityY(-700);
                 this.ps.setVelocityX(0);
             } else {
                 this.ps.setVelocityY(-500);
