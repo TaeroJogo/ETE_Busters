@@ -12,11 +12,13 @@ class ClassRoom1 extends Phaser.Scene {
         this.spacebar;
         this.fireRate = 1000;
         this.timeBefore = 0;
+        this.platform
     }
 
     init(data) { }
     preload() {
         this.load.image('classroom', '../res/cenario/classroom.png');
+        this.load.image('table', '../res/cenario/table.png');
         this.load.image('id_card', '../res/sprites/id_card.png')
         this.load.image('ghost', '../res/ghosts/ghost.png')
 
@@ -83,6 +85,13 @@ class ClassRoom1 extends Phaser.Scene {
 
         this.add.image(400, 300, 'classroom').setScale(1.5)
 
+        this.platform = this.physics.add.sprite(400, 550, 'table').setScale(0.2).refreshBody()
+        this.platform.body.immovable = true;
+        this.platform.body.moves = false;
+
+
+
+
         this.inst = new GameText(this, 710, 5, 'x' + this.bltqnt)
         this.player = new Player(this, 400, 561, 'playerStand', 0.2, 500, this.game.config)
 
@@ -102,9 +111,11 @@ class ClassRoom1 extends Phaser.Scene {
             });
         }
 
+        this.physics.add.collider(this.player.ps, this.platform, () => {
+        })
+
         this.ghosts.forEach(ghost => {
             this.physics.add.collider(this.player.ps, ghost.gs, (player, ghost) => {
-                console.log(player.height)
                 if (player.width == 430 || player.height < 560) {
                     if (player.body.touching.up && player.height > 560) {
                         this.player.damage()
@@ -198,7 +209,7 @@ class ClassRoom1 extends Phaser.Scene {
             frames: this.anims.generateFrameNumbers("playerThrowingL"),
             frameRate: 10
         });
-        console.log(this.anims)
+
     }
 
     update(time, delta) {
