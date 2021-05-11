@@ -26,7 +26,8 @@ class ClassRoom1 extends Phaser.Scene {
         this.load.image('classroom', '../res/cenario/classroom.jpg');
         this.load.image('table', '../res/cenario/table.png');
         this.load.image('id_card', '../res/sprites/id_card.png')
-        // this.load.image('ghost', '../res/ghosts/ghost.png')
+        this.load.spritesheet('ghostFlying', '../res/ghosts/fantasma_2_voando.png', { frameWidth: 62.25, frameHeight: 50})
+        this.load.spritesheet('ghostFlyingL', '../res/ghosts/fantasma_2_voandoL.png', { frameWidth: 62.25, frameHeight: 50})
 
         this.load.spritesheet('playerDown', '../res/sprites/down.png', { frameWidth: 249, frameHeight: 375 });
         this.load.spritesheet('playerRunning', '../res/sprites/running.png', { frameWidth: 515, frameHeight: 686 });
@@ -107,9 +108,14 @@ class ClassRoom1 extends Phaser.Scene {
         this.randomMinAndMax = (max, min) => Math.floor(Math.random() * (max - (min) + 1)) + min;
         this.randomInterv = (min, max, min2, max2) => this.randomMinAndMax(1, 0) == 0 ? this.randomMinAndMax(min, max) : this.randomMinAndMax(min2, max2)
 
+        this.anims.create({
+            key: 'fly',
+            frames: this.anims.generateFrameNumbers("ghostFlying"),
+            frameRate: 10
+        })
 
         for (let i = 0; i < this.ghostNumber; i++) {
-            this.ghosts.push(new Ghost(this, this.randomInterv(-200, -50, 650, 850), this.randomMinAndMax(-200, 400), 'ghost', 0.2, 0))
+            this.ghosts.push(new Ghost(this, this.randomInterv(-200, -50, 650, 850), this.randomMinAndMax(-200, 400), 'ghostFlying', 0.2, 0))
         }
 
         this.moveGhosts = () => {
@@ -231,7 +237,6 @@ class ClassRoom1 extends Phaser.Scene {
             frames: this.anims.generateFrameNumbers("playerThrowingL"),
             frameRate: 10
         });
-
     }
 
     update(time, delta) {
