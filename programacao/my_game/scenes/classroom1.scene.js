@@ -48,6 +48,7 @@ class ClassRoom1 extends Phaser.Scene {
         this.load.spritesheet('playerKickingL', '../res/sprites/kickL.png', { frameWidth: 455, frameHeight: 556 });
         this.load.spritesheet('playerThrowing', '../res/sprites/throw.png', { frameWidth: 459, frameHeight: 714 });
         this.load.spritesheet('playerThrowingL', '../res/sprites/throwL.png', { frameWidth: 459, frameHeight: 714 });
+        //this.load.spritesheet('player')
 
         this.load.audio('music', '../res/sons/Sound_Effects/musicadeluta.mp3');
         this.load.audio('punch', '../res/sons/Sound_Effects/punch.mp3');
@@ -155,8 +156,6 @@ class ClassRoom1 extends Phaser.Scene {
                         var angleDeg = (Math.atan2(obj2.y - obj1.y, obj2.x - obj1.x) * 180 / Math.PI);
                         return angleDeg;
                     }
-                    if (this.keys.SHIFT.isDown)
-                        console.log(angleBetween(this.player.ps, ghost.gs))
                     if ((angleBetween(this.player.ps, ghost.gs) <= 90 && angleBetween(this.player.ps, ghost.gs) >= 0) || (angleBetween(this.player.ps, ghost.gs) >= -90 && angleBetween(this.player.ps, ghost.gs) <= 0)) {
                         ghost.gs.play('flyL', true)
                     }
