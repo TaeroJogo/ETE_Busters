@@ -26,8 +26,6 @@ class ClassRoom1 extends Phaser.Scene {
         this.load.image('classroom', '../res/cenario/classroom.jpg');
         this.load.image('table', '../res/cenario/table.png');
         this.load.image('id_card', '../res/sprites/id_card.png')
-        this.load.spritesheet('ghostFlying', '../res/ghosts/fantasma_2_voando.png', { frameWidth: 62.25, frameHeight: 50})
-        this.load.spritesheet('ghostFlyingL', '../res/ghosts/fantasma_2_voandoL.png', { frameWidth: 62.25, frameHeight: 50})
 
         this.load.spritesheet('playerDown', '../res/sprites/down.png', { frameWidth: 249, frameHeight: 375 });
         this.load.spritesheet('playerRunning', '../res/sprites/running.png', { frameWidth: 515, frameHeight: 686 });
