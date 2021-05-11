@@ -125,12 +125,11 @@ class ClassRoom1 extends Phaser.Scene {
         }
 
         this.platforms.forEach((plat) => {
-            this.physics.add.collider(this.player.ps, plat, () => {
+            this.physics.add.collider(this.player.ps, plat, (player, plat) => {
             })
             this.physics.add.overlap(this.player.ps, plat, () => {
                 if (this.player.checkOverlap) {
                     if (this.player.ps.y > 611 && this.player.ps.y < 612) {
-                        console.log(32)
                         this.player.ps.y = 559.94
                     } else if (this.player.ps.y > 281 && this.player.ps.y < 283) {
                         this.player.ps.y = 229.24
@@ -245,18 +244,27 @@ class ClassRoom1 extends Phaser.Scene {
         }
 
         if (this.keys.SHIFT.isDown && this.keys.A.isDown) {
-            if (this.keys.RIGHT.isDown) {
-                this.player.combat()
-            } else {
-                this.player.standShot('L')
+            if (this.player.isThrowing) {
+                this.player.throwing_card()
+            }
+            else {
+                if (this.keys.RIGHT.isDown) {
+                    this.player.combat()
+                } else {
+                    this.player.standShot('L')
+                }
             }
         }
         else if (this.keys.SHIFT.isDown && this.keys.D.isDown) {
-            if (this.keys.RIGHT.isDown) {
-                this.player.combat()
-            }
-            else {
-                this.player.standShot('R')
+            if (this.player.isThrowing) {
+                this.player.throwing_card()
+            } else {
+                if (this.keys.RIGHT.isDown) {
+                    this.player.combat()
+                }
+                else {
+                    this.player.standShot('R')
+                }
             }
         }
         else if (this.keys.SHIFT.isDown) {
