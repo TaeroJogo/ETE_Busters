@@ -13,6 +13,8 @@ class Player {
         this.pss = audio.pss
         this.isThrowing = false
         this.platSneak = 0
+        this.forcePunch = false
+        this.checkOverlap = false
     }
 
     damage() {
@@ -21,6 +23,7 @@ class Player {
     }
 
     move_left() {
+        this.checkOverlap = false
         this.isNotJumping = true
         this.pos = 'L';
         if (!this.ps.body.onFloor()) {
@@ -36,6 +39,7 @@ class Player {
     }
 
     move_left_jump() {
+        this.checkOverlap = false
         this.ps.body.setOffset(0, 135)
         this.isNotJumping = false
         this.ps.setVelocityX(-this.xSpeed);
@@ -49,6 +53,7 @@ class Player {
     }
 
     move_right() {
+        this.checkOverlap = false
         this.isNotJumping = true
         this.pos = 'R';
         if (!this.ps.body.onFloor()) {
@@ -64,6 +69,7 @@ class Player {
     }
 
     move_right_jump() {
+        this.checkOverlap = false
         this.ps.body.setOffset(0, 135)
         this.isNotJumping = false
         this.ps.setVelocityX(this.xSpeed);
@@ -77,6 +83,8 @@ class Player {
     }
 
     jump() {
+        this.checkOverlap = false
+        this.forcePunch = false
         this.isNotJumping = false
         if (this.pos == 'R') {
             this.ps.anims.play('jump', true);
@@ -102,6 +110,7 @@ class Player {
     }
 
     sneak() {
+        this.checkOverlap = false
         if (this.ps.y > 559 && this.ps.y < 560 && this.ps.body.blocked.down) {
             this.platSneak = 1
             this.ps.y = 605
@@ -120,6 +129,7 @@ class Player {
     }
 
     stand() {
+        this.checkOverlap = false
         if (this.platSneak == 1) {
             this.ps.y = 559.94
         }
@@ -146,6 +156,7 @@ class Player {
     }
 
     standShot(posit) {
+        this.checkOverlap = false
         this.posit = posit
         this.pos = posit
 
@@ -196,9 +207,7 @@ class Player {
                     else if (posit == 'R') {
                         this.ps.anims.play('stand', true);
                     }
-
                 }
-
             }
         }
     }
@@ -206,12 +215,13 @@ class Player {
     combat() {
         this.ps.setVelocityX(0);
 
-        if (this.ps.body.blocked.down) {
+        if (this.ps.body.blocked.down || this.forcePunch) {
             this.ps.body.setSize(262, 690)
             this.ps.anims.play(this.pos == 'R' ? 'punching' : 'punchingL', true);
             this.ps.body.setSize(320, 690)
             this.ps.body.setOffset(this.pos == 'R' ? 100 : 0, 0)
-        } else if (!this.ps.body.onFloor()) {
+        } else if (!this.ps.body.onFloor() && !this.ps.body.blocked.down) {
+            this.checkOverlap = true
             this.ps.body.setSize(262, 690)
             this.ps.anims.play(this.pos == 'R' ? 'kicking' : 'kickingL', true);
             this.ps.body.setSize(400, 550)

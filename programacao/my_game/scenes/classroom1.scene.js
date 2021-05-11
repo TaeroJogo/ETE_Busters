@@ -26,7 +26,7 @@ class ClassRoom1 extends Phaser.Scene {
         this.load.image('classroom', '../res/cenario/classroom.jpg');
         this.load.image('table', '../res/cenario/table.png');
         this.load.image('id_card', '../res/sprites/id_card.png')
-        this.load.image('ghost', '../res/ghosts/ghost.png')
+        // this.load.image('ghost', '../res/ghosts/ghost.png')
 
         this.load.spritesheet('playerDown', '../res/sprites/down.png', { frameWidth: 249, frameHeight: 375 });
         this.load.spritesheet('playerRunning', '../res/sprites/running.png', { frameWidth: 515, frameHeight: 686 });
@@ -122,6 +122,17 @@ class ClassRoom1 extends Phaser.Scene {
 
         this.platforms.forEach((plat) => {
             this.physics.add.collider(this.player.ps, plat, () => {
+            })
+            this.physics.add.overlap(this.player.ps, plat, () => {
+                if (this.player.checkOverlap) {
+                    if (this.player.ps.y > 611 && this.player.ps.y < 612) {
+                        console.log(32)
+                        this.player.ps.y = 559.94
+                    } else if (this.player.ps.y > 281 && this.player.ps.y < 283) {
+                        this.player.ps.y = 229.24
+                    }
+                    this.player.forcePunch = true
+                }
             })
         })
 
