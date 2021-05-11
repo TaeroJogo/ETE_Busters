@@ -19,6 +19,7 @@ class ClassRoom1 extends Phaser.Scene {
             1: [925, 260],
             2: [98, 260],
         }
+        this.boss
     }
 
     init(data) { }
@@ -26,8 +27,12 @@ class ClassRoom1 extends Phaser.Scene {
         this.load.image('classroom', '../res/cenario/classroom.jpg');
         this.load.image('table', '../res/cenario/table.png');
         this.load.image('id_card', '../res/sprites/id_card.png')
-        this.load.spritesheet('ghostFlying', '../res/ghosts/fantasmasR.png', { frameWidth: 387.5, frameHeight: 297})
-        this.load.spritesheet('ghostFlyingL', '../res/ghosts/fantasmasL.png', { frameWidth: 387.5, frameHeight: 297})
+        this.load.spritesheet('ghostFlying', '../res/ghosts/fantasmasR.png', { frameWidth: 387.5, frameHeight: 297 })
+        this.load.spritesheet('ghostFlyingL', '../res/ghosts/fantasmasL.png', { frameWidth: 387.5, frameHeight: 297 })
+
+        this.load.image('boss', '../res/ghosts/fantasma_1.png')
+        this.load.spritesheet('bossWalking', '../res/ghosts/fantasma_2.png', { frameWidth: 235.5, frameHeight: 248 });
+        this.load.spritesheet('bossDead', '../res/ghosts/fantasma_3.png', { frameWidth: 270, frameHeight: 334 });
 
         this.load.spritesheet('playerDown', '../res/sprites/down.png', { frameWidth: 249, frameHeight: 375 });
         this.load.spritesheet('playerRunning', '../res/sprites/running.png', { frameWidth: 515, frameHeight: 686 });
@@ -102,6 +107,18 @@ class ClassRoom1 extends Phaser.Scene {
             this.platforms.push(platform)
         }
 
+        this.anims.create({
+            key: 'bossWalk',
+            frames: this.anims.generateFrameNumbers("bossWalking"),
+            frameRate: 10
+        });
+
+        this.anims.create({
+            key: 'bossDead',
+            frames: this.anims.generateFrameNumbers("bossDead"),
+            frameRate: 10
+        });
+
         this.inst = new GameText(this, 1150, 5, 'x' + this.bltqnt)
         this.player = new Player(this, 400, 561, 'playerStand', 0.2, 500, this.game.config)
 
@@ -123,18 +140,26 @@ class ClassRoom1 extends Phaser.Scene {
         for (let i = 0; i < this.ghostNumber; i++) {
             this.ghosts.push(new Ghost(this, this.randomInterv(-200, -50, 650, 850), this.randomMinAndMax(-200, 400), 'ghostFlying', 0.3, 0))
         }
+
+        this.boss = new Ghost(this, 1150, 500, 'boss', 1.2, -350)
+
         this.moveGhosts = () => {
+            if (this.player.ps.y != this.boss.gs.y) {
+                this.physics.moveTo(this.boss.gs, 1150, this.player.ps.y)
+            }
             this.ghosts.forEach(ghost => {
                 if (ghost.gs.isAlive) {
                     this.physics.moveToObject(ghost.gs, this.player.ps, 50)
-                    let angleBetween = (obj1, obj2) => {var angleDeg = (Math.atan2(obj2.y - obj1.y, obj2.x - obj1.x) * 180 / Math.PI);
-                        return angleDeg;}
-                        if(this.keys.SHIFT.isDown)
+                    let angleBetween = (obj1, obj2) => {
+                        var angleDeg = (Math.atan2(obj2.y - obj1.y, obj2.x - obj1.x) * 180 / Math.PI);
+                        return angleDeg;
+                    }
+                    if (this.keys.SHIFT.isDown)
                         console.log(angleBetween(this.player.ps, ghost.gs))
-                    if((angleBetween(this.player.ps, ghost.gs) <= 90 && angleBetween(this.player.ps, ghost.gs) >=0) || (angleBetween(this.player.ps, ghost.gs) >= -90 && angleBetween(this.player.ps, ghost.gs) <= 0)) {
+                    if ((angleBetween(this.player.ps, ghost.gs) <= 90 && angleBetween(this.player.ps, ghost.gs) >= 0) || (angleBetween(this.player.ps, ghost.gs) >= -90 && angleBetween(this.player.ps, ghost.gs) <= 0)) {
                         ghost.gs.play('flyL', true)
                     }
-                    else if((angleBetween(this.player.ps, ghost.gs) < -90 && angleBetween(this.player.ps, ghost.gs) >= -180) || (angleBetween(this.player.ps, ghost.gs) > 90 && angleBetween(this.player.ps, ghost.gs) <= 180 )){
+                    else if ((angleBetween(this.player.ps, ghost.gs) < -90 && angleBetween(this.player.ps, ghost.gs) >= -180) || (angleBetween(this.player.ps, ghost.gs) > 90 && angleBetween(this.player.ps, ghost.gs) <= 180)) {
                         ghost.gs.play('fly', true)
                     }
                 }
@@ -251,6 +276,7 @@ class ClassRoom1 extends Phaser.Scene {
             frames: this.anims.generateFrameNumbers("playerThrowingL"),
             frameRate: 10
         });
+
     }
 
     update(time, delta) {
