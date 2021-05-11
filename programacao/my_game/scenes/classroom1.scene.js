@@ -23,8 +23,10 @@ class ClassRoom1 extends Phaser.Scene {
         this.bossHealth = 10
         this.bossPewFireRate = 4500
         this.bossPewBefore = 0
+        this.bossPews = []
         this.minionSpawnBefore = 0
         this.minionSpawnFireRate = 10000
+        this.canSpawnMinions = true
     }
 
     init(data) { }
@@ -172,6 +174,7 @@ class ClassRoom1 extends Phaser.Scene {
                         this.boss.gs.play('bossWalk', true)
                         let bossPew = new Ghost(this, 1150, this.boss.gs.y, 'bossPew', 0.5, -350)
                         this.physics.moveTo(bossPew.gs, this.player.ps.x, this.player.ps.y)
+                        this.bossPews.push(bossPew)
                         bossPew.gs.play('bossPew')
                         this.physics.add.collider(this.player.ps, bossPew.gs, (player, ghost) => {
                             if (player.width == 430 || player.height < 560) {
@@ -217,12 +220,23 @@ class ClassRoom1 extends Phaser.Scene {
                 }
             } else if (this.boss.gs.isAlive) {
                 this.boss.gs.isAlive = false
+                this.canSpawnMinions = false
                 this.boss.gs.play('bossDead', true)
+                this.bossPews.forEach((pews) => {
+                    pews.gs.play('bossPewDead')
+                    setTimeout(() => {
+                        pews.gs.destroy()
+                    }, 500);
+                })
+                this.ghosts.forEach((ghost) => {
+                    ghost.gs.isAlive = false
+                    ghost.gs.destroy()
+                })
                 setTimeout(() => {
-                    
+                    this.boss.gs.destroy()
                 }, 500);
             }
-            if(((new Date().getTime()) - this.minionSpawnBefore) > this.minionSpawnFireRate) {
+            if ((((new Date().getTime()) - this.minionSpawnBefore) > this.minionSpawnFireRate) && this.canSpawnMinions) {
                 this.minionSpawnBefore = new Date().getTime()
                 for (let i = 0; i < this.ghostNumber; i++) {
                     this.ghosts.push(new Ghost(this, this.randomInterv(-200, -50, 650, 850), this.randomMinAndMax(-200, 400), 'ghostFlying', 0.3, 0))
@@ -245,7 +259,7 @@ class ClassRoom1 extends Phaser.Scene {
                             else {
                                 this.game.config.ks.play()
                             }
-    
+
                         }
                         else {
                             this.player.damage()
@@ -256,7 +270,7 @@ class ClassRoom1 extends Phaser.Scene {
                         ghost.isAlive = false
                         ghost.destroy()
                     }
-    
+
                 })
             });
             this.ghosts.forEach(ghost => {
@@ -412,7 +426,9 @@ class ClassRoom1 extends Phaser.Scene {
     }
 
     update(time, delta) {
-        this.moveGhosts()
+        if (this.canSpawnMinions) {
+            this.moveGhosts()
+        }
 
         if ((((new Date().getTime()) - this.timeBefore) > this.fireRate - 200) && this.player.isThrowing) {
             this.player.isThrowing = false
