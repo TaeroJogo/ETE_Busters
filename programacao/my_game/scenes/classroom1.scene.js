@@ -28,6 +28,7 @@ class ClassRoom1 extends Phaser.Scene {
         this.minionSpawnFireRate = 10000
         this.canSpawnMinions = true
         this.gameOver = false
+        this.victory
     }
 
     init(data) { }
@@ -70,6 +71,10 @@ class ClassRoom1 extends Phaser.Scene {
         this.load.audio('hit', '../res/sons/Sound_Effects/hit.mp3');
         this.load.audio('kick', '../res/sons/Sound_Effects/kick.mp3');
         this.load.audio('die', '../res/sons/Sound_Effects/death_sound.mp3');
+        this.load.audio('bossDeath', '../res/sons/Sound_Effects/bossDeathSound.mp3');
+        this.load.audio('bossShot', '../res/sons/Sound_Effects/bossShotSound.mp3');
+        this.load.audio('victoryS', '../res/sons/Victory_n_loss_sounds/Victory.mp3');
+        this.load.audio('defeat', '../res/sons/Victory_n_loss_sounds/Game_Over.mp3');
     }
     create(data) {
         let bmsc = this.sound.add('music', {
@@ -145,7 +150,7 @@ class ClassRoom1 extends Phaser.Scene {
         });
 
 
-        this.inst = new GameText(this, 1150, 5, 'x' + this.bltqnt, '32px', '#00000', 'Georgia, "Goudy Bookletter 1911", Times, serif')
+        this.inst = new GameText(this, 1140, 5, 'x' + this.bltqnt, '32px', '#00000', 'Georgia, "Goudy Bookletter 1911", Times, serif')
         this.player = new Player(this, 400, 561, 'playerStand', 0.2, 500, this.game.config)
 
         this.randomMinAndMax = (max, min) => Math.floor(Math.random() * (max - (min) + 1)) + min;
@@ -177,6 +182,16 @@ class ClassRoom1 extends Phaser.Scene {
                         this.physics.moveTo(bossPew.gs, this.player.ps.x, this.player.ps.y)
                         this.bossPews.push(bossPew)
                         bossPew.gs.play('bossPew')
+                        let bss = this.sound.add('bossShot', {
+                            mute: false,
+                            volume: 1,
+                            rate: 1,
+                            detune: 0,
+                            seek: 0,
+                            loop: false,
+                            delay: 0,
+                        })
+                        bss.play()
                         this.physics.add.collider(this.player.ps, bossPew.gs, (player, ghost) => {
                             if (player.width == 430 || player.height < 560) {
                                 if (player.body.touching.up && player.height > 560) {
@@ -220,6 +235,27 @@ class ClassRoom1 extends Phaser.Scene {
                     this.physics.moveTo(this.boss.gs, 1150, this.player.ps.y)
                 }
             } else if (this.boss.gs.isAlive) {
+                let bds = this.sound.add('bossDeath', {
+                    mute: false,
+                    volume: 1,
+                    rate: 1,
+                    detune: 0,
+                    seek: 0,
+                    loop: false,
+                    delay: 0,
+                })
+                let vs = this.sound.add('victoryS', {
+                    mute: false,
+                    volume: 1,
+                    rate: 1,
+                    detune: 0,
+                    seek: 0,
+                    loop: false,
+                    delay: 0,
+                })
+                bds.play()
+                bmsc.stop()
+                vs.play()
                 this.boss.gs.isAlive = false
                 this.canSpawnMinions = false
                 this.boss.gs.play('bossDead', true)
@@ -235,6 +271,7 @@ class ClassRoom1 extends Phaser.Scene {
                 })
                 setTimeout(() => {
                     this.boss.gs.destroy()
+                    this.victory = new GameText(this, 70, 300, 'Victory', '200px', '#00000', 'Georgia, "Goudy Bookletter 1911", Times, serif')
                 }, 500);
             }
             if ((((new Date().getTime()) - this.minionSpawnBefore) > this.minionSpawnFireRate) && this.canSpawnMinions) {
