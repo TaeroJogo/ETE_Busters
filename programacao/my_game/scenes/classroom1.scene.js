@@ -434,74 +434,76 @@ class ClassRoom1 extends Phaser.Scene {
             this.player.isThrowing = false
         }
 
-        if (this.keys.SHIFT.isDown && this.keys.A.isDown) {
-            if (this.player.isThrowing) {
-                this.player.throwing_card()
-            }
-            else {
-                if (this.keys.RIGHT.isDown) {
-                    this.player.combat()
-                } else {
-                    this.player.standShot('L')
-                }
-            }
-        }
-        else if (this.keys.SHIFT.isDown && this.keys.D.isDown) {
-            if (this.player.isThrowing) {
-                this.player.throwing_card()
-            } else {
-                if (this.keys.RIGHT.isDown) {
-                    this.player.combat()
+        if (this.canSpawnMinions) {
+            if (this.keys.SHIFT.isDown && this.keys.A.isDown) {
+                if (this.player.isThrowing) {
+                    this.player.throwing_card()
                 }
                 else {
-                    this.player.standShot('R')
+                    if (this.keys.RIGHT.isDown) {
+                        this.player.combat()
+                    } else {
+                        this.player.standShot('L')
+                    }
                 }
             }
-        }
-        else if (this.keys.SHIFT.isDown) {
-            if (this.player.isThrowing) {
-                this.player.throwing_card()
-            } else {
-                this.player.standShot(this.player.pos)
+            else if (this.keys.SHIFT.isDown && this.keys.D.isDown) {
+                if (this.player.isThrowing) {
+                    this.player.throwing_card()
+                } else {
+                    if (this.keys.RIGHT.isDown) {
+                        this.player.combat()
+                    }
+                    else {
+                        this.player.standShot('R')
+                    }
+                }
             }
-        }
-        else if (this.keys.RIGHT.isDown) {
-            this.player.combat()
-        }
-        else if (this.keys.SHIFT.isDown) {
-            this.player.standShot()
-            if (this.keys.RIGHT.isDown) {
+            else if (this.keys.SHIFT.isDown) {
+                if (this.player.isThrowing) {
+                    this.player.throwing_card()
+                } else {
+                    this.player.standShot(this.player.pos)
+                }
+            }
+            else if (this.keys.RIGHT.isDown) {
                 this.player.combat()
             }
-        }
-        else if (this.keys.A.isDown && this.keys.D.isDown && !this.keys.RIGHT.isDown) {
-            this.player.stand()
-        }
-        else if (this.keys.W.isDown && this.keys.D.isDown) {
-            this.player.jump()
-            this.player.move_right_jump()
-        }
-        else if (this.keys.W.isDown && this.keys.A.isDown) {
-            this.player.jump()
-            this.player.move_left_jump()
-        }
-        else if (this.keys.W.isDown) {
-            this.player.jump()
-        }
-        else if (this.keys.D.isDown && !this.keys.S.isDown) {
-            this.player.move_right()
-        }
-        else if (this.keys.A.isDown && !this.keys.S.isDown) {
-            this.player.move_left()
-        }
-        else if (this.keys.S.isDown) {
-            this.player.sneak()
-        }
-        else {
-            if (this.player.isThrowing) {
-                this.player.throwing_card()
-            } else {
+            else if (this.keys.SHIFT.isDown) {
+                this.player.standShot()
+                if (this.keys.RIGHT.isDown) {
+                    this.player.combat()
+                }
+            }
+            else if (this.keys.A.isDown && this.keys.D.isDown && !this.keys.RIGHT.isDown) {
                 this.player.stand()
+            }
+            else if (this.keys.W.isDown && this.keys.D.isDown) {
+                this.player.jump()
+                this.player.move_right_jump()
+            }
+            else if (this.keys.W.isDown && this.keys.A.isDown) {
+                this.player.jump()
+                this.player.move_left_jump()
+            }
+            else if (this.keys.W.isDown) {
+                this.player.jump()
+            }
+            else if (this.keys.D.isDown && !this.keys.S.isDown) {
+                this.player.move_right()
+            }
+            else if (this.keys.A.isDown && !this.keys.S.isDown) {
+                this.player.move_left()
+            }
+            else if (this.keys.S.isDown) {
+                this.player.sneak()
+            }
+            else {
+                if (this.player.isThrowing) {
+                    this.player.throwing_card()
+                } else {
+                    this.player.stand()
+                }
             }
         }
         if (this.keys.UP.isDown && !this.keys.S.isDown && !this.keys.RIGHT.isDown) {
