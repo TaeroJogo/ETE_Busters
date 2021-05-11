@@ -9,7 +9,7 @@ let config = {
             gravity: { y: 350 }
         }
     },
-    scene: [ClassRoom1],
+    scene: [MenuScreen, ClassRoom1],
     scale: {
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
