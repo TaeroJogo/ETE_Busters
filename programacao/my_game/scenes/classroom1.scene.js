@@ -20,7 +20,7 @@ class ClassRoom1 extends Phaser.Scene {
             2: [98, 260],
         }
         this.boss
-        this.bossHealth = 10
+        this.bossHealth = 100
         this.bossPewFireRate = 4500
         this.bossPewBefore = 0
         this.bossPews = []
@@ -29,6 +29,12 @@ class ClassRoom1 extends Phaser.Scene {
         this.canSpawnMinions = true
         this.gameOver = false
         this.victory
+        this.gameOverText1
+        this.gameOverText2
+        this.gos
+        this.bmsc
+        this.test = 0
+        this.ghostDestroy
     }
 
     init(data) { }
@@ -77,7 +83,7 @@ class ClassRoom1 extends Phaser.Scene {
         this.load.audio('defeat', '../res/sons/Victory_n_loss_sounds/Game_Over.mp3');
     }
     create(data) {
-        let bmsc = this.sound.add('music', {
+        this.bmsc = this.sound.add('music', {
             mute: false,
             volume: 0.4,
             rate: 1,
@@ -86,9 +92,9 @@ class ClassRoom1 extends Phaser.Scene {
             loop: true,
             delay: 0,
         })
-        bmsc.play()
+        this.bmsc.play()
 
-
+        this.gos = this.sound.add('defeat')
         this.game.config.pss = this.sound.add('punch')
         this.game.config.js = this.sound.add('jump', {
             mute: false,
@@ -254,7 +260,7 @@ class ClassRoom1 extends Phaser.Scene {
                     delay: 0,
                 })
                 bds.play()
-                bmsc.stop()
+                this.bmsc.stop()
                 vs.play()
                 this.boss.gs.isAlive = false
                 this.canSpawnMinions = false
@@ -464,11 +470,17 @@ class ClassRoom1 extends Phaser.Scene {
     }
 
     update(time, delta) {
-
-        if (this.player.healthBar.value <= 0) {
-            this.gameOver = true
-            this.canSpawnMinions = false
+        if(this.test == 0) {
+            if (this.player.healthBar.value <= 0) {
+                this.test = 1
+                this.canSpawnMinions = false
+                this.gameOverText1 = new GameText(this, 300, 170, 'Game', '200px', '#00000', 'Georgia, "Goudy Bookletter 1911", Times, serif')
+                this.gameOverText2 = new GameText(this, 300, 370, 'Over', '200px', '#00000', 'Georgia, "Goudy Bookletter 1911", Times, serif')
+                this.gos.play()
+                this.bmsc.stop()
+            }
         }
+       
 
         if (this.canSpawnMinions) {
             this.moveGhosts()
@@ -549,6 +561,9 @@ class ClassRoom1 extends Phaser.Scene {
                     this.player.stand()
                 }
             }
+        }
+        else {
+            this.player.stand()
         }
         if (this.keys.UP.isDown && !this.keys.S.isDown && !this.keys.RIGHT.isDown && this.canSpawnMinions) {
             if (((new Date().getTime()) - this.timeBefore) > this.fireRate) {
