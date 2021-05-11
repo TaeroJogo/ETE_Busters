@@ -20,6 +20,7 @@ class ClassRoom1 extends Phaser.Scene {
             2: [98, 260],
         }
         this.boss
+        this.bossHealth = 80
     }
 
     init(data) { }
@@ -389,6 +390,10 @@ class ClassRoom1 extends Phaser.Scene {
                                     bullet.destroy()
                                 })
                             });
+                            this.physics.add.collider(bullet.bullet, this.boss.gs, (bullet, ghost) => {
+                                this.bossHealth -= 1
+                                bullet.destroy()
+                            })
                         }, 400);
                     }
 
