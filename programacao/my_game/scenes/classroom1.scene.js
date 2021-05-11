@@ -21,7 +21,6 @@ class ClassRoom1 extends Phaser.Scene {
         }
         this.boss
         this.bossHealth = 10
-        this.teste = true
         this.bossPewFireRate = 4500
         this.bossPewBefore = 0
         this.minionSpawnBefore = 0
