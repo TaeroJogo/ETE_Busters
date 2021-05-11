@@ -178,6 +178,8 @@ class ClassRoom1 extends Phaser.Scene {
         })
 
         this.boss = new Ghost(this, 1150, 500, 'boss', 1.2, -350)
+        this.boss.gs.body.setSize(200, 200)
+        this.boss.gs.body.setOffset(70, 0)
 
         this.moveGhosts = () => {
             if (this.bossHealth > 0) {
