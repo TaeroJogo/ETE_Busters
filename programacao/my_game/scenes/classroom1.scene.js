@@ -20,7 +20,7 @@ class ClassRoom1 extends Phaser.Scene {
             2: [98, 260],
         }
         this.boss
-        this.bossHealth = 100
+        this.bossHealth = 10
         this.teste = true
         this.bossPewFireRate = 4500
         this.bossPewBefore = 0
@@ -166,55 +166,64 @@ class ClassRoom1 extends Phaser.Scene {
         this.boss = new Ghost(this, 1150, 500, 'boss', 1.2, -350)
 
         this.moveGhosts = () => {
-            if (Math.abs(this.player.ps.y) - 5 < Math.abs(this.boss.gs.y) && Math.abs(this.player.ps.y) + 5 > Math.abs(this.boss.gs.y)) {
-                this.physics.moveTo(this.boss.gs, 1150, this.boss.gs.y)
+            if (this.bossHealth > 0) {
+                if (Math.abs(this.player.ps.y) - 5 < Math.abs(this.boss.gs.y) && Math.abs(this.player.ps.y) + 5 > Math.abs(this.boss.gs.y)) {
+                    this.physics.moveTo(this.boss.gs, 1150, this.boss.gs.y)
 
-                if (((new Date().getTime()) - this.bossPewBefore) > this.bossPewFireRate) {
-                    this.bossPewBefore = new Date().getTime()
-                    let bossPew = new Ghost(this, 1150, this.boss.gs.y, 'bossPew', 0.5, -350)
-                    this.physics.moveTo(bossPew.gs, this.player.ps.x, this.player.ps.y)
-                    bossPew.gs.play('bossPew')
-                    this.physics.add.collider(this.player.ps, bossPew.gs, (player, ghost) => {
-                        if (player.width == 430 || player.height < 560) {
-                            if (player.body.touching.up && player.height > 560) {
-                                ghost.play('bossPewDead')
-                                setTimeout(() => {
-                                    ghost.destroy()
-                                }, 500);
-                                this.player.damage()
-                            }
-                            if ((player.body.touching.left && this.player.pos == 'L') || (player.body.touching.right && this.player.pos == 'R')) {
-                                this.bltqnt += 8
-                                this.inst.setNewText('x' + this.bltqnt.toString())
-                                ghost.play('bossPewDead')
-                                setTimeout(() => {
-                                    ghost.destroy()
-                                }, 500);
-                                if (player.body.onFloor()) {
-                                    this.game.config.pss.play()
+                    if (((new Date().getTime()) - this.bossPewBefore) > this.bossPewFireRate) {
+                        this.bossPewBefore = new Date().getTime()
+                        this.boss.gs.play('bossWalk', true)
+                        let bossPew = new Ghost(this, 1150, this.boss.gs.y, 'bossPew', 0.5, -350)
+                        this.physics.moveTo(bossPew.gs, this.player.ps.x, this.player.ps.y)
+                        bossPew.gs.play('bossPew')
+                        this.physics.add.collider(this.player.ps, bossPew.gs, (player, ghost) => {
+                            if (player.width == 430 || player.height < 560) {
+                                if (player.body.touching.up && player.height > 560) {
+                                    ghost.play('bossPewDead')
+                                    setTimeout(() => {
+                                        ghost.destroy()
+                                    }, 500);
+                                    this.player.damage()
+                                }
+                                if ((player.body.touching.left && this.player.pos == 'L') || (player.body.touching.right && this.player.pos == 'R')) {
+                                    this.bltqnt += 8
+                                    this.inst.setNewText('x' + this.bltqnt.toString())
+                                    ghost.play('bossPewDead')
+                                    setTimeout(() => {
+                                        ghost.destroy()
+                                    }, 500);
+                                    if (player.body.onFloor()) {
+                                        this.game.config.pss.play()
+                                    }
+                                    else {
+                                        this.game.config.ks.play()
+                                    }
+
                                 }
                                 else {
-                                    this.game.config.ks.play()
+                                    this.player.damage()
                                 }
-
                             }
                             else {
                                 this.player.damage()
+                                ghost.play('bossPewDead')
+                                setTimeout(() => {
+                                    ghost.destroy()
+                                }, 500);
+
                             }
-                        }
-                        else {
-                            this.player.damage()
-                            ghost.play('bossPewDead')
-                            setTimeout(() => {
-                                ghost.destroy()
-                            }, 500);
+                        })
+                    }
 
-                        }
-                    })
+                } else {
+                    this.physics.moveTo(this.boss.gs, 1150, this.player.ps.y)
                 }
-
-            } else {
-                this.physics.moveTo(this.boss.gs, 1150, this.player.ps.y)
+            } else if (this.boss.gs.isAlive) {
+                this.boss.gs.isAlive = false
+                this.boss.gs.play('bossDead', true)
+                setTimeout(() => {
+                    ghost.destroy()
+                }, 500);
             }
             this.ghosts.forEach(ghost => {
                 if (ghost.gs.isAlive) {
