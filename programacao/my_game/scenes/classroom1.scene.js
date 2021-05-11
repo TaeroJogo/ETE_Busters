@@ -10,7 +10,7 @@ class ClassRoom1 extends Phaser.Scene {
         this.ghostNumber = 2
         this.ghosts = [];
         this.spacebar;
-        this.fireRate = 1000;
+        this.fireRate = 600;
         this.timeBefore = 0;
         this.platform
         this.platforms = []
