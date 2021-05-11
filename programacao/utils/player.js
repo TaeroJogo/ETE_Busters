@@ -40,10 +40,12 @@ class Player {
 
     move_left_jump() {
         this.checkOverlap = false
-        this.ps.body.setOffset(0, 135)
         this.isNotJumping = false
         this.ps.setVelocityX(-this.xSpeed);
-        this.ps.anims.play('jumpL', true);
+        if (!this.isThrowing) {
+            this.ps.body.setOffset(0, 135)
+            this.ps.anims.play('jumpL', true);
+        }
         this.pos = 'L';
         if (this.ps.body.onFloor()) {
             if (Math.abs(this.ps.body.velocity.x) == 300) {
@@ -70,10 +72,12 @@ class Player {
 
     move_right_jump() {
         this.checkOverlap = false
-        this.ps.body.setOffset(0, 135)
         this.isNotJumping = false
         this.ps.setVelocityX(this.xSpeed);
-        this.ps.anims.play('jump', true);
+        if (!this.isThrowing) {
+            this.ps.body.setOffset(0, 135)
+            this.ps.anims.play('jump', true);
+        }
         this.pos = 'R';
         if (this.ps.body.onFloor()) {
             if (Math.abs(this.ps.body.velocity.x) == 300) {
@@ -86,12 +90,12 @@ class Player {
         this.checkOverlap = false
         this.forcePunch = false
         this.isNotJumping = false
-        if (this.pos == 'R') {
+        if (this.pos == 'R' && !this.isThrowing) {
             this.ps.anims.play('jump', true);
             this.ps.body.setSize(300, 555)
             this.ps.body.setOffset(0, 135)
         }
-        else if (this.pos == 'L') {
+        else if (this.pos == 'L' && !this.isThrowing) {
             this.ps.anims.play('jumpL', true);
             this.ps.body.setSize(300, 555)
             this.ps.body.setOffset(0, 135)
