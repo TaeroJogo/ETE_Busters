@@ -132,6 +132,49 @@ class ClassRoom1 extends Phaser.Scene {
                         this.player2.standShot(this.player.pos)
                     }
                 }
+                if (this.keys.K.isDown && !this.keys.DOWN.isDown && !this.keys.L.isDown && this.canSpawnMinions) {
+                    if (((new Date().getTime()) - this.timeBefore) > this.fireRate) {
+                        this.timeBefore = new Date().getTime()
+                        if (this.bltqnt2 > 0) {
+                            this.bltqnt2 = this.bltqnt2 - 1;
+                            this.inst.setNewText('x' + this.bltqnt2.toString())
+        
+                            let bullet;
+                            let newBullet = () => bullet = new Bullet(this, this.player.ps.x, this.player.ps.y, "id_card", 0.4, this.game.config.idcs)
+                            let direction = 'normal'
+        
+                            if (keyName == 'ShiftRight' && (this.keys.D.isDown || this.keys.A.isDown) && this.keys.W.isDown) {
+                                direction = 'diagonal'
+                                this.player.throwing_card_diagonal()
+                            }
+                            else if (this.keys.SHIFT.isDown && this.player.ps.body.onFloor() && this.keys.W.isDown) {
+                                direction = 'up'
+                                this.player.throwing_card_up()
+                            }
+                            else {
+                                this.player.throwing_card()
+                            }
+        
+                            setTimeout(() => {
+                                newBullet()
+                                direction == 'normal' ? bullet.fire(this.player.pos) : direction == 'up' ? bullet.fireUp() : bullet.fireDiagonally(this.player.pos)
+                                this.ghosts.forEach(ghost => {
+                                    this.physics.add.collider(bullet.bullet, ghost.gs, (bullet, ghost) => {
+                                        ghost.isAlive = false
+                                        ghost.destroy()
+                                        this.game.config.ds.play()
+                                        bullet.destroy()
+                                    })
+                                });
+                                this.physics.add.collider(bullet.bullet, this.boss.gs, (bullet, ghost) => {
+                                    this.bossDmg.play()
+                                    this.bossHealth -= 1
+                                    bullet.destroy()
+                                })
+                            }, 400);
+                        }
+                    }
+                }
             }
         }, false);
 
@@ -706,5 +749,4 @@ class ClassRoom1 extends Phaser.Scene {
             }
         }
     }
-
 }
