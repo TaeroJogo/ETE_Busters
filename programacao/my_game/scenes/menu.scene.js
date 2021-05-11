@@ -19,7 +19,10 @@ class MenuScreen extends Phaser.Scene {
             .setInteractive()
             .on('pointerdown', () => this.scene.start("scene1", {
                 "players": "one"
-            }));
+            }))
+
+        play.on('pointerover', () => play.setStyle({ fill: '#66bb6a' }));
+        play.on('pointerout', () => play.setStyle({ fill: '#FFFFFF' }));
 
 
         const localMultiplayer = this.add.text(350, 750, 'LOCAL MULTIPLAYER', { fontSize: '40px', fill: '#FFFFFF', fontFamily: 'Joystix' })
@@ -27,6 +30,9 @@ class MenuScreen extends Phaser.Scene {
             .on('pointerdown', () => this.scene.start("scene1", {
                 "players": "two"
             }));
+
+        localMultiplayer.on('pointerover', () => localMultiplayer.setStyle({ fill: '#66bb6a' }));
+        localMultiplayer.on('pointerout', () => localMultiplayer.setStyle({ fill: '#FFFFFF' }));
     }
 
     update(time, delta) { }
