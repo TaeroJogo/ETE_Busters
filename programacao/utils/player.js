@@ -1,5 +1,5 @@
 class Player {
-    constructor(scene, x, y, texture, scale, gravity, audio) {
+    constructor(scene, x, y, texture, scale, gravity, audio, player) {
         this.ps = scene.physics.add.sprite(x, y, texture).setScale(0.3)
         this.ps.setGravityY(gravity)
         this.ps.setCollideWorldBounds(true);
@@ -7,7 +7,10 @@ class Player {
         this.pos = 'R'
         this.xSpeed = 300;
         this.isNotJumping = true;
+        if(player == 1)
         this.healthBar = new HealthBar(scene, 1050, 17.5);
+        else
+        this.healthBar2 = new HealthBar(scene, 135, 17.5)
         this.js = audio.js
         this.hs = audio.hs
         this.pss = audio.pss

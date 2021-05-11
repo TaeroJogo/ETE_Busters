@@ -7,9 +7,12 @@ class ClassRoom1 extends Phaser.Scene {
         super(config);
         this.keys;
         this.player;
+        this.player2;
         this.bullets;
         this.bltqnt = 100;
+        this.bltqnt2 = 100;
         this.inst;
+        this.init2;
         this.ghostNumber = 3
         this.ghosts = [];
         this.spacebar;
@@ -39,10 +42,11 @@ class ClassRoom1 extends Phaser.Scene {
         this.test = 0
         this.ghostDestroy
         this.bossDmg
+        this.players
     }
 
     init(data) {
-        console.log(data.players)
+        this.players = data.players
     }
     preload() {
         this.load.image('classroom', '../res/cenario/classroom.jpg');
@@ -97,7 +101,37 @@ class ClassRoom1 extends Phaser.Scene {
             const keyName = event.code;
 
             if (keyName == 'ShiftRight') {
-                console.log(32)
+                if (keyName == 'ShiftRight' && this.keys.LEFT.isDown) {
+                    if (this.player2.isThrowing) {
+                        this.player2.throwing_card()
+                    }
+                    else {
+                        if (this.keys.L.isDown) {
+                            this.player2.combat()
+                        } else {
+                            this.player2.standShot('L')
+                        }
+                    }
+                }
+                else if (keyName == 'ShiftRight' && this.keys.RIGHT.isDown) {
+                    if (this.player2.isThrowing) {
+                        this.player2.throwing_card()
+                    } else {
+                        if (this.keys.L.isDown) {
+                            this.player2.combat()
+                        }
+                        else {
+                            this.player2.standShot('R')
+                        }
+                    }
+                }
+                else if (keyName == 'ShiftRight') {
+                    if (this.player2.isThrowing) {
+                        this.player2.throwing_card()
+                    } else {
+                        this.player2.standShot(this.player.pos)
+                    }
+                }
             }
         }, false);
 
@@ -136,7 +170,7 @@ class ClassRoom1 extends Phaser.Scene {
         })
         this.game.config.ks = this.sound.add('kick')
 
-        this.keys = this.input.keyboard.addKeys("W,A,S,D,SHIFT,UP,RIGHT");
+        this.keys = this.input.keyboard.addKeys("W,A,S,D,SHIFT,UP,RIGHT,DOWN,LEFT,V,B,K,L");
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         this.add.image(1252 / 2, 834 / 2, 'classroom')
@@ -173,9 +207,14 @@ class ClassRoom1 extends Phaser.Scene {
         });
 
 
+        this.player = new Player(this, 300, 561, 'playerStand', 0.2, 500, this.game.config, 1)
         this.inst = new GameText(this, 1140, 5, 'x' + this.bltqnt, '32px', '#00000', 'Georgia, "Goudy Bookletter 1911", Times, serif')
-        this.player = new Player(this, 400, 561, 'playerStand', 0.2, 500, this.game.config)
-
+        if(this.players == 'two')
+        {
+            this.inst2 = new GameText(this, 20, 5, 'x' + this.bltqnt, '32px', '#00000', 'Georgia, "Goudy Bookletter 1911", Times, serif')
+            this.player2 = new Player(this, 400, 561, 'playerStand', 0.2, 500, this.game.config, 2)
+        }
+        
         this.randomMinAndMax = (max, min) => Math.floor(Math.random() * (max - (min) + 1)) + min;
         this.randomInterv = (min, max, min2, max2) => this.randomMinAndMax(1, 0) == 0 ? this.randomMinAndMax(min, max) : this.randomMinAndMax(min2, max2)
 
@@ -510,12 +549,41 @@ class ClassRoom1 extends Phaser.Scene {
         }
 
         if (this.canSpawnMinions) {
+            if(this.player2 != undefined)
+            {
+                if (this.keys.L.isDown) {
+                    this.player2.combat()
+                }
+                else if (this.keys.LEFT.isDown && this.keys.RIGHT.isDown && !this.keys.DOWN.isDown) {
+                    this.player2.stand()
+                }
+                else if (this.keys.UP.isDown && this.keys.RIGHT.isDown) {
+                    this.player2.jump()
+                    this.player2.move_right_jump()
+                }
+                else if (this.keys.UP.isDown && this.keys.LEFT.isDown) {
+                    this.player2.jump()
+                    this.player2.move_left_jump()
+                }
+                else if (this.keys.UP.isDown) {
+                    this.player2.jump()
+                }
+                else if (this.keys.RIGHT.isDown && !this.keys.DOWN.isDown) {
+                    this.player2.move_right()
+                }
+                else if (this.keys.LEFT.isDown && !this.keys.DOWN.isDown) {
+                    this.player2.move_left()
+                }
+                else if (this.keys.DOWN.isDown) {
+                    this.player2.sneak()
+                }
+            }
             if (this.keys.SHIFT.isDown && this.keys.A.isDown) {
                 if (this.player.isThrowing) {
                     this.player.throwing_card()
                 }
                 else {
-                    if (this.keys.RIGHT.isDown) {
+                    if (this.keys.B.isDown) {
                         this.player.combat()
                     } else {
                         this.player.standShot('L')
@@ -526,7 +594,7 @@ class ClassRoom1 extends Phaser.Scene {
                 if (this.player.isThrowing) {
                     this.player.throwing_card()
                 } else {
-                    if (this.keys.RIGHT.isDown) {
+                    if (this.keys.B.isDown) {
                         this.player.combat()
                     }
                     else {
@@ -541,16 +609,16 @@ class ClassRoom1 extends Phaser.Scene {
                     this.player.standShot(this.player.pos)
                 }
             }
-            else if (this.keys.RIGHT.isDown) {
+            else if (this.keys.B.isDown) {
                 this.player.combat()
             }
             else if (this.keys.SHIFT.isDown) {
                 this.player.standShot()
-                if (this.keys.RIGHT.isDown) {
+                if (this.keys.B.isDown) {
                     this.player.combat()
                 }
             }
-            else if (this.keys.A.isDown && this.keys.D.isDown && !this.keys.RIGHT.isDown) {
+            else if (this.keys.A.isDown && this.keys.D.isDown && !this.keys.B.isDown) {
                 this.player.stand()
             }
             else if (this.keys.W.isDown && this.keys.D.isDown) {
@@ -573,10 +641,12 @@ class ClassRoom1 extends Phaser.Scene {
             else if (this.keys.S.isDown) {
                 this.player.sneak()
             }
+            
             else {
                 if (this.player.isThrowing) {
                     this.player.throwing_card()
-                } else {
+                }
+                 else {
                     this.player.stand()
                 }
             }
@@ -584,7 +654,7 @@ class ClassRoom1 extends Phaser.Scene {
         else {
             this.player.stand()
         }
-        if (this.keys.UP.isDown && !this.keys.S.isDown && !this.keys.RIGHT.isDown && this.canSpawnMinions) {
+        if (this.keys.V.isDown && !this.keys.S.isDown && !this.keys.B.isDown && this.canSpawnMinions) {
             if (((new Date().getTime()) - this.timeBefore) > this.fireRate) {
                 this.timeBefore = new Date().getTime()
                 if (this.bltqnt > 0) {
