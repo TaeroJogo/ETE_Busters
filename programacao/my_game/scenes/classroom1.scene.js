@@ -1,6 +1,9 @@
 class ClassRoom1 extends Phaser.Scene {
 
     constructor(config) {
+        config = {
+            key: 'scene1',
+        }
         super(config);
         this.keys;
         this.player;
@@ -38,7 +41,9 @@ class ClassRoom1 extends Phaser.Scene {
         this.bossDmg
     }
 
-    init(data) { }
+    init(data) {
+        console.log(data.players)
+    }
     preload() {
         this.load.image('classroom', '../res/cenario/classroom.jpg');
         this.load.image('table', '../res/cenario/table.png');
@@ -86,6 +91,16 @@ class ClassRoom1 extends Phaser.Scene {
         this.load.audio('defeat', '../res/sons/Victory_n_loss_sounds/Game_Over.mp3');
     }
     create(data) {
+
+
+        document.addEventListener('keydown', (event) => {
+            const keyName = event.code;
+
+            if (keyName == 'ShiftRight') {
+                console.log(32)
+            }
+        }, false);
+
         this.bmsc = this.sound.add('music', {
             mute: false,
             volume: 0.4,
@@ -125,7 +140,6 @@ class ClassRoom1 extends Phaser.Scene {
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         this.add.image(1252 / 2, 834 / 2, 'classroom')
-
 
         for (let i = 0; i < 3; i++) {
             let platform = this.physics.add.sprite(this.platformsData[i][0], this.platformsData[i][1]).setScale(0.36).refreshBody()
@@ -475,7 +489,7 @@ class ClassRoom1 extends Phaser.Scene {
     }
 
     update(time, delta) {
-        if(this.test == 0) {
+        if (this.test == 0) {
             if (this.player.healthBar.value <= 0) {
                 this.test = 1
                 this.canSpawnMinions = false
@@ -485,7 +499,7 @@ class ClassRoom1 extends Phaser.Scene {
                 this.bmsc.stop()
             }
         }
-       
+
 
         if (this.canSpawnMinions) {
             this.moveGhosts()
