@@ -15,7 +15,7 @@ class ClassRoom1 extends Phaser.Scene {
         this.platform
         this.platforms = []
         this.platformsData = {
-            0: [520, 590],
+            0: [505, 590],
             1: [925, 260],
             2: [98, 260],
         }
@@ -92,7 +92,7 @@ class ClassRoom1 extends Phaser.Scene {
 
 
         for (let i = 0; i < 3; i++) {
-            let platform = this.physics.add.sprite(this.platformsData[i][0], this.platformsData[i][1]).setScale(0.33).refreshBody()
+            let platform = this.physics.add.sprite(this.platformsData[i][0], this.platformsData[i][1]).setScale(0.36).refreshBody()
             platform.body.immovable = true;
             platform.body.moves = false;
             platform.body.setSize(750, 450)
