@@ -704,6 +704,7 @@ class ClassRoom1 extends Phaser.Scene {
         }
         else {
             this.player.stand()
+            this.player2.stand()
         }
         if (this.keys.V.isDown && !this.keys.S.isDown && !this.keys.B.isDown && this.canSpawnMinions) {
             if (((new Date().getTime()) - this.timeBefore) > this.fireRate) {
