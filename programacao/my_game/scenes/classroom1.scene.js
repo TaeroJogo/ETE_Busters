@@ -7,7 +7,7 @@ class ClassRoom1 extends Phaser.Scene {
         this.bullets;
         this.bltqnt = 100;
         this.inst;
-        this.ghostNumber = 2
+        this.ghostNumber = 3
         this.ghosts = [];
         this.spacebar;
         this.fireRate = 600;
@@ -24,6 +24,8 @@ class ClassRoom1 extends Phaser.Scene {
         this.teste = true
         this.bossPewFireRate = 4500
         this.bossPewBefore = 0
+        this.minionSpawnBefore = 0
+        this.minionSpawnFireRate = 10000
     }
 
     init(data) { }
@@ -159,10 +161,6 @@ class ClassRoom1 extends Phaser.Scene {
             frameRate: 10
         })
 
-        for (let i = 0; i < this.ghostNumber; i++) {
-            this.ghosts.push(new Ghost(this, this.randomInterv(-200, -50, 650, 850), this.randomMinAndMax(-200, 400), 'ghostFlying', 0.3, 0))
-        }
-
         this.boss = new Ghost(this, 1150, 500, 'boss', 1.2, -350)
 
         this.moveGhosts = () => {
@@ -225,6 +223,43 @@ class ClassRoom1 extends Phaser.Scene {
                     ghost.destroy()
                 }, 500);
             }
+            if(((new Date().getTime()) - this.minionSpawnBefore) > this.minionSpawnFireRate) {
+                this.minionSpawnBefore = new Date().getTime()
+                for (let i = 0; i < this.ghostNumber; i++) {
+                    this.ghosts.push(new Ghost(this, this.randomInterv(-200, -50, 650, 850), this.randomMinAndMax(-200, 400), 'ghostFlying', 0.3, 0))
+                }
+            }
+            this.ghosts.forEach(ghost => {
+                this.physics.add.collider(this.player.ps, ghost.gs, (player, ghost) => {
+                    if (player.width == 430 || player.height < 560) {
+                        if (player.body.touching.up && player.height > 560) {
+                            this.player.damage()
+                        }
+                        if ((player.body.touching.left && this.player.pos == 'L') || (player.body.touching.right && this.player.pos == 'R')) {
+                            ghost.isAlive = false
+                            this.bltqnt += 8
+                            this.inst.setNewText('x' + this.bltqnt.toString())
+                            ghost.destroy()
+                            if (player.body.onFloor()) {
+                                this.game.config.pss.play()
+                            }
+                            else {
+                                this.game.config.ks.play()
+                            }
+    
+                        }
+                        else {
+                            this.player.damage()
+                        }
+                    }
+                    else {
+                        this.player.damage()
+                        ghost.isAlive = false
+                        ghost.destroy()
+                    }
+    
+                })
+            });
             this.ghosts.forEach(ghost => {
                 if (ghost.gs.isAlive) {
                     this.physics.moveToObject(ghost.gs, this.player.ps, 50)
