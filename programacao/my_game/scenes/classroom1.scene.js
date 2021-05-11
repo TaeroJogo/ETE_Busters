@@ -529,7 +529,7 @@ class ClassRoom1 extends Phaser.Scene {
 
     update(time, delta) {
         if (this.test == 0) {
-            if (this.player.healthBar.value <= 0) {
+            if (this.player.healthBar.value <= 0 && this.player2.healthBar2.value <= 0) {
                 this.test = 1
                 this.canSpawnMinions = false
                 this.gameOverText1 = new GameText(this, 300, 170, 'Game', '200px', '#00000', 'Georgia, "Goudy Bookletter 1911", Times, serif')
@@ -576,6 +576,14 @@ class ClassRoom1 extends Phaser.Scene {
                 }
                 else if (this.keys.DOWN.isDown) {
                     this.player2.sneak()
+                }
+                else {
+                    if (this.player2.isThrowing) {
+                        this.player2.throwing_card()
+                    }
+                     else {
+                        this.player2.stand()
+                    }
                 }
             }
             if (this.keys.SHIFT.isDown && this.keys.A.isDown) {
