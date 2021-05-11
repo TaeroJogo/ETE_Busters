@@ -506,7 +506,7 @@ class ClassRoom1 extends Phaser.Scene {
                 }
             }
         }
-        if (this.keys.UP.isDown && !this.keys.S.isDown && !this.keys.RIGHT.isDown) {
+        if (this.keys.UP.isDown && !this.keys.S.isDown && !this.keys.RIGHT.isDown && this.canSpawnMinions) {
             if (((new Date().getTime()) - this.timeBefore) > this.fireRate) {
                 this.timeBefore = new Date().getTime()
                 if (this.bltqnt > 0) {
