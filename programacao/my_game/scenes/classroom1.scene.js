@@ -20,7 +20,7 @@ class ClassRoom1 extends Phaser.Scene {
             2: [98, 260],
         }
         this.boss
-        this.bossHealth = 80
+        this.bossHealth = 100
     }
 
     init(data) { }
@@ -190,6 +190,8 @@ class ClassRoom1 extends Phaser.Scene {
                     }
                     if ((player.body.touching.left && this.player.pos == 'L') || (player.body.touching.right && this.player.pos == 'R')) {
                         ghost.isAlive = false
+                        this.bltqnt += 8
+                        this.inst.setNewText('x' + this.bltqnt.toString())
                         ghost.destroy()
                         if (player.body.onFloor()) {
                             this.game.config.pss.play()
