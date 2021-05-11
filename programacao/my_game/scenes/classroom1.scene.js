@@ -142,7 +142,7 @@ class ClassRoom1 extends Phaser.Scene {
         });
 
 
-        this.inst = new GameText(this, 1150, 5, 'x' + this.bltqnt)
+        this.inst = new GameText(this, 1150, 5, 'x' + this.bltqnt, '32px', '#00000', 'Georgia, "Goudy Bookletter 1911", Times, serif')
         this.player = new Player(this, 400, 561, 'playerStand', 0.2, 500, this.game.config)
 
         this.randomMinAndMax = (max, min) => Math.floor(Math.random() * (max - (min) + 1)) + min;
@@ -219,7 +219,7 @@ class ClassRoom1 extends Phaser.Scene {
                 this.boss.gs.isAlive = false
                 this.boss.gs.play('bossDead', true)
                 setTimeout(() => {
-                    ghost.destroy()
+                    
                 }, 500);
             }
             if(((new Date().getTime()) - this.minionSpawnBefore) > this.minionSpawnFireRate) {
