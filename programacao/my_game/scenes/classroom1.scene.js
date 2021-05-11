@@ -27,6 +27,7 @@ class ClassRoom1 extends Phaser.Scene {
         this.minionSpawnBefore = 0
         this.minionSpawnFireRate = 10000
         this.canSpawnMinions = true
+        this.gameOver = false
     }
 
     init(data) { }
@@ -426,6 +427,12 @@ class ClassRoom1 extends Phaser.Scene {
     }
 
     update(time, delta) {
+
+        if (this.player.healthBar.value <= 0) {
+            this.gameOver = true
+            this.canSpawnMinions = false
+        }
+
         if (this.canSpawnMinions) {
             this.moveGhosts()
         }
