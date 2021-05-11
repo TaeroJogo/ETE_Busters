@@ -54,7 +54,8 @@ class ClassRoom1 extends Phaser.Scene {
         this.load.spritesheet('playerKickingL', '../res/sprites/kickL.png', { frameWidth: 455, frameHeight: 556 });
         this.load.spritesheet('playerThrowing', '../res/sprites/throw.png', { frameWidth: 459, frameHeight: 714 });
         this.load.spritesheet('playerThrowingL', '../res/sprites/throwL.png', { frameWidth: 459, frameHeight: 714 });
-        //this.load.spritesheet('player')
+        this.load.spritesheet('playerThrowingD', '../res/sprites/throwD.png', { frameWidth: 470, frameHeight: 691 });
+        this.load.spritesheet('playerThrowingDL', '../res/sprites/throwDL.png', { frameWidth: 470, frameHeight: 691 });
 
         this.load.audio('music', '../res/sons/Sound_Effects/musicadeluta.mp3');
         this.load.audio('punch', '../res/sons/Sound_Effects/punch.mp3');
@@ -343,6 +344,16 @@ class ClassRoom1 extends Phaser.Scene {
             frames: this.anims.generateFrameNumbers("playerThrowingL"),
             frameRate: 10
         });
+        this.anims.create({
+            key: 'throwD',
+            frames: this.anims.generateFrameNumbers("playerThrowingD"),
+            frameRate: 10
+        });
+        this.anims.create({
+            key: 'throwDL',
+            frames: this.anims.generateFrameNumbers("playerThrowingDL"),
+            frameRate: 10
+        });
 
     }
 
@@ -436,6 +447,7 @@ class ClassRoom1 extends Phaser.Scene {
 
                     if (this.keys.SHIFT.isDown && (this.keys.D.isDown || this.keys.A.isDown) && this.keys.W.isDown) {
                         newBullet()
+                        this.player.throwing_card_diagonal()
                         bullet.fireDiagonally(this.player.pos)
                     }
                     else if (this.keys.SHIFT.isDown && this.player.ps.body.onFloor() && this.keys.W.isDown) {

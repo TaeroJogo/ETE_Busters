@@ -240,4 +240,12 @@ class Player {
         this.isThrowing = true
         this.ps.anims.play(this.pos == 'R' ? 'throw' : 'throwL', true);
     }
+
+    throwing_card_diagonal() {
+        this.ps.setVelocityX(0);
+        this.ps.body.setSize(262, 700)
+        this.ps.body.setOffset(this.pos == 'R' ? 70 : 70, 2.5)
+        this.isThrowing = true
+        this.ps.anims.play(this.pos == 'R' ? 'throwD' : 'throwDL', true);
+    }
 }
