@@ -26,6 +26,8 @@ class ClassRoom1 extends Phaser.Scene {
         this.load.image('classroom', '../res/cenario/classroom.jpg');
         this.load.image('table', '../res/cenario/table.png');
         this.load.image('id_card', '../res/sprites/id_card.png')
+        this.load.spritesheet('ghostFlying', '../res/ghosts/fantasmasR.png', { frameWidth: 387.5, frameHeight: 297})
+        this.load.spritesheet('ghostFlyingL', '../res/ghosts/fantasmasL.png', { frameWidth: 387.5, frameHeight: 297})
 
         this.load.spritesheet('playerDown', '../res/sprites/down.png', { frameWidth: 249, frameHeight: 375 });
         this.load.spritesheet('playerRunning', '../res/sprites/running.png', { frameWidth: 515, frameHeight: 686 });
@@ -112,14 +114,29 @@ class ClassRoom1 extends Phaser.Scene {
             frameRate: 10
         })
 
+        this.anims.create({
+            key: 'flyL',
+            frames: this.anims.generateFrameNumbers("ghostFlyingL"),
+            frameRate: 10
+        })
+
         for (let i = 0; i < this.ghostNumber; i++) {
             this.ghosts.push(new Ghost(this, this.randomInterv(-200, -50, 650, 850), this.randomMinAndMax(-200, 400), 'ghostFlying', 0.3, 0))
         }
-
         this.moveGhosts = () => {
             this.ghosts.forEach(ghost => {
                 if (ghost.gs.isAlive) {
                     this.physics.moveToObject(ghost.gs, this.player.ps, 50)
+                    let angleBetween = (obj1, obj2) => {var angleDeg = (Math.atan2(obj2.y - obj1.y, obj2.x - obj1.x) * 180 / Math.PI);
+                        return angleDeg;}
+                        if(this.keys.SHIFT.isDown)
+                        console.log(angleBetween(this.player.ps, ghost.gs))
+                    if((angleBetween(this.player.ps, ghost.gs) <= 90 && angleBetween(this.player.ps, ghost.gs) >=0) || (angleBetween(this.player.ps, ghost.gs) >= -90 && angleBetween(this.player.ps, ghost.gs) <= 0)) {
+                        ghost.gs.play('flyL', true)
+                    }
+                    else if((angleBetween(this.player.ps, ghost.gs) < -90 && angleBetween(this.player.ps, ghost.gs) >= -180) || (angleBetween(this.player.ps, ghost.gs) > 90 && angleBetween(this.player.ps, ghost.gs) <= 180 )){
+                        ghost.gs.play('fly', true)
+                    }
                 }
             });
         }
