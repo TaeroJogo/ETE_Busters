@@ -15,9 +15,9 @@ class ClassRoom1 extends Phaser.Scene {
         this.platform
         this.platforms = []
         this.platformsData = {
-            0: [510, 590],
-            1: [915, 260],
-            2: [85, 260],
+            0: [520, 590],
+            1: [925, 260],
+            2: [98, 260],
         }
     }
 
@@ -94,7 +94,7 @@ class ClassRoom1 extends Phaser.Scene {
 
 
         for (let i = 0; i < 3; i++) {
-            let platform = this.physics.add.sprite(this.platformsData[i][0], this.platformsData[i][1]).setScale(0.36).refreshBody()
+            let platform = this.physics.add.sprite(this.platformsData[i][0], this.platformsData[i][1]).setScale(0.33).refreshBody()
             platform.body.immovable = true;
             platform.body.moves = false;
             platform.body.setSize(750, 450)
@@ -142,12 +142,11 @@ class ClassRoom1 extends Phaser.Scene {
         }
 
         this.platforms.forEach((plat) => {
-            this.physics.add.collider(this.player.ps, plat, () => {
+            this.physics.add.collider(this.player.ps, plat, (player, plat) => {
             })
             this.physics.add.overlap(this.player.ps, plat, () => {
                 if (this.player.checkOverlap) {
                     if (this.player.ps.y > 611 && this.player.ps.y < 612) {
-                        console.log(32)
                         this.player.ps.y = 559.94
                     } else if (this.player.ps.y > 281 && this.player.ps.y < 283) {
                         this.player.ps.y = 229.24
@@ -262,18 +261,27 @@ class ClassRoom1 extends Phaser.Scene {
         }
 
         if (this.keys.SHIFT.isDown && this.keys.A.isDown) {
-            if (this.keys.RIGHT.isDown) {
-                this.player.combat()
-            } else {
-                this.player.standShot('L')
+            if (this.player.isThrowing) {
+                this.player.throwing_card()
+            }
+            else {
+                if (this.keys.RIGHT.isDown) {
+                    this.player.combat()
+                } else {
+                    this.player.standShot('L')
+                }
             }
         }
         else if (this.keys.SHIFT.isDown && this.keys.D.isDown) {
-            if (this.keys.RIGHT.isDown) {
-                this.player.combat()
-            }
-            else {
-                this.player.standShot('R')
+            if (this.player.isThrowing) {
+                this.player.throwing_card()
+            } else {
+                if (this.keys.RIGHT.isDown) {
+                    this.player.combat()
+                }
+                else {
+                    this.player.standShot('R')
+                }
             }
         }
         else if (this.keys.SHIFT.isDown) {
