@@ -35,6 +35,7 @@ class ClassRoom1 extends Phaser.Scene {
         this.bmsc
         this.test = 0
         this.ghostDestroy
+        this.bossDmg
     }
 
     init(data) { }
@@ -70,6 +71,7 @@ class ClassRoom1 extends Phaser.Scene {
         this.load.spritesheet('playerThrowingV', '../res/sprites/throwV.png', { frameWidth: 470, frameHeight: 691 });
         this.load.spritesheet('playerThrowingVL', '../res/sprites/throwVL.png', { frameWidth: 470, frameHeight: 691 });
 
+
         this.load.audio('music', '../res/sons/Sound_Effects/musicadeluta.mp3');
         this.load.audio('punch', '../res/sons/Sound_Effects/punch.mp3');
         this.load.audio('card', '../res/sons/Sound_Effects/card_throw.mp3');
@@ -79,6 +81,7 @@ class ClassRoom1 extends Phaser.Scene {
         this.load.audio('die', '../res/sons/Sound_Effects/death_sound.mp3');
         this.load.audio('bossDeath', '../res/sons/Sound_Effects/bossDeathSound.mp3');
         this.load.audio('bossShot', '../res/sons/Sound_Effects/bossShotSound.mp3');
+        this.load.audio('bossDmg', '../res/sons/Sound_Effects/bossDamageSound.mp3');
         this.load.audio('victoryS', '../res/sons/Victory_n_loss_sounds/Victory.mp3');
         this.load.audio('defeat', '../res/sons/Victory_n_loss_sounds/Game_Over.mp3');
     }
@@ -93,7 +96,7 @@ class ClassRoom1 extends Phaser.Scene {
             delay: 0,
         })
         this.bmsc.play()
-
+        this.bossDmg = this.sound.add('bossDmg')
         this.gos = this.sound.add('defeat')
         this.game.config.pss = this.sound.add('punch')
         this.game.config.js = this.sound.add('jump', {
@@ -600,6 +603,7 @@ class ClassRoom1 extends Phaser.Scene {
                             })
                         });
                         this.physics.add.collider(bullet.bullet, this.boss.gs, (bullet, ghost) => {
+                            this.bossDmg.play()
                             this.bossHealth -= 1
                             bullet.destroy()
                         })
