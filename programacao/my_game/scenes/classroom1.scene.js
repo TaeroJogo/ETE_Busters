@@ -113,7 +113,7 @@ class ClassRoom1 extends Phaser.Scene {
         })
 
         for (let i = 0; i < this.ghostNumber; i++) {
-            this.ghosts.push(new Ghost(this, this.randomInterv(-200, -50, 650, 850), this.randomMinAndMax(-200, 400), 'ghostFlying', 0.2, 0))
+            this.ghosts.push(new Ghost(this, this.randomInterv(-200, -50, 650, 850), this.randomMinAndMax(-200, 400), 'ghostFlying', 0.3, 0))
         }
 
         this.moveGhosts = () => {
