@@ -17,7 +17,9 @@ class ClassRoom1 extends Phaser.Scene {
         this.ghosts = [];
         this.spacebar;
         this.fireRate = 600;
+        this.fireRate2 = 600;
         this.timeBefore = 0;
+        this.timeBefore2 = 0;
         this.platform
         this.platforms = []
         this.platformsData = {
@@ -97,7 +99,7 @@ class ClassRoom1 extends Phaser.Scene {
     create(data) {
 
 
-        document.addEventListener('keydown', (event) => {
+        /*document.addEventListener('keydown', (event) => {
             const keyName = event.code;
 
             if (keyName == 'ShiftRight') {
@@ -176,7 +178,7 @@ class ClassRoom1 extends Phaser.Scene {
                     }
                 }
             }
-        }, false);
+        }, false);*/
 
         this.bmsc = this.sound.add('music', {
             mute: false,
@@ -213,7 +215,7 @@ class ClassRoom1 extends Phaser.Scene {
         })
         this.game.config.ks = this.sound.add('kick')
 
-        this.keys = this.input.keyboard.addKeys("W,A,S,D,SHIFT,UP,RIGHT,DOWN,LEFT,V,B,K,L");
+        this.keys = this.input.keyboard.addKeys("W,A,S,D,SHIFT,UP,RIGHT,DOWN,LEFT,V,B,K,L,ALT");
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         this.add.image(1252 / 2, 834 / 2, 'classroom')
@@ -590,11 +592,54 @@ class ClassRoom1 extends Phaser.Scene {
         if ((((new Date().getTime()) - this.timeBefore) > this.fireRate - 200) && this.player.isThrowing) {
             this.player.isThrowing = false
         }
+        if ((((new Date().getTime()) - this.timeBefore2) > this.fireRate2 - 200) && this.player2.isThrowing) {
+            this.player2.isThrowing = false
+        }
 
         if (this.canSpawnMinions) {
             if(this.player2 != undefined)
             {
-                if (this.keys.L.isDown) {
+                if (this.keys.ALT.isDown && this.keys.LEFT.isDown) {
+                    if (this.player2.isThrowing) {
+                        this.player2.throwing_card()
+                    }
+                    else {
+                        if (this.keys.L.isDown) {
+                            this.player2.combat()
+                        } else {
+                            this.player2.standShot('L')
+                        }
+                    }
+                }
+                else if (this.keys.ALT.isDown && this.keys.RIGHT.isDown) {
+                    if (this.player2.isThrowing) {
+                        this.player2.throwing_card()
+                    } else {
+                        if (this.keys.L.isDown) {
+                            this.player2.combat()
+                        }
+                        else {
+                            this.player2.standShot('R')
+                        }
+                    }
+                }
+                else if (this.keys.ALT.isDown) {
+                    if (this.player2.isThrowing) {
+                        this.player2.throwing_card()
+                    } else {
+                        this.player2.standShot(this.player2.pos)
+                    }
+                }
+                else if (this.keys.L.isDown) {
+                    this.player2.combat()
+                }
+                else if (this.keys.ALT.isDown) {
+                    this.player2.standShot()
+                    if (this.keys.L.isDown) {
+                        this.player2.combat()
+                    }
+                }
+                else if (this.keys.L.isDown) {
                     this.player2.combat()
                 }
                 else if (this.keys.LEFT.isDown && this.keys.RIGHT.isDown && !this.keys.DOWN.isDown) {
@@ -732,6 +777,49 @@ class ClassRoom1 extends Phaser.Scene {
                     setTimeout(() => {
                         newBullet()
                         direction == 'normal' ? bullet.fire(this.player.pos) : direction == 'up' ? bullet.fireUp() : bullet.fireDiagonally(this.player.pos)
+                        this.ghosts.forEach(ghost => {
+                            this.physics.add.collider(bullet.bullet, ghost.gs, (bullet, ghost) => {
+                                ghost.isAlive = false
+                                ghost.destroy()
+                                this.game.config.ds.play()
+                                bullet.destroy()
+                            })
+                        });
+                        this.physics.add.collider(bullet.bullet, this.boss.gs, (bullet, ghost) => {
+                            this.bossDmg.play()
+                            this.bossHealth -= 1
+                            bullet.destroy()
+                        })
+                    }, 400);
+                }
+            }
+        }
+        if (this.keys.K.isDown && !this.keys.DOWN.isDown && !this.keys.L.isDown && this.canSpawnMinions) {
+            if (((new Date().getTime()) - this.timeBefore2) > this.fireRate2) {
+                this.timeBefore2 = new Date().getTime()
+                if (this.bltqnt2 > 0) {
+                    this.bltqnt2 = this.bltqnt2 - 1;
+                    this.inst2.setNewText('x' + this.bltqnt2.toString())
+
+                    let bullet;
+                    let newBullet = () => bullet = new Bullet(this, this.player2.ps.x, this.player2.ps.y, "id_card", 0.4, this.game.config.idcs)
+                    let direction = 'normal'
+
+                    if (this.keys.ALT.isDown && (this.keys.RIGHT.isDown || this.keys.LEFT.isDown) && this.keys.UP.isDown) {
+                        direction = 'diagonal'
+                        this.player2.throwing_card_diagonal()
+                    }
+                    else if (this.keys.ALT.isDown && this.player2.ps.body.onFloor() && this.keys.UP.isDown) {
+                        direction = 'up'
+                        this.player2.throwing_card_up()
+                    }
+                    else {
+                        this.player2.throwing_card()
+                    }
+
+                    setTimeout(() => {
+                        newBullet()
+                        direction == 'normal' ? bullet.fire(this.player2.pos) : direction == 'up' ? bullet.fireUp() : bullet.fireDiagonally(this.player2.pos)
                         this.ghosts.forEach(ghost => {
                             this.physics.add.collider(bullet.bullet, ghost.gs, (bullet, ghost) => {
                                 ghost.isAlive = false
