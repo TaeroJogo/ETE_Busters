@@ -1,32 +1,36 @@
 class Player {
     constructor(scene, x, y, texture, scale, gravity, audio, player) {
-        this.ps = scene.physics.add.sprite(x, y, texture).setScale(0.3)
-        this.ps.setGravityY(gravity)
-        this.ps.setCollideWorldBounds(true);
+        this.ps = scene.physics.add.sprite(x, y, texture).setScale(0.3) //cria a sprite ou boneco do player
+        this.ps.setGravityY(gravity) //gravidade
+        this.ps.setCollideWorldBounds(true); //colisao  com as bordas do mundo
 
-        this.pos = 'R'
+        this.pos = 'R' //se o player ta virado para a direita ou esquerda
         this.xSpeed = 300;
         this.isNotJumping = true;
-        this.healthBar = new HealthBar(scene, player == 1 ? 1050 : 135, 17.5);
+        this.healthBar = new HealthBar(scene, player == 1 ? 1050 : 135, 17.5); //barra de vida do player que e de uma classe
         this.js = audio.js
         this.hs = audio.hs
         this.pss = audio.pss
         this.isThrowing = false
-        this.platSneak = 0
+        this.platSneak = 0 //qual plataforma ele esta agachado
         this.forcePunch = false
         this.checkOverlap = false
     }
 
-    damage() {
+    damage() { //leva dano
         this.healthBar.decrease(5)
         this.hs.play()
     }
 
-    move_left() {
+    //SETSIZE DEFINE O TAMANHO DA HITBOX
+    //SETOFFSET DEFINE O DESLOCAMENTO DESSA HITBOX
+    //ANIMS.PLAY TOCA A ANIMACAO
+
+    move_left() { //anda esquerda
         this.checkOverlap = false
         this.isNotJumping = true
         this.pos = 'L';
-        if (!this.ps.body.onFloor()) {
+        if (!this.ps.body.onFloor()) { //checa se esta no chao
             this.ps.body.setSize(300, 555)
             this.ps.body.setOffset(0, 135)
             this.move_left_jump()
@@ -38,7 +42,7 @@ class Player {
         }
     }
 
-    move_left_jump() {
+    move_left_jump() { //anda para esquerda enquanto esta pulando
         this.checkOverlap = false
         this.isNotJumping = false
         this.ps.setVelocityX(-this.xSpeed);
@@ -48,7 +52,7 @@ class Player {
         }
         this.pos = 'L';
         if (this.ps.body.onFloor()) {
-            if (Math.abs(this.ps.body.velocity.x) == 300) {
+            if (Math.abs(this.ps.body.velocity.x) == 300) { //ve se o player esta se movendo horizontalmente
                 this.js.play()
             }
         }
@@ -113,7 +117,7 @@ class Player {
         }
     }
 
-    sneak() {
+    sneak() {//agachar
         this.checkOverlap = false
         if (this.ps.y > 559 && this.ps.y < 560 && this.ps.body.blocked.down) {
             this.platSneak = 1
@@ -159,7 +163,7 @@ class Player {
 
     }
 
-    standShot(posit) {
+    standShot(posit) { //tiro com o shift
         this.checkOverlap = false
         this.posit = posit
         this.pos = posit
@@ -216,7 +220,7 @@ class Player {
         }
     }
 
-    combat() {
+    combat() { //chute e soco
         this.ps.setVelocityX(0);
 
         if (this.ps.body.blocked.down || this.forcePunch) {

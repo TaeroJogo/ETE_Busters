@@ -48,9 +48,10 @@ class ClassRoom1 extends Phaser.Scene {
     }
 
     init(data) {
-        this.players = data.players
+        this.players = data.players//RECEBE DATA DA CENA DO MENU
     }
     preload() {
+        //CARREGA IMAGENS E AUDIO
         this.load.image('classroom', '../res/cenario/classroom.jpg');
         this.load.image('table', '../res/cenario/table.png');
         this.load.image('id_card', '../res/sprites/id_card.png')
@@ -97,7 +98,7 @@ class ClassRoom1 extends Phaser.Scene {
         this.load.audio('defeat', '../res/sons/Victory_n_loss_sounds/Game_Over.mp3');
     }
     create(data) {
-
+        //EXECUTA UMA VEZ QUANDO A CENA E CRIADA
         this.bmsc = this.sound.add('music', {
             mute: false,
             volume: 0.4,
@@ -133,17 +134,17 @@ class ClassRoom1 extends Phaser.Scene {
         })
         this.game.config.ks = this.sound.add('kick')
 
-        this.keys = this.input.keyboard.addKeys("W,A,S,D,SHIFT,UP,RIGHT,DOWN,LEFT,V,B,K,L,ALT");
+        this.keys = this.input.keyboard.addKeys("W,A,S,D,SHIFT,UP,RIGHT,DOWN,LEFT,V,B,K,L,ALT");//adiciona teclas do teclado a serem escutadas
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
-        this.add.image(1252 / 2, 834 / 2, 'classroom')
+        this.add.image(1252 / 2, 834 / 2, 'classroom')//fundo
 
-        if(this.players == 'two') {
+        if (this.players == 'two') {//diminui vida do boss se for um player so
             this.bossHealth = 65
             this.ghostNumber = 6
         }
 
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 3; i++) {//adiciona a hitbox das plataformas
             let platform = this.physics.add.sprite(this.platformsData[i][0], this.platformsData[i][1]).setScale(0.36).refreshBody()
             platform.body.immovable = true;
             platform.body.moves = false;
@@ -152,6 +153,8 @@ class ClassRoom1 extends Phaser.Scene {
             this.platforms.push(platform)
         }
 
+
+        //CRIA ANIMAÇÔES DO FANTASMA, SEMPRE QUANDO TIVER ANIMS = CRIAR ANIMACAO
         this.anims.create({
             key: 'bossWalk',
             frames: this.anims.generateFrameNumbers("bossWalking"),
@@ -174,16 +177,17 @@ class ClassRoom1 extends Phaser.Scene {
             frameRate: 10
         });
 
-
+        //CRIA OS PERSONAGENS PRINCIPAIS A PARTIR DA CLASSE
         this.player = new Player(this, 300, 561, 'playerStand', 0.2, 500, this.game.config, 1)
         this.inst = new GameText(this, 1140, 5, 'x' + this.bltqnt, '32px', '#00000', 'Georgia, "Goudy Bookletter 1911", Times, serif')
         if (this.players == 'two') {
             this.inst2 = new GameText(this, 20, 5, 'x' + this.bltqnt2, '32px', '#00000', 'Georgia, "Goudy Bookletter 1911", Times, serif')
             this.player2 = new Player(this, 400, 561, 'playerStand', 0.2, 500, this.game.config, 2)
-            this.player.ps.tint = '0xef5350'
+            this.player.ps.tint = '0xef5350'//COLORE ELES SE FOR DOIS PLAYERS
             this.player2.ps.tint = '0x29b6f6'
         }
 
+        //FUNCOES DE GERAR NUMERO ALEATORIO
         this.randomMinAndMax = (max, min) => Math.floor(Math.random() * (max - (min) + 1)) + min;
         this.randomInterv = (min, max, min2, max2) => this.randomMinAndMax(1, 0) == 0 ? this.randomMinAndMax(min, max) : this.randomMinAndMax(min2, max2)
 
@@ -199,15 +203,19 @@ class ClassRoom1 extends Phaser.Scene {
             frameRate: 10
         })
 
+        //CRIA O FANSTASMA BOSS A PARTIR DA CLASSE DO FASNTASMA
         this.boss = new Ghost(this, 1150, 500, 'boss', 1.2, -350)
-        this.boss.gs.body.setSize(200, 200)
+        this.boss.gs.body.setSize(200, 200)//HITBOX
         this.boss.gs.body.setOffset(70, 0)
 
+        //MOVE OS FANTASMAS
         this.moveGhosts = () => {
             if (this.bossHealth > 0) {
+                //SE O BOSS ESTIVER NA DIRECAO DO PLAYER 
                 if (Math.abs(this.player.ps.y) - 5 < Math.abs(this.boss.gs.y) && Math.abs(this.player.ps.y) + 5 > Math.abs(this.boss.gs.y)) {
                     this.physics.moveTo(this.boss.gs, 1150, this.boss.gs.y)
 
+                    //NASCE OS MORCEGOS
                     if (((new Date().getTime()) - this.bossPewBefore) > this.bossPewFireRate) {
                         this.bossPewBefore = new Date().getTime()
                         this.boss.gs.play('bossWalk', true)
@@ -225,6 +233,7 @@ class ClassRoom1 extends Phaser.Scene {
                             delay: 0,
                         })
                         bss.play()
+                        //CRIAR COLISAO ENTRE O PLAYER E MORCEGOS
                         this.physics.add.collider(this.player.ps, bossPew.gs, (player, ghost) => {
                             if (player.width == 430 || player.height < 560) {
                                 if (player.body.touching.up && player.height > 560) {
@@ -239,7 +248,7 @@ class ClassRoom1 extends Phaser.Scene {
                                     this.inst.setNewText('x' + this.bltqnt.toString())
                                     ghost.play('bossPewDead')
                                     setTimeout(() => {
-                                        ghost.destroy()
+                                        ghost.destroy() //DESTROI O FANTASMA QUANDO A COLISAO
                                     }, 500);
                                     if (player.body.onFloor()) {
                                         this.game.config.pss.play()
@@ -250,18 +259,19 @@ class ClassRoom1 extends Phaser.Scene {
 
                                 }
                                 else {
-                                    this.player.damage()
+                                    this.player.damage()//DANO AO PLAYER AO COLIDIR COM MORCEGO
                                 }
                             }
                             else {
-                                this.player.damage()
+                                this.player.damage()//DANO AO PLAYER AO COLIDIR COM MORCEGO
                                 ghost.play('bossPewDead')
                                 setTimeout(() => {
-                                    ghost.destroy()
+                                    ghost.destroy()//DESTROI O FANTASMA QUANDO A COLISAO
                                 }, 500);
 
                             }
                         })
+                        //MESMA COISA DA DE CIMA, MAS COM O PLAYER 2
                         if (this.players == 'two') {
                             this.physics.add.collider(this.player2.ps, bossPew.gs, (player, ghost) => {
                                 if (player.width == 430 || player.height < 560) {
@@ -306,7 +316,8 @@ class ClassRoom1 extends Phaser.Scene {
                 } else {
                     this.physics.moveTo(this.boss.gs, 1150, this.player.ps.y)
                 }
-            } else if (this.boss.gs.isAlive) {
+            } else if (this.boss.gs.isAlive) { //CHECA SE BOSS ESTA VIVO
+                //SE TIVER SOUND E PORQUE ESTA DEFININDO SONS A SEREM USADOS
                 let bds = this.sound.add('bossDeath', {
                     mute: false,
                     volume: 1,
@@ -343,9 +354,11 @@ class ClassRoom1 extends Phaser.Scene {
                 })
                 setTimeout(() => {
                     this.boss.gs.destroy()
+                    //SE BOSS MORREU GANHAR JOGO
                     this.victory = new GameText(this, 70, 300, 'Victory', '200px', '#00000', 'Georgia, "Goudy Bookletter 1911", Times, serif')
                 }, 500);
             }
+            //CHECA DE TEMPOS EM TEMPOS SE PODE SPAWNAR OS FANTASMAS
             if ((((new Date().getTime()) - this.minionSpawnBefore) > this.minionSpawnFireRate) && this.canSpawnMinions) {
                 this.minionSpawnBefore = new Date().getTime()
                 for (let i = 0; i < this.ghostNumber; i++) {
@@ -353,6 +366,7 @@ class ClassRoom1 extends Phaser.Scene {
                 }
             }
             this.ghosts.forEach(ghost => {
+                //ADICIONA COLISAO DESSES FANTASMAS CRIADOS COM O PLAYER, MESMA LOGICA COM OS FANTASMAS MORCEGOS
                 this.physics.add.collider(this.player.ps, ghost.gs, (player, ghost) => {
                     if (player.width == 430 || player.height < 560) {
                         if (player.body.touching.up && player.height > 560) {
@@ -383,6 +397,7 @@ class ClassRoom1 extends Phaser.Scene {
 
                 })
             });
+            //COLISAO FANTASMAS PLAYER2
             if (this.players == 'two') {
                 this.ghosts.forEach(ghost => {
                     this.physics.add.collider(this.player2.ps, ghost.gs, (player, ghost) => {
@@ -416,6 +431,7 @@ class ClassRoom1 extends Phaser.Scene {
                     })
                 });
             }
+            //QUANDO A DOIS PLAYERS, ELE RANZDOMIZA QUAL PLAYER CADA FANTASMA IRA SEGUIR
             this.ghosts.forEach(ghost => {
                 if (this.players == 'two') {
                     if (ghost.gs.isAlive) {
@@ -468,7 +484,7 @@ class ClassRoom1 extends Phaser.Scene {
                 }
             });
         }
-
+        //COLISAO DAS PLATAFORMAS COM OS PLAYER
         this.platforms.forEach((plat) => {
             this.physics.add.collider(this.player.ps, plat, (player, plat) => {
             })
@@ -483,7 +499,7 @@ class ClassRoom1 extends Phaser.Scene {
                 }
             })
         })
-
+        //COLISAO DAS PLATAFORMAS COM OS PLAYER
         if (this.players == 'two') {
             this.platforms.forEach((plat) => {
                 this.physics.add.collider(this.player2.ps, plat, (player, plat) => {
@@ -500,7 +516,7 @@ class ClassRoom1 extends Phaser.Scene {
                 })
             })
         }
-
+        //DEFINICAO DE ANIMACOES
         this.anims.create({
             key: 'right',
             frames: this.anims.generateFrameNumbers("playerRunning"),
@@ -589,17 +605,19 @@ class ClassRoom1 extends Phaser.Scene {
 
     }
 
-    update(time, delta) {
-        if (this.test == 0) {
+    update(time, delta) {//FUNCAO QUE FICA SEMPRE EM LOOP
+        if (this.test == 0) {//CHECA SE OS PLAYERS ESTAO VIVOS
             if (this.player.healthBar.value <= 0) {
                 this.test = 1
                 this.canSpawnMinions = false
+                //SE ESTIVEREM MORTOS DA GAME OVER
                 this.gameOverText1 = new GameText(this, 300, 170, 'Game', '200px', '#00000', 'Georgia, "Goudy Bookletter 1911", Times, serif')
                 this.gameOverText2 = new GameText(this, 300, 370, 'Over', '200px', '#00000', 'Georgia, "Goudy Bookletter 1911", Times, serif')
                 this.gos.play()
                 this.bmsc.stop()
             }
             if (this.players == 'two') {
+                //MESMA COISA DA DE CIMA
                 if (this.player2.healthBar.value <= 0) {
                     this.test = 1
                     this.canSpawnMinions = false
@@ -612,10 +630,11 @@ class ClassRoom1 extends Phaser.Scene {
         }
 
 
-        if (this.canSpawnMinions) {
+        if (this.canSpawnMinions) { //SE ELE PODE NASCER FANTASMAS, CRIA E MOVE ELES AOS PLAYERS
             this.moveGhosts()
         }
 
+        //DEFINE O FIRERATE DA ARMA
         if ((((new Date().getTime()) - this.timeBefore) > this.fireRate - 200) && this.player.isThrowing) {
             this.player.isThrowing = false
         }
@@ -626,6 +645,7 @@ class ClassRoom1 extends Phaser.Scene {
         }
 
         if (this.canSpawnMinions) {
+            //AQUI PARA BAIXO E SO MOVIMENTACAO DO PLAYER, SE A TECLA TAL ISDOWN(PRESSIONADA) EXECUTAR ACAO
             if (this.player2 != undefined) {
                 if (this.keys.ALT.isDown && this.keys.LEFT.isDown) {
                     if (this.player2.isThrowing) {
@@ -781,16 +801,19 @@ class ClassRoom1 extends Phaser.Scene {
                 this.player2.stand()
             }
         }
+        //ATIRA CARTEIRINHA
         if (this.keys.V.isDown && !this.keys.S.isDown && !this.keys.B.isDown && this.canSpawnMinions) {
-            if (((new Date().getTime()) - this.timeBefore) > this.fireRate) {
+            if (((new Date().getTime()) - this.timeBefore) > this.fireRate) {//CHECA SE O FIRERATE PERMITE
                 this.timeBefore = new Date().getTime()
                 if (this.bltqnt > 0) {
                     this.bltqnt = this.bltqnt - 1;
                     this.inst.setNewText('x' + this.bltqnt.toString())
 
                     let bullet;
+                    //FAZ NASCER A CARTEIRINHA
                     let newBullet = () => bullet = new Bullet(this, this.player.ps.x, this.player.ps.y, "id_card", 0.4, this.game.config.idcs)
                     let direction = 'normal'
+                    //VE PARA QUAL DIRECAO ATACA A CARTEIRINHA DEPENDENDO DE QUAL TECLA QUE ESTA PRESSIONADA
                     if (this.keys.SHIFT.isDown && (this.keys.D.isDown || this.keys.A.isDown) && this.keys.W.isDown) {
                         direction = 'diagonal'
                         this.player.throwing_card_diagonal()
@@ -805,8 +828,9 @@ class ClassRoom1 extends Phaser.Scene {
 
                     setTimeout(() => {
                         newBullet()
-                        if(this.players == 'two')
-                        bullet.bullet.tint = '0xef5350'
+                        //SE TIVER DOIS PLAYERS ELE COLORE A CARTEIRINHA
+                        if (this.players == 'two')
+                            bullet.bullet.tint = '0xef5350'
                         direction == 'normal' ? bullet.fire(this.player.pos) : direction == 'up' ? bullet.fireUp() : bullet.fireDiagonally(this.player.pos)
                         this.ghosts.forEach(ghost => {
                             this.physics.add.collider(bullet.bullet, ghost.gs, (bullet, ghost) => {
@@ -825,6 +849,7 @@ class ClassRoom1 extends Phaser.Scene {
                 }
             }
         }
+        //MESMA COISA DO DE CIMA
         if (this.keys.K.isDown && !this.keys.DOWN.isDown && !this.keys.L.isDown && this.canSpawnMinions) {
             if (((new Date().getTime()) - this.timeBefore2) > this.fireRate2) {
                 this.timeBefore2 = new Date().getTime()

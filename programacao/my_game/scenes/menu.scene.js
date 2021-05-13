@@ -1,4 +1,4 @@
-class MenuScreen extends Phaser.Scene {
+class MenuScreen extends Phaser.Scene {//extends quer dizer que pega a funcionalidade de outra classe, no caso a classe de cena do phaser
 
     constructor(config) {
         config = {
@@ -8,6 +8,7 @@ class MenuScreen extends Phaser.Scene {
     }
 
     preload() {
+        //CARREGA IMAGENS E AUDIO
         this.load.image('background', '../res/cenario/menuPhoto.png')
         this.title = new GameText(this, 80, 20, 'ETE BUSTERS', '120px', '#FFFFFF', 'Georgia, "Goudy Bookletter 1911", Times, serif')
 
@@ -16,6 +17,7 @@ class MenuScreen extends Phaser.Scene {
     }
 
     create(data) {
+        //EXECUTA UMA VEZ QUANDO A CENA E CRIADA
         this.hover = this.sound.add('hoverSound', {
             mute: false,
             volume: 1,
@@ -36,11 +38,11 @@ class MenuScreen extends Phaser.Scene {
             delay: 0,
         })
 
-        this.add.image(1252 / 2, 834 / 2, 'background')
+        this.add.image(1252 / 2, 834 / 2, 'background')//fundo 
 
-        const play = this.add.text(550, 680, 'PLAY!', { fontSize: '40px', fill: '#FFFFFF', fontFamily: 'Joystix' })
+        const play = this.add.text(550, 680, 'PLAY!', { fontSize: '40px', fill: '#FFFFFF', fontFamily: 'Joystix' })//adiciona textro que no caso e o titulo
             .setInteractive()
-            .on('pointerdown', () => {
+            .on('pointerdown', () => { //ve se mouse ta em cima do texto ou nao para mudar o botao de cor
                 this.select.play()
                 this.scene.start("scene1", {
                     "players": "one"

@@ -1,4 +1,4 @@
-let config = {
+let config = {//DEFINA A CONFIGURAÇÂO GLOBAL DO JOGO
     type: Phaser.AUTO,
     width: 1252,
     height: 834,
@@ -9,7 +9,7 @@ let config = {
             gravity: { y: 350 }
         }
     },
-    scene: [MenuScreen, ClassRoom1],
+    scene: [MenuScreen, ClassRoom1],//CENAS
     scale: {
         autoCenter: Phaser.Scale.CENTER_BOTH
     },

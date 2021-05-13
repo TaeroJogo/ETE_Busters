@@ -1,10 +1,10 @@
 class HealthBar {
     constructor(scene, x, y) {
-        this.bar = new Phaser.GameObjects.Graphics(scene);
+        this.bar = new Phaser.GameObjects.Graphics(scene);//cria barra de vida na cena
 
         this.x = x;
         this.y = y;
-        this.value = 100;
+        this.value = 100;//quantidade de vida
         this.p = 76 / 100;
 
         this.draw();
@@ -18,7 +18,7 @@ class HealthBar {
         this.draw()
     }
 
-    decrease(amount) {
+    decrease(amount) {//diminui vida
         this.value -= amount;
 
         if (this.value < 0) {
@@ -30,7 +30,7 @@ class HealthBar {
         return (this.value === 0);
     }
 
-    draw() {
+    draw() {//pinta ela, se vida estiver baixa muda a cor para vermelha
         this.bar.clear();
 
         this.bar.fillStyle(0x000000);
