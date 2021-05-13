@@ -7,10 +7,7 @@ class Player {
         this.pos = 'R'
         this.xSpeed = 300;
         this.isNotJumping = true;
-        if(player == 1)
-        this.healthBar = new HealthBar(scene, 1050, 17.5);
-        else
-        this.healthBar2 = new HealthBar(scene, 135, 17.5)
+        this.healthBar = new HealthBar(scene, player == 1 ? 1050 : 135, 17.5);
         this.js = audio.js
         this.hs = audio.hs
         this.pss = audio.pss

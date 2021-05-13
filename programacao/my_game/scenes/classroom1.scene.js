@@ -254,12 +254,11 @@ class ClassRoom1 extends Phaser.Scene {
 
         this.player = new Player(this, 300, 561, 'playerStand', 0.2, 500, this.game.config, 1)
         this.inst = new GameText(this, 1140, 5, 'x' + this.bltqnt, '32px', '#00000', 'Georgia, "Goudy Bookletter 1911", Times, serif')
-        if(this.players == 'two')
-        {
+        if (this.players == 'two') {
             this.inst2 = new GameText(this, 20, 5, 'x' + this.bltqnt, '32px', '#00000', 'Georgia, "Goudy Bookletter 1911", Times, serif')
             this.player2 = new Player(this, 400, 561, 'playerStand', 0.2, 500, this.game.config, 2)
         }
-        
+
         this.randomMinAndMax = (max, min) => Math.floor(Math.random() * (max - (min) + 1)) + min;
         this.randomInterv = (min, max, min2, max2) => this.randomMinAndMax(1, 0) == 0 ? this.randomMinAndMax(min, max) : this.randomMinAndMax(min2, max2)
 
@@ -338,6 +337,45 @@ class ClassRoom1 extends Phaser.Scene {
 
                             }
                         })
+                        if (this.players == 'two') {
+                            this.physics.add.collider(this.player2.ps, bossPew.gs, (player, ghost) => {
+                                if (player.width == 430 || player.height < 560) {
+                                    if (player.body.touching.up && player.height > 560) {
+                                        ghost.play('bossPewDead')
+                                        setTimeout(() => {
+                                            ghost.destroy()
+                                        }, 500);
+                                        this.player.damage()
+                                    }
+                                    if ((player.body.touching.left && this.player2.pos == 'L') || (player.body.touching.right && this.player2.pos == 'R')) {
+                                        this.bltqnt += 8
+                                        this.inst.setNewText('x' + this.bltqnt.toString())
+                                        ghost.play('bossPewDead')
+                                        setTimeout(() => {
+                                            ghost.destroy()
+                                        }, 500);
+                                        if (player.body.onFloor()) {
+                                            this.game.config.pss.play()
+                                        }
+                                        else {
+                                            this.game.config.ks.play()
+                                        }
+
+                                    }
+                                    else {
+                                        this.player2.damage()
+                                    }
+                                }
+                                else {
+                                    this.player2.damage()
+                                    ghost.play('bossPewDead')
+                                    setTimeout(() => {
+                                        ghost.destroy()
+                                    }, 500);
+
+                                }
+                            })
+                        }
                     }
 
                 } else {
@@ -420,18 +458,87 @@ class ClassRoom1 extends Phaser.Scene {
 
                 })
             });
+            if (this.players == 'two') {
+                this.ghosts.forEach(ghost => {
+                    this.physics.add.collider(this.player2.ps, ghost.gs, (player, ghost) => {
+                        if (player.width == 430 || player.height < 560) {
+                            if (player.body.touching.up && player.height > 560) {
+                                this.player2.damage()
+                            }
+                            if ((player.body.touching.left && this.player2.pos == 'L') || (player.body.touching.right && this.player2.pos == 'R')) {
+                                ghost.isAlive = false
+                                this.bltqnt += 8
+                                this.inst.setNewText('x' + this.bltqnt.toString())
+                                ghost.destroy()
+                                if (player.body.onFloor()) {
+                                    this.game.config.pss.play()
+                                }
+                                else {
+                                    this.game.config.ks.play()
+                                }
+
+                            }
+                            else {
+                                this.player2.damage()
+                            }
+                        }
+                        else {
+                            this.player2.damage()
+                            ghost.isAlive = false
+                            ghost.destroy()
+                        }
+
+                    })
+                });
+            }
             this.ghosts.forEach(ghost => {
-                if (ghost.gs.isAlive) {
-                    this.physics.moveToObject(ghost.gs, this.player.ps, 50)
-                    let angleBetween = (obj1, obj2) => {
-                        var angleDeg = (Math.atan2(obj2.y - obj1.y, obj2.x - obj1.x) * 180 / Math.PI);
-                        return angleDeg;
+                if (this.players == 'two') {
+                    if (ghost.gs.isAlive) {
+                        if (!ghost.alocatedTo) {
+                            let p = this.randomMinAndMax(1, 0) == 0 ? this.player.ps : this.player2.ps
+
+                            this.physics.moveToObject(ghost.gs, p, 50)
+                            let angleBetween = (obj1, obj2) => {
+                                var angleDeg = (Math.atan2(obj2.y - obj1.y, obj2.x - obj1.x) * 180 / Math.PI);
+                                return angleDeg;
+                            }
+                            if ((angleBetween(p, ghost.gs) <= 90 && angleBetween(p, ghost.gs) >= 0) || (angleBetween(p, ghost.gs) >= -90 && angleBetween(p, ghost.gs) <= 0)) {
+                                ghost.gs.play('flyL', true)
+                            }
+                            else if ((angleBetween(p, ghost.gs) < -90 && angleBetween(p, ghost.gs) >= -180) || (angleBetween(p, ghost.gs) > 90 && angleBetween(p, ghost.gs) <= 180)) {
+                                ghost.gs.play('fly', true)
+                            }
+                            ghost.alocatedTo = p
+                        }
+                        else if (ghost.alocatedTo) {
+                            let p = ghost.alocatedTo
+                            this.physics.moveToObject(ghost.gs, p, 50)
+                            let angleBetween = (obj1, obj2) => {
+                                var angleDeg = (Math.atan2(obj2.y - obj1.y, obj2.x - obj1.x) * 180 / Math.PI);
+                                return angleDeg;
+                            }
+                            if ((angleBetween(p, ghost.gs) <= 90 && angleBetween(p, ghost.gs) >= 0) || (angleBetween(p, ghost.gs) >= -90 && angleBetween(p, ghost.gs) <= 0)) {
+                                ghost.gs.play('flyL', true)
+                            }
+                            else if ((angleBetween(p, ghost.gs) < -90 && angleBetween(p, ghost.gs) >= -180) || (angleBetween(p, ghost.gs) > 90 && angleBetween(p, ghost.gs) <= 180)) {
+                                ghost.gs.play('fly', true)
+                            }
+                        }
                     }
-                    if ((angleBetween(this.player.ps, ghost.gs) <= 90 && angleBetween(this.player.ps, ghost.gs) >= 0) || (angleBetween(this.player.ps, ghost.gs) >= -90 && angleBetween(this.player.ps, ghost.gs) <= 0)) {
-                        ghost.gs.play('flyL', true)
-                    }
-                    else if ((angleBetween(this.player.ps, ghost.gs) < -90 && angleBetween(this.player.ps, ghost.gs) >= -180) || (angleBetween(this.player.ps, ghost.gs) > 90 && angleBetween(this.player.ps, ghost.gs) <= 180)) {
-                        ghost.gs.play('fly', true)
+                }
+                else {
+                    if (ghost.gs.isAlive) {
+                        this.physics.moveToObject(ghost.gs, this.player.ps, 50)
+                        let angleBetween = (obj1, obj2) => {
+                            var angleDeg = (Math.atan2(obj2.y - obj1.y, obj2.x - obj1.x) * 180 / Math.PI);
+                            return angleDeg;
+                        }
+                        if ((angleBetween(this.player.ps, ghost.gs) <= 90 && angleBetween(this.player.ps, ghost.gs) >= 0) || (angleBetween(this.player.ps, ghost.gs) >= -90 && angleBetween(this.player.ps, ghost.gs) <= 0)) {
+                            ghost.gs.play('flyL', true)
+                        }
+                        else if ((angleBetween(this.player.ps, ghost.gs) < -90 && angleBetween(this.player.ps, ghost.gs) >= -180) || (angleBetween(this.player.ps, ghost.gs) > 90 && angleBetween(this.player.ps, ghost.gs) <= 180)) {
+                            ghost.gs.play('fly', true)
+                        }
                     }
                 }
             });
@@ -452,37 +559,22 @@ class ClassRoom1 extends Phaser.Scene {
             })
         })
 
-        this.ghosts.forEach(ghost => {
-            this.physics.add.collider(this.player.ps, ghost.gs, (player, ghost) => {
-                if (player.width == 430 || player.height < 560) {
-                    if (player.body.touching.up && player.height > 560) {
-                        this.player.damage()
-                    }
-                    if ((player.body.touching.left && this.player.pos == 'L') || (player.body.touching.right && this.player.pos == 'R')) {
-                        ghost.isAlive = false
-                        this.bltqnt += 8
-                        this.inst.setNewText('x' + this.bltqnt.toString())
-                        ghost.destroy()
-                        if (player.body.onFloor()) {
-                            this.game.config.pss.play()
+        if (this.players == 'two') {
+            this.platforms.forEach((plat) => {
+                this.physics.add.collider(this.player2.ps, plat, (player, plat) => {
+                })
+                this.physics.add.overlap(this.player2.ps, plat, () => {
+                    if (this.player2.checkOverlap) {
+                        if (this.player2.ps.y > 611 && this.player2.ps.y < 612) {
+                            this.player2.ps.y = 559.94
+                        } else if (this.player2.ps.y > 281 && this.player2.ps.y < 283) {
+                            this.player2.ps.y = 229.24
                         }
-                        else {
-                            this.game.config.ks.play()
-                        }
-
+                        this.player2.forcePunch = true
                     }
-                    else {
-                        this.player.damage()
-                    }
-                }
-                else {
-                    this.player.damage()
-                    ghost.isAlive = false
-                    ghost.destroy()
-                }
-
+                })
             })
-        });
+        }
 
         this.anims.create({
             key: 'right',
@@ -574,13 +666,23 @@ class ClassRoom1 extends Phaser.Scene {
 
     update(time, delta) {
         if (this.test == 0) {
-            if (this.player.healthBar.value <= 0 && this.player2.healthBar2.value <= 0) {
+            if (this.player.healthBar.value <= 0) {
                 this.test = 1
                 this.canSpawnMinions = false
                 this.gameOverText1 = new GameText(this, 300, 170, 'Game', '200px', '#00000', 'Georgia, "Goudy Bookletter 1911", Times, serif')
                 this.gameOverText2 = new GameText(this, 300, 370, 'Over', '200px', '#00000', 'Georgia, "Goudy Bookletter 1911", Times, serif')
                 this.gos.play()
                 this.bmsc.stop()
+            }
+            if (this.players == 'two') {
+                if (this.player2.healthBar.value <= 0) {
+                    this.test = 1
+                    this.canSpawnMinions = false
+                    this.gameOverText1 = new GameText(this, 300, 170, 'Game', '200px', '#00000', 'Georgia, "Goudy Bookletter 1911", Times, serif')
+                    this.gameOverText2 = new GameText(this, 300, 370, 'Over', '200px', '#00000', 'Georgia, "Goudy Bookletter 1911", Times, serif')
+                    this.gos.play()
+                    this.bmsc.stop()
+                }
             }
         }
 
@@ -592,13 +694,14 @@ class ClassRoom1 extends Phaser.Scene {
         if ((((new Date().getTime()) - this.timeBefore) > this.fireRate - 200) && this.player.isThrowing) {
             this.player.isThrowing = false
         }
-        if ((((new Date().getTime()) - this.timeBefore2) > this.fireRate2 - 200) && this.player2.isThrowing) {
-            this.player2.isThrowing = false
+        if (this.players == 'two') {
+            if ((((new Date().getTime()) - this.timeBefore2) > this.fireRate2 - 200) && this.player2.isThrowing) {
+                this.player2.isThrowing = false
+            }
         }
 
         if (this.canSpawnMinions) {
-            if(this.player2 != undefined)
-            {
+            if (this.player2 != undefined) {
                 if (this.keys.ALT.isDown && this.keys.LEFT.isDown) {
                     if (this.player2.isThrowing) {
                         this.player2.throwing_card()
@@ -669,7 +772,7 @@ class ClassRoom1 extends Phaser.Scene {
                     if (this.player2.isThrowing) {
                         this.player2.throwing_card()
                     }
-                     else {
+                    else {
                         this.player2.stand()
                     }
                 }
@@ -737,19 +840,21 @@ class ClassRoom1 extends Phaser.Scene {
             else if (this.keys.S.isDown) {
                 this.player.sneak()
             }
-            
+
             else {
                 if (this.player.isThrowing) {
                     this.player.throwing_card()
                 }
-                 else {
+                else {
                     this.player.stand()
                 }
             }
         }
         else {
             this.player.stand()
-            this.player2.stand()
+            if (this.players == 'two') {
+                this.player2.stand()
+            }
         }
         if (this.keys.V.isDown && !this.keys.S.isDown && !this.keys.B.isDown && this.canSpawnMinions) {
             if (((new Date().getTime()) - this.timeBefore) > this.fireRate) {
