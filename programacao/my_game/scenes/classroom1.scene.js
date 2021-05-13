@@ -348,7 +348,7 @@ class ClassRoom1 extends Phaser.Scene {
                                         this.player.damage()
                                     }
                                     if ((player.body.touching.left && this.player2.pos == 'L') || (player.body.touching.right && this.player2.pos == 'R')) {
-                                        this.bltqnt += 8
+                                        this.bltqnt2 += 8
                                         this.inst.setNewText('x' + this.bltqnt.toString())
                                         ghost.play('bossPewDead')
                                         setTimeout(() => {
@@ -407,7 +407,7 @@ class ClassRoom1 extends Phaser.Scene {
                 this.canSpawnMinions = false
                 this.boss.gs.play('bossDead', true)
                 this.bossPews.forEach((pews) => {
-                    pews.gs.play('bossPewDead')
+                    //pews.gs.play('bossPewDead')
                     setTimeout(() => {
                         pews.gs.destroy()
                     }, 500);
