@@ -98,88 +98,6 @@ class ClassRoom1 extends Phaser.Scene {
     }
     create(data) {
 
-
-        /*document.addEventListener('keydown', (event) => {
-            const keyName = event.code;
-
-            if (keyName == 'ShiftRight') {
-                if (keyName == 'ShiftRight' && this.keys.LEFT.isDown) {
-                    if (this.player2.isThrowing) {
-                        this.player2.throwing_card()
-                    }
-                    else {
-                        if (this.keys.L.isDown) {
-                            this.player2.combat()
-                        } else {
-                            this.player2.standShot('L')
-                        }
-                    }
-                }
-                else if (keyName == 'ShiftRight' && this.keys.RIGHT.isDown) {
-                    if (this.player2.isThrowing) {
-                        this.player2.throwing_card()
-                    } else {
-                        if (this.keys.L.isDown) {
-                            this.player2.combat()
-                        }
-                        else {
-                            this.player2.standShot('R')
-                        }
-                    }
-                }
-                else if (keyName == 'ShiftRight') {
-                    if (this.player2.isThrowing) {
-                        this.player2.throwing_card()
-                    } else {
-                        this.player2.standShot(this.player.pos)
-                    }
-                }
-                if (this.keys.K.isDown && !this.keys.DOWN.isDown && !this.keys.L.isDown && this.canSpawnMinions) {
-                    if (((new Date().getTime()) - this.timeBefore) > this.fireRate) {
-                        this.timeBefore = new Date().getTime()
-                        if (this.bltqnt2 > 0) {
-                            this.bltqnt2 = this.bltqnt2 - 1;
-                            this.inst.setNewText('x' + this.bltqnt2.toString())
-        
-                            let bullet;
-                            let newBullet = () => bullet = new Bullet(this, this.player.ps.x, this.player.ps.y, "id_card", 0.4, this.game.config.idcs)
-                            let direction = 'normal'
-        
-                            if (keyName == 'ShiftRight' && (this.keys.D.isDown || this.keys.A.isDown) && this.keys.W.isDown) {
-                                direction = 'diagonal'
-                                this.player.throwing_card_diagonal()
-                            }
-                            else if (this.keys.SHIFT.isDown && this.player.ps.body.onFloor() && this.keys.W.isDown) {
-                                direction = 'up'
-                                this.player.throwing_card_up()
-                            }
-                            else {
-                                this.player.throwing_card()
-                            }
-        
-                            setTimeout(() => {
-                                newBullet()
-                                direction == 'normal' ? bullet.fire(this.player.pos) : direction == 'up' ? bullet.fireUp() : bullet.fireDiagonally(this.player.pos)
-                                this.ghosts.forEach(ghost => {
-                                    this.physics.add.collider(bullet.bullet, ghost.gs, (bullet, ghost) => {
-                                        ghost.isAlive = false
-                                        ghost.destroy()
-                                        this.game.config.ds.play()
-                                        bullet.destroy()
-                                    })
-                                });
-                                this.physics.add.collider(bullet.bullet, this.boss.gs, (bullet, ghost) => {
-                                    this.bossDmg.play()
-                                    this.bossHealth -= 1
-                                    bullet.destroy()
-                                })
-                            }, 400);
-                        }
-                    }
-                }
-            }
-        }, false);*/
-
         this.bmsc = this.sound.add('music', {
             mute: false,
             volume: 0.4,
@@ -220,6 +138,11 @@ class ClassRoom1 extends Phaser.Scene {
 
         this.add.image(1252 / 2, 834 / 2, 'classroom')
 
+        if(this.players == 'two') {
+            this.bossHealth = 65
+            this.ghostNumber = 6
+        }
+
         for (let i = 0; i < 3; i++) {
             let platform = this.physics.add.sprite(this.platformsData[i][0], this.platformsData[i][1]).setScale(0.36).refreshBody()
             platform.body.immovable = true;
@@ -255,8 +178,10 @@ class ClassRoom1 extends Phaser.Scene {
         this.player = new Player(this, 300, 561, 'playerStand', 0.2, 500, this.game.config, 1)
         this.inst = new GameText(this, 1140, 5, 'x' + this.bltqnt, '32px', '#00000', 'Georgia, "Goudy Bookletter 1911", Times, serif')
         if (this.players == 'two') {
-            this.inst2 = new GameText(this, 20, 5, 'x' + this.bltqnt, '32px', '#00000', 'Georgia, "Goudy Bookletter 1911", Times, serif')
+            this.inst2 = new GameText(this, 20, 5, 'x' + this.bltqnt2, '32px', '#00000', 'Georgia, "Goudy Bookletter 1911", Times, serif')
             this.player2 = new Player(this, 400, 561, 'playerStand', 0.2, 500, this.game.config, 2)
+            this.player.ps.tint = '0xef5350'
+            this.player2.ps.tint = '0x29b6f6'
         }
 
         this.randomMinAndMax = (max, min) => Math.floor(Math.random() * (max - (min) + 1)) + min;
@@ -349,7 +274,7 @@ class ClassRoom1 extends Phaser.Scene {
                                     }
                                     if ((player.body.touching.left && this.player2.pos == 'L') || (player.body.touching.right && this.player2.pos == 'R')) {
                                         this.bltqnt2 += 8
-                                        this.inst.setNewText('x' + this.bltqnt.toString())
+                                        this.inst.setNewText('x' + this.bltqnt2.toString())
                                         ghost.play('bossPewDead')
                                         setTimeout(() => {
                                             ghost.destroy()
@@ -467,8 +392,8 @@ class ClassRoom1 extends Phaser.Scene {
                             }
                             if ((player.body.touching.left && this.player2.pos == 'L') || (player.body.touching.right && this.player2.pos == 'R')) {
                                 ghost.isAlive = false
-                                this.bltqnt += 8
-                                this.inst.setNewText('x' + this.bltqnt.toString())
+                                this.bltqnt2 += 8
+                                this.inst.setNewText('x' + this.bltqnt2.toString())
                                 ghost.destroy()
                                 if (player.body.onFloor()) {
                                     this.game.config.pss.play()
@@ -866,7 +791,6 @@ class ClassRoom1 extends Phaser.Scene {
                     let bullet;
                     let newBullet = () => bullet = new Bullet(this, this.player.ps.x, this.player.ps.y, "id_card", 0.4, this.game.config.idcs)
                     let direction = 'normal'
-
                     if (this.keys.SHIFT.isDown && (this.keys.D.isDown || this.keys.A.isDown) && this.keys.W.isDown) {
                         direction = 'diagonal'
                         this.player.throwing_card_diagonal()
@@ -881,6 +805,8 @@ class ClassRoom1 extends Phaser.Scene {
 
                     setTimeout(() => {
                         newBullet()
+                        if(this.players == 'two')
+                        bullet.bullet.tint = '0xef5350'
                         direction == 'normal' ? bullet.fire(this.player.pos) : direction == 'up' ? bullet.fireUp() : bullet.fireDiagonally(this.player.pos)
                         this.ghosts.forEach(ghost => {
                             this.physics.add.collider(bullet.bullet, ghost.gs, (bullet, ghost) => {
@@ -924,6 +850,7 @@ class ClassRoom1 extends Phaser.Scene {
 
                     setTimeout(() => {
                         newBullet()
+                        bullet.bullet.tint = '0x29b6f6'
                         direction == 'normal' ? bullet.fire(this.player2.pos) : direction == 'up' ? bullet.fireUp() : bullet.fireDiagonally(this.player2.pos)
                         this.ghosts.forEach(ghost => {
                             this.physics.add.collider(bullet.bullet, ghost.gs, (bullet, ghost) => {
